@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="riscv-interpreter-kcelebi", # Replace with your own username
+    name="riscv-interpreter", # Replace with your own username
     version="0.0.1",
     author="Kaya Çelebi",
     author_email="kayacelebi17@gmail.com",
