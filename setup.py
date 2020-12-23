@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="riscv_assembler",
-    version="0.0.6",
+    version="0.0.7",
     author="Kaya Çelebi",
     author_email="kayacelebi17@gmail.com",
     description="RISC-V assembler",
