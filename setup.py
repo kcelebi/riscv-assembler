@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="riscinterpreter", # Replace with your own username
+    name="riscinterpreter",
     version="0.0.4",
     author="Kaya Çelebi",
     author_email="kayacelebi17@gmail.com",
