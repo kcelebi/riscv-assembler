@@ -8,6 +8,7 @@ import sys
 import os
 from bitstring import BitArray
 import math as m
+from pathlib import Path
 
 class WrongInstructionSize( Exception ):
 	#raised when instruction size is not 32 bits
@@ -37,10 +38,8 @@ class EmptyFile( Exception ):
 		super().__init__(self.message)
 class AssemblyConverter:
 
-	def __init__(self, filename, output_type='b'):
-		self.filename = filename
-		if filename[-2::] != ".s":
-			raise WrongFileType
+	def __init__(self, output_type='b'):
+		self.filename = ""
 			
 		self.code = []
 		self.instructions = []
@@ -184,9 +183,13 @@ class AssemblyConverter:
 	#initializing mapping and instruction data
 	def __pre(self):
 		#register mapping
-		#make dictionary	
+		#make dictionary
+		rmap_path = Path(__file__).parent / "data/reg_map.dat"	
 		r_map = {}
-		f = open("riscinterpreter/data/reg_map.dat", "r")
+		
+		f = open(rmap_path,"r")
+		#f = open("riscinterpreter/data/reg_map.dat", "r")
+		#f = open("src/data/reg_map.dat","r")
 		line = f.readline()
 
 		#assign mapping 
@@ -195,6 +198,7 @@ class AssemblyConverter:
 			r_map[elems[0]] = elems[1] 
 			line = f.readline()
 
+		f.close()
 		#index for instr_data
 		opcode = 0
 		f3 = 1
@@ -202,7 +206,10 @@ class AssemblyConverter:
 
 		#order is [opcode, f3, f7]
 		instr_data = {}
-		f = open("riscinterpreter/data/instr_data.dat", "r")
+		instr_path = Path(__file__).parent / "data/instr_data.dat"
+		f = open(instr_path,"r")
+		#f = open("riscinterpreter/data/instr_data.dat", "r")
+		#f = open("src/data/instr_data.dat","r")
 		line = f.readline()
 
 		#assign data
@@ -210,6 +217,7 @@ class AssemblyConverter:
 			elems = line.replace("\n","").split(" ")
 			instr_data[elems[0]] = elems[1::]
 			line = f.readline()
+		f.close()
 
 		return r_map,instr_data
 
@@ -386,7 +394,10 @@ class AssemblyConverter:
 		print("Number of instructions: {}".format(len(self.instructions)))
 
 	#DO THE MAGIC
-	def convert(self):
+	def convert(self,filename):
+		if filename[-2::] != ".s":
+			raise WrongFileType
+		self.filename = filename
 		self.r_map, self.instr_data = self.__pre()
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
