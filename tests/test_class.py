@@ -1,4 +1,4 @@
-from convert_class import AssemblyConverter
+from riscv-interpeter.convert_class import AssemblyConverter
 
 #TESTS
 
