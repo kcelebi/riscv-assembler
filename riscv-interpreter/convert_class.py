@@ -1,32 +1,7 @@
 '''
 TASKS
-
-[x] map s, a, t registers to the appropriate s register
-[x] finish S type parsing
-[x] R type
-[x] I type
-[x] S type
-[x] SB type
-[x] U type
-[x] UJ type
-[x] figure out exceptions in I type
-[x] write out opcode + f3 + f7 for other instr types <---
-[x] make write to __binary
-[x] make write to text
-[x] move long data to .txt files
-[x] ignore .global, .text lines
-[x] ignore empty lines
-[x] ignore comments
-[x] figure out loops/funcs
-[x] for jal, jalr convert names to hex imm
-[x] fix verbose offset
-[x] fix ecall
-[x] fix SB pseudos
-[x] fix jal impl
-[x] for tests, fix external command line issue
 [] make tests
 [] note collisions
-[*] pseudo instructions?
 
 '''
 import sys
@@ -56,6 +31,10 @@ class WrongFileType( Exception ):
 		self.message = message
 		super().__init__(self.message)
 
+class EmptyFile( Exception ):
+	def __init__(self, message = "File either doesn't exist, has no code, or all is commented out.\nInvestigate any tab/spacing syntax issues"):
+		self.message = message
+		super().__init__(self.message)
 class AssemblyConverter:
 
 	def __init__(self, filename, output_type):
@@ -367,8 +346,16 @@ class AssemblyConverter:
 			print("-----Writing to __binary file-----")
 			#make it [their .s file name].bin
 			fname = self.filename.split("/")[-1]
-			print("Output file: " + fname[0:len(fname)-2] + ".bin")
-			with open("output/bin/" + fname[0:len(fname)-2] + ".bin", "wb") as f:
+			print("Output file: " + fname[:-2] + ".bin")
+
+			if not os.path.exists(fname[:-2]):
+				os.system("mkdir {}".format(fname[:-2]))
+				os.system("mkdir {}".format("bin"))
+			else:
+				if not os.path.exists("bin"):
+					os.system("mkdir {}".format("bin"))
+
+			with open("output/"+fname[:-2]+"/bin/" + fname[:-2] + ".bin", "wb") as f:
 				for elem in self.instructions:
 					#split into bytes
 					byte_array = [elem[i:i+8] for i in range(0,len(elem),8)]
@@ -382,8 +369,16 @@ class AssemblyConverter:
 			#make it [their .s file name].txt
 
 			fname = self.filename.split("/")[-1]
-			print("Output file: " + fname[0:len(fname)-2] + ".txt")
-			with open("output/text/" + fname[0:len(fname)-2] + ".txt", "w") as f:
+			print("Output file: " + fname[:-2] + ".txt")
+
+			if not os.path.exists(fname[:-2]):
+				os.system("mkdir {}".format(fname[:-2]))
+				os.system("mkdir {}".format("txt"))
+			else:
+				if not os.path.exists("txt"):
+					os.system("mkdir {}".format("txt"))
+
+			with open("output/"+fname[:-2]+"text/" + fname[:-2] + ".txt", "w") as f:
 				for elem in self.instructions:
 					f.write(elem + "\n")
 

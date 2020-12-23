@@ -2,17 +2,17 @@ from convert_class import AssemblyConverter
 
 #TESTS
 
+#test simple.s file, writes to txt and bin
 def test0():
-
-	cnv = AssemblyConverter("Assembly/simple.s", "t")
+	cnv = AssemblyConverter("tests/assembly/simple.s", "tb")
 
 	cnv.convert()
 
-	ans = "tests/simple/simple0.txt"
+	ans = "tests/expected/simple/txt/simple.txt"
 	a = open(ans,"r")
 	a_line = a.readline()
 
-	file = "output/text/simple0.txt"
+	file = "output/simple/txt/simple.txt"
 	f = open(file,"r")
 	f_line = f.readline()
 
