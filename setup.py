@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="riscv-interpreter", # Replace with your own username
+    name="riscinterpreter", # Replace with your own username
     version="0.0.1",
     author="Kaya Çelebi",
     author_email="kayacelebi17@gmail.com",
-    description="RISC-V interpeter",
+    description="RISC-V interpreter",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/kcelebi/riscv-interpreter",
+    url="https://github.com/kcelebi/riscinterpreter",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

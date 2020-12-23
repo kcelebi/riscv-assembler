@@ -1,5 +1,5 @@
-from riscv-interpeter.convert_class import AssemblyConverter
-
+from riscinterpreter.riscinterpreter.convert_class import AssemblyConverter
+#fix above ^^^
 #TESTS
 
 #test simple.s file, writes to txt and bin
