@@ -30,3 +30,91 @@ With this object we can apply our most powerful function : `convert()`. This fun
 `cnv.convert("simple.s")`
 
 Any empty files, fully commented files, or files without `.s` extension will not be accepted. The function creates a directory by truncating the extension of the file along with two subdirectories called `bin` and `txt` for the respective output files (for `simple.s` the directory would be `simple`). 
+
+## Instruction Format Functions
+
+This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. 
+
+### R_type
+
+This functions converts individual lines of assembly with R type instructions to machine code. The function usage is:
+
+`R_type(operation, rs1, rs2, rd)`
+
+Here is an example of translating `add x0 s0 s1`
+
+    from riscv_interpreter.convert import AssemblyConverter
+    
+    cnv = AssemblyConverter() #output to binary   
+    cnv.R_type("add","x0","s0","s1") #convert the instruction
+
+Note that the registers are being written as strings. The package maps them correctly to their respective binary values (ex. `s0` maps to `x8`).
+
+### I_type
+
+This functions converts individual lines of assembly with I type instructions to machine code. The function usage is:
+
+`I_type(operation, rs1, imm, rd)`
+
+Here is an example of translating `addi x0 x0 32`
+
+    from riscv_interpreter.convert import AssemblyConverter
+    
+    cnv = AssemblyConverter() #output to binary   
+    cnv.I_type("addi","x0","32","x0") #convert the instruction
+
+Note that the immediate is a string, not just a number. This was implemented this way for seamless integration with the convert() function, there is an easy workaround for using it on its own. 
+
+### S_type
+
+This functions converts individual lines of assembly with S type instructions to machine code. The function usage is:
+
+`S_type(operation, rs1, rs2, imm)`
+
+Here is an example of translating `sw x0 0(sp)`
+
+    from riscv_interpreter.convert import AssemblyConverter
+    
+    cnv = AssemblyConverter() #output to binary   
+    cnv.S_type("sw","x0","sp","0") #convert the instruction
+    
+### SB_type
+
+This functions converts individual lines of assembly with SB type instructions to machine code. The function usage is:
+
+`SB_type(operation, rs1, rs2, imm)`
+
+Here is an example of translating `beq x0 x1 loop`:
+
+    from riscv_interpreter.convert import AssemblyConverter
+    
+    cnv = AssemblyConverter() #output to binary   
+    cnv.SB_type("beq","x0","x1","loop") #convert the instruction
+
+Note that the jump is written as a string, the appropriate instruction jump is calculated by the package.
+
+### U_type
+
+This functions converts individual lines of assembly with U type instructions to machine code. The function usage is:
+
+`U_type(operation, imm, rd)`
+
+Here is an example of converting `lui x0 10`:
+
+    from riscv_interpreter.convert import AssemblyConverter
+    
+    cnv = AssemblyConverter() #output to binary   
+    cnv.U_type("lui","x0","10") #convert the instruction
+    
+### UJ_type
+
+This functions converts individual lines of assembly with UJ type instructions to machine code. The function usage is:
+
+`UJ_type(operation, imm, rd)`
+
+Here is an example of converting `jal a0 func`:
+
+    from riscv_interpreter.convert import AssemblyConverter
+    
+    cnv = AssemblyConverter() #output to binary   
+    cnv.UJ_type("jal","func","a0") #convert the instruction
