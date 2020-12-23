@@ -24,7 +24,7 @@ We can now instantiate an object. The constructor requires a string that specifi
     cnv = AssemblyConverter("t") #just text
     cnv = AssemblyConverter() #binary by default
 
-### Convert
+## Convert
 With this object we can apply our most powerful function : `convert()`. This function takes in a file name (with .s extension) from the local directory and converts it to the output file of your choice, specified by the object construction. Let's convert the file `simple.s`:
 
 `cnv.convert("simple.s")`
