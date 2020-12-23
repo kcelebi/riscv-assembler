@@ -37,7 +37,7 @@ class EmptyFile( Exception ):
 		super().__init__(self.message)
 class AssemblyConverter:
 
-	def __init__(self, filename, output_type):
+	def __init__(self, filename, output_type='b'):
 		self.filename = filename
 		if filename[-2::] != ".s":
 			raise WrongFileType
@@ -46,14 +46,10 @@ class AssemblyConverter:
 		self.instructions = []
 		self.r_map = {}
 		self.instr_data = {}
-
-		if len(output_type.split()) == 0:
-			self.output_type = "b" #binary by default
+		if "b" not in output_type and "t" not in output_type:
+			raise IncorrectOutputType()
 		else:
-			if "b" not in output_type.split() and "t" not in output_type.split():
-				raise IncorrectOutputType()
-			else:
-				self.output_type = output_type.split()
+			self.output_type = output_type
 
 		#instr types
 		self.R_instr = ["add","sub", "sll", "sltu", "xor", "srl", "sra", "or", "and", "addw", "subw", "sllw", "slrw", "sraw", "mul", "mulh", "mulu", "mulsu", "div", "divu", "rem", "remu"]
@@ -190,7 +186,7 @@ class AssemblyConverter:
 		#register mapping
 		#make dictionary	
 		r_map = {}
-		f = open("data/reg_map.dat", "r")
+		f = open("riscinterpreter/data/reg_map.dat", "r")
 		line = f.readline()
 
 		#assign mapping 
@@ -206,7 +202,7 @@ class AssemblyConverter:
 
 		#order is [opcode, f3, f7]
 		instr_data = {}
-		f = open("data/instr_data.dat", "r")
+		f = open("riscinterpreter/data/instr_data.dat", "r")
 		line = f.readline()
 
 		#assign data
@@ -343,7 +339,7 @@ class AssemblyConverter:
 	#AFTER READING FILE	
 	def __post(self):
 
-		if len(instructions) == 0:
+		if len(self.instructions) == 0:
 			raise EmptyFile
 		if "b" in self.output_type:
 			print("-----Writing to __binary file-----")
@@ -353,12 +349,13 @@ class AssemblyConverter:
 
 			if not os.path.exists(fname[:-2]):
 				os.system("mkdir {}".format(fname[:-2]))
-				os.system("mkdir {}".format("bin"))
+				os.system("mkdir {}/bin".format(fname[:-2]))
 			else:
 				if not os.path.exists("bin"):
-					os.system("mkdir {}".format("bin"))
+					os.system("mkdir {}/bin".format(fname[:-2]))
 
-			with open("output/"+fname[:-2]+"/bin/" + fname[:-2] + ".bin", "wb") as f:
+			#with open("output/"+fname[:-2]+"/bin/" + fname[:-2] + ".bin", "wb") as f:
+			with open(fname[:-2]+"/bin/" + fname[:-2] + ".bin", "wb") as f:
 				for elem in self.instructions:
 					#split into bytes
 					byte_array = [elem[i:i+8] for i in range(0,len(elem),8)]
@@ -376,12 +373,13 @@ class AssemblyConverter:
 
 			if not os.path.exists(fname[:-2]):
 				os.system("mkdir {}".format(fname[:-2]))
-				os.system("mkdir {}".format("txt"))
+				os.system("mkdir {}/txt".format(fname[:-2]))
 			else:
 				if not os.path.exists("txt"):
-					os.system("mkdir {}".format("txt"))
+					os.system("mkdir {}/txt".format(fname[:-2]))
 
-			with open("output/"+fname[:-2]+"text/" + fname[:-2] + ".txt", "w") as f:
+			#with open("output/"+fname[:-2]+"text/" + fname[:-2] + ".txt", "w") as f:
+			with open(fname[:-2]+"/txt/" + fname[:-2] + ".txt", "w") as f:
 				for elem in self.instructions:
 					f.write(elem + "\n")
 
