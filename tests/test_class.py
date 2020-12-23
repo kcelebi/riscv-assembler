@@ -1,4 +1,4 @@
-from riscinterpreter.riscinterpreter.convert_class import AssemblyConverter
+from riscinterpreter.convert_class import AssemblyConverter
 #fix above ^^^
 #TESTS
 

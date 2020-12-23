@@ -11,7 +11,7 @@ setuptools.setup(
     description="RISC-V interpreter",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/kcelebi/riscinterpreter",
+    url="https://github.com/kcelebi/riscv-interpreter",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
