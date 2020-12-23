@@ -190,7 +190,7 @@ class AssemblyConverter:
 		#register mapping
 		#make dictionary	
 		r_map = {}
-		f = open("data/reg_map.txt", "r")
+		f = open("data/reg_map.dat", "r")
 		line = f.readline()
 
 		#assign mapping 
@@ -206,7 +206,7 @@ class AssemblyConverter:
 
 		#order is [opcode, f3, f7]
 		instr_data = {}
-		f = open("data/instr_data.txt", "r")
+		f = open("data/instr_data.dat", "r")
 		line = f.readline()
 
 		#assign data
