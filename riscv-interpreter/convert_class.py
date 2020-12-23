@@ -342,6 +342,9 @@ class AssemblyConverter:
 
 	#AFTER READING FILE	
 	def __post(self):
+
+		if len(instructions) == 0:
+			raise EmptyFile
 		if "b" in self.output_type:
 			print("-----Writing to __binary file-----")
 			#make it [their .s file name].bin
