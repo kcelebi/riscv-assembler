@@ -15,9 +15,11 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     package_data={'riscv_assembler':['data/*.dat']},
     classifiers=[
+        "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3',
+    install_requires=['bitstring','pathlib']
 )

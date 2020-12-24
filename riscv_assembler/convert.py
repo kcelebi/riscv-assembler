@@ -130,7 +130,7 @@ class AssemblyConverter:
 				raise IncorrectOutputType(e)
 
 	#checks whether instruction is in system
-	def instructionExists(x):
+	def instructionExists(self,x):
 		return x in self.all_instr
 
 
@@ -432,3 +432,12 @@ class AssemblyConverter:
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
 		self.__post()
+
+	def convert_ret(self,filename):
+		if filename[-2::] != ".s":
+			raise WrongFileType
+		self.filename = filename
+		self.r_map, self.instr_data = self.__pre()
+		self.code = self.__read_in_advance()
+		self.instructions = self.__get_instructions()
+		return self.instructions
