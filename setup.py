@@ -13,8 +13,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/kcelebi/riscv_assembler",
     packages=setuptools.find_packages(),
-    package_dir={'riscv_assembler':'.'},
-    package_data={'riscv_assembler':['data/*.dat']},
+    package_dir={'.':'.'},
+    package_data={'.':['data/*.dat']},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
