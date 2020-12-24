@@ -45,7 +45,7 @@ class AssemblyConverter:
 		self.instructions = []
 		self.r_map = {}
 		self.instr_data = {}
-		if "b" not in output_type and "t" not in output_type:
+		if "b" not in output_type and "t" not in output_type and "p" not in output_type:
 			raise IncorrectOutputType()
 		else:
 			self.output_type = output_type
@@ -391,6 +391,12 @@ class AssemblyConverter:
 				for elem in self.instructions:
 					f.write(elem + "\n")
 
+		if "p" in self.output_type:
+			print("------Printing Output------")
+
+			for e in self.instructions:
+				print(e)
+				
 		print("Number of instructions: {}".format(len(self.instructions)))
 
 	#DO THE MAGIC
