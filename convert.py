@@ -1,9 +1,3 @@
-'''
-TASKS
-[] make tests
-[] note collisions
-
-'''
 import sys
 import os
 from bitstring import BitArray
