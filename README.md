@@ -142,7 +142,7 @@ Here is an example of converting `jal a0 func`:
 
 Here are a few functions that might be useful:
 
-### getOutputType
+### getOutputType()
 
 This function simply prints the output type that has been initially selected. Example usage:
 
@@ -154,17 +154,18 @@ This will print to console:
     Writing to binary file
     Writing to text file
 
-### setOutputType
+### setOutputType()
 
 This function allows the option to change the output type after initialization. Example usage:
 
     cnv = AssemblyConverter("bt") #initially write to binary and text file
     cnv.setOutputType("p") #now only print to console
 
-### instructionExists
+### instructionExists()
 
 This function returns a boolean for whether a provided instruction exists in the system. Example usage:
 
     instructionExists("add") #yields true
     instructionExists("hello world") #yields false
     
+<!-- ### addPseudo()-->
