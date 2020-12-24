@@ -4,7 +4,7 @@ from bitstring import BitArray
 import math as m
 from pathlib import Path
 
-__all__ = ["AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType"]
+__all__ = ['riscv-assembler',"riscv_assembler","AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType"]
 class WrongInstructionSize( Exception ):
 	#raised when instruction size is not 32 bits
 	def __init__(self, message = "Instruction is not 32 bits, possible assembly file error"):
@@ -33,6 +33,16 @@ class EmptyFile( Exception ):
 		super().__init__(self.message)
 class AssemblyConverter:
 
+	#	__flatten__ an array
+	def __flatten(self,x):
+		arr = []
+		for e in x:
+			if not isinstance(e, list):
+				arr.append(e)
+			else:
+				arr.extend(e)
+		return arr
+
 	def __init__(self, output_type='b'):
 		self.filename = ""
 			
@@ -57,7 +67,7 @@ class AssemblyConverter:
 
 		self.pseudo_instr = ["beqz", "bnez", "li", "mv", "j", "jr", "la", "neg", "nop", "not", "ret", "seqz", "snez", "bgt", "ble"]
 
-		self.all_instr = __flatten([self.R_instr, self.I_instr, self.S_instr, self.SB_instr, self.U_instr, self.UJ_instr, self.pseudo_instr])
+		self.all_instr = self.__flatten([self.R_instr, self.I_instr, self.S_instr, self.SB_instr, self.U_instr, self.UJ_instr, self.pseudo_instr])
 	#helper methods
 	def __reg_map(self,x):
 		return self.r_map[x]
@@ -101,16 +111,6 @@ class AssemblyConverter:
 				return x[0:pos]
 
 		return x
-
-	#__flatten__ an array
-	def __flatten(self,x):
-		arr = []
-		for e in x:
-			if not isinstance(e, list):
-				arr.append(e)
-			else:
-				arr.extend(e)
-		return arr
 
 	#change output type
 	def setOutputType(self, x):

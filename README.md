@@ -19,7 +19,7 @@ Use the links below to jump to sections of the documentation:
 
 The package can be installed using pip:
 
-`$ pip install riscv_assembler`
+`$ pip install riscv-assembler`
 
 No other actions necessary.
 
@@ -27,7 +27,7 @@ No other actions necessary.
 
 The package works through an `AssemblyConverter` class. We would first need to import this class:
 
-`from riscv_interpreter.convert import AssemblyConverter`
+`from riscv_assembler.convert import AssemblyConverter`
 
 We can now instantiate an object. The constructor requires a string that specifies the output file as any combination of binary or text file, or printing to console. Here are acceptable usages:
     
@@ -58,7 +58,7 @@ This functions converts individual lines of assembly with R type instructions to
 
 Here is an example of translating `add x0 s0 s1`
 
-    from riscv_interpreter.convert import AssemblyConverter
+    from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
     cnv.R_type("add","x0","s0","s1") #convert the instruction
@@ -73,7 +73,7 @@ This functions converts individual lines of assembly with I type instructions to
 
 Here is an example of translating `addi x0 x0 32`
 
-    from riscv_interpreter.convert import AssemblyConverter
+    from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
     cnv.I_type("addi","x0","32","x0") #convert the instruction
@@ -88,7 +88,7 @@ This functions converts individual lines of assembly with S type instructions to
 
 Here is an example of translating `sw x0 0(sp)`
 
-    from riscv_interpreter.convert import AssemblyConverter
+    from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
     cnv.S_type("sw","x0","sp","0") #convert the instruction
@@ -101,7 +101,7 @@ This functions converts individual lines of assembly with SB type instructions t
 
 Here is an example of translating `beq x0 x1 loop`:
 
-    from riscv_interpreter.convert import AssemblyConverter
+    from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
     cnv.SB_type("beq","x0","x1","loop") #convert the instruction
@@ -116,7 +116,7 @@ This functions converts individual lines of assembly with U type instructions to
 
 Here is an example of converting `lui x0 10`:
 
-    from riscv_interpreter.convert import AssemblyConverter
+    from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
     cnv.U_type("lui","x0","10") #convert the instruction
@@ -129,7 +129,7 @@ This functions converts individual lines of assembly with UJ type instructions t
 
 Here is an example of converting `jal a0 func`:
 
-    from riscv_interpreter.convert import AssemblyConverter
+    from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
     cnv.UJ_type("jal","func","a0") #convert the instruction
