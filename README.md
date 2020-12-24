@@ -1,7 +1,7 @@
 # riscv-assembler
 RISC-V Assembly code assembler package.
 
-This package contains tools and functions that can convert RISC-V Assembly code to machine code. The whole process is implemented using Python purely for understandability, less so for efficiency in computation. These tools can be used to convert given lines of code or whole files. For conversion, output file types are binary, text files, and printing to console. The supported instruction types are R, I, S, SB, U, and UJ. Almost all standard instructions are supported, most pseudo instructions are also supported (see [helper functions](#helper-functions) about adding pseudo/missing instructions).
+This package contains tools and functions that can convert **RISC-V** Assembly code to machine code. The whole process is implemented using Python purely for understandability, less so for efficiency in computation. These tools can be used to _convert given lines of code or [whole files](#convert) to machine code_. For conversion, output file types are binary, text files, and printing to console. The supported instruction types are **R, I, S, SB, U, and UJ**. Almost all standard instructions are supported, most pseudo instructions are also supported (see [helper functions](#helper-functions) about adding pseudo/missing instructions).
 
 # Table of Contents
 
@@ -14,6 +14,7 @@ Use the links below to jump to sections of the documentation:
     - [Helper Functions](#helper-functions)
 - [How it Works](#how-it-works)
 - [Future Plans](#future-plans)
+
 # Installation
 
 The package can be installed using pip:
@@ -28,7 +29,7 @@ The package works through an `AssemblyConverter` class. We would first need to i
 
 `from riscv_interpreter.convert import AssemblyConverter`
 
-We can now instantiate an object. The constructor requires a string that specifies the output file as any combination of binary, text, or printing to console. Here are acceptable usages:
+We can now instantiate an object. The constructor requires a string that specifies the output file as any combination of binary or text file, or printing to console. Here are acceptable usages:
     
     cnv = AssemblyConverter("btp") #binary and text and printing
     cnv = AssemblyConverter("pbt") #works same as above ^
