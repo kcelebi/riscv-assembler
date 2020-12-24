@@ -11,14 +11,15 @@ Use the links below to jump to sections of the documentation:
 - [Usage](#usage)
     - [Convert](#convert)
     - [Instruction Format Functions](##instruction-format-functions)
-        - [R Format](#r_type)
-        - [I Format](#i_type)
-        - [S Format](#s_type)
-        - [SB Format](#sb_type)
-        - [U Format](#u_type)
-        - [UJ Format](#uj_type)
+        - [R Format](#r_type())
+        - [I Format](#i_type())
+        - [S Format](#s_type())
+        - [SB Format](#sb_type())
+        - [U Format](#u_type())
+        - [UJ Format](#uj_type())
     - [Helper Functions](#helper-functions)
-- 
+- [How it Works](#how-it-works)
+- [Future Plans](#future-plans)
 # Installation
 
 The package can be installed using pip:
@@ -54,7 +55,7 @@ Any empty files, fully commented files, or files without `.s` extension will not
 
 This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. The outputs to these are written to text or binary files or printed to console, depending on how the constructor was initialized. For the below examples, they are being outputted to binary files.
 
-### R_type
+### R_type()
 
 This functions converts individual lines of assembly with R type instructions to machine code. The function usage is:
 
@@ -69,7 +70,7 @@ Here is an example of translating `add x0 s0 s1`
 
 Note that the registers are being written as strings. The package maps them correctly to their respective binary values (ex. `s0` maps to `x8`).
 
-### I_type
+### I_type()
 
 This functions converts individual lines of assembly with I type instructions to machine code. The function usage is:
 
@@ -84,7 +85,7 @@ Here is an example of translating `addi x0 x0 32`
 
 Note that the immediate is a string, not just a number. This was implemented this way for seamless integration with the convert() function, there is an easy workaround for using it on its own. 
 
-### S_type
+### S_type()
 
 This functions converts individual lines of assembly with S type instructions to machine code. The function usage is:
 
@@ -97,7 +98,7 @@ Here is an example of translating `sw x0 0(sp)`
     cnv = AssemblyConverter() #output to binary   
     cnv.S_type("sw","x0","sp","0") #convert the instruction
     
-### SB_type
+### SB_type()
 
 This functions converts individual lines of assembly with SB type instructions to machine code. The function usage is:
 
@@ -112,7 +113,7 @@ Here is an example of translating `beq x0 x1 loop`:
 
 Note that the jump is written as a string, the appropriate instruction jump is calculated by the package.
 
-### U_type
+### U_type()
 
 This functions converts individual lines of assembly with U type instructions to machine code. The function usage is:
 
@@ -125,7 +126,7 @@ Here is an example of converting `lui x0 10`:
     cnv = AssemblyConverter() #output to binary   
     cnv.U_type("lui","x0","10") #convert the instruction
     
-### UJ_type
+### UJ_type()
 
 This functions converts individual lines of assembly with UJ type instructions to machine code. The function usage is:
 
@@ -169,3 +170,7 @@ This function returns a boolean for whether a provided instruction exists in the
     instructionExists("hello world") #yields false
     
 <!-- ### addPseudo()-->
+
+# How it Works
+
+# Future Plans
