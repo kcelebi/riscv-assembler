@@ -165,7 +165,13 @@ This function returns a boolean for whether a provided instruction exists in the
     instructionExists("hello world") #yields false
     
 <!-- ### addPseudo()-->
-
+For functions that do not exist in the system that are used often, feel free to contact me to have it implemented. Most functions are readily available, however, with a growing library it is possible that a pseudo instruction or two slipped past. I intend on implementing functions that allow for the user to bypass any shortfalls like this (see [future plans](#future-plans) )
 # How it Works
 
+This package works by parsing through given `.s` files, filtering through comments and empty space to find instructions, categorizing them by their instruction type, then constructing the machine code. These tools have been tested quite thoroughly and work well for individual files. This package was designed with the intention of helping with CPU architecture engineering (see [future plans](#future-plans) ). Machine code is difficult to interpret which can make it difficult to create efficient tests by hand. Simple software like this can help generate testing material and help debug CPU systems. 
+
 # Future Plans
+
+One of the bigger problems I intend to tackle is dealing with multiple files in a project. Currently, this package can only handle files that exist on their own. This implementation will be coming soon. 
+
+A function that I intend to implement is `addPseudo()` which gives users the opportunity to add their own custom functions or fill in functions that might be missing from the package data. 
