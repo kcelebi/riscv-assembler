@@ -17,6 +17,7 @@ Use the links below to jump to sections of the documentation:
         - [SB Format](#sb_type)
         - [U Format](#u_type)
         - [UJ Format](#uj_type)
+    - [Helper Functions](#helper-functions)
 - 
 # Installation
 
@@ -32,11 +33,13 @@ The package works through an `AssemblyConverter` class. We would first need to i
 
 `from riscv_interpreter.convert import AssemblyConverter`
 
-We can now instantiate an object. The constructor requires a string that specifies the output file as either binary, text, or both. Here are acceptable usages:
+We can now instantiate an object. The constructor requires a string that specifies the output file as any combination of binary, text, or printing to console. Here are acceptable usages:
     
-    cnv = AssemblyConverter("bt") #binary and text
+    cnv = AssemblyConverter("btp") #binary and text and printing
+    cnv = AssemblyConverter("pbt") #works same as above ^
     cnv = AssemblyConverter("b") #just binary
     cnv = AssemblyConverter("t") #just text
+    cnv = AssemblyConverter("p") #just printing
     cnv = AssemblyConverter() #binary by default
     
 
@@ -45,11 +48,11 @@ With this object we can apply our most powerful function : `convert()`. This fun
 
 `cnv.convert("simple.s")`
 
-Any empty files, fully commented files, or files without `.s` extension will not be accepted. The function creates a directory by truncating the extension of the file along with two subdirectories called `bin` and `txt` for the respective output files (for `simple.s` the directory would be `simple`). 
+Any empty files, fully commented files, or files without `.s` extension will not be accepted. The function creates a directory by truncating the extension of the file along with two subdirectories called `bin` and `txt` for the respective output files (for `simple.s` the directory would be `simple`). Output files will be stored there for usage and/or printed to console.
 
 ## Instruction Format Functions
 
-This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. 
+This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. The outputs to these are written to text or binary files or printed to console, depending on how the constructor was initialized. For the below examples, they are being outputted to binary files.
 
 ### R_type
 
@@ -134,3 +137,34 @@ Here is an example of converting `jal a0 func`:
     
     cnv = AssemblyConverter() #output to binary   
     cnv.UJ_type("jal","func","a0") #convert the instruction
+    
+## Helper Functions
+
+Here are a few functions that might be useful:
+
+### getOutputType
+
+This function simply prints the output type that has been initially selected. Example usage:
+
+    cnv = AssemblyConverter("bt") #initially write to binary and text file
+    cnv.getOutputType()
+
+This will print to console:
+    
+    Writing to binary file
+    Writing to text file
+
+### setOutputType
+
+This function allows the option to change the output type after initialization. Example usage:
+
+    cnv = AssemblyConverter("bt") #initially write to binary and text file
+    cnv.setOutputType("p") #now only print to console
+
+### instructionExists
+
+This function returns a boolean for whether a provided instruction exists in the system. Example usage:
+
+    instructionExists("add") #yields true
+    instructionExists("hello world") #yields false
+    
