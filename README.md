@@ -1,4 +1,4 @@
-[![Inline docs](http://inch-ci.org/github/kcelebi/riscv-assembler.svg?branch=master)](http://inch-ci.org/github/kcelebi/riscv-assembler)
+[![Gitter](https://badges.gitter.im/riscv-assembler/community.svg)](https://gitter.im/riscv-assembler/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 # riscv-assembler Documentation
 RISC-V Assembly code assembler package.
 
