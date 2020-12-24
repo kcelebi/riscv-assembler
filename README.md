@@ -1,7 +1,3 @@
-<!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/kcelebi" data-color-scheme="no-preference: dark; light: light; dark: dark;" aria-label="Follow @kcelebi on GitHub">Follow @kcelebi</a>
-<!-- Place this tag in your head or just before your close body tag. -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
 # riscv-assembler Documentation
 RISC-V Assembly code assembler package.
 
