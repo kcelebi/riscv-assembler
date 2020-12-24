@@ -18,11 +18,12 @@ The package works through an `AssemblyConverter` class. We would first need to i
 `from riscv_interpreter.convert import AssemblyConverter`
 
 We can now instantiate an object. The constructor requires a string that specifies the output file as either binary, text, or both. Here are acceptable usages:
-
+    ```python
     cnv = AssemblyConverter("bt") #binary and text
     cnv = AssemblyConverter("b") #just binary
     cnv = AssemblyConverter("t") #just text
     cnv = AssemblyConverter() #binary by default
+    ```
 
 ## Convert
 With this object we can apply our most powerful function : `convert()`. This function takes in a file name (with .s extension) from the local directory and converts it to the output file of your choice, specified by the object construction. Let's convert the file `simple.s`:
