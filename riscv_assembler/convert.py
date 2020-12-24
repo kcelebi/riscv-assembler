@@ -62,6 +62,7 @@ class AssemblyConverter:
 
 		self.pseudo_instr = ["beqz", "bnez", "li", "mv", "j", "jr", "la", "neg", "nop", "not", "ret", "seqz", "snez", "bgt", "ble"]
 
+		self.all_instr = __flatten([self.R_instr, self.I_instr, self.S_instr, self.SB_instr, self.U_instr, self.UJ_instr, self.pseudo_instr])
 	#helper methods
 	def __reg_map(self,x):
 		return self.r_map[x]
@@ -116,6 +117,35 @@ class AssemblyConverter:
 				arr.extend(e)
 		return arr
 
+	#change output type
+	def setOutputType(self, x):
+		self.output_type = x
+
+	#return output type
+	def getOutputType(self):
+		for e in self.output_type:
+			if e == "p":
+				print("Printing to console")
+			elif e == "b":
+				print("Writing to binary file")
+			elif e == "t":
+				print("Writing to text file")
+			else:
+				print("Messed up output type")
+				raise IncorrectOutputType(e)
+
+	#checks whether instruction is in system
+	def instructionExists(x):
+		return x in self.all_instr
+
+
+	#add custom pseudo instruction
+	#to be implemented later
+	'''
+	def addPseudo(instr, op_arr):
+		return ""
+	'''
+	
 	#create instruction
 	def R_type(self,instr, rs1, rs2, rd):
 		opcode = 0;f3 = 1;f7 = 2
@@ -393,10 +423,9 @@ class AssemblyConverter:
 
 		if "p" in self.output_type:
 			print("------Printing Output------")
-
 			for e in self.instructions:
 				print(e)
-				
+
 		print("Number of instructions: {}".format(len(self.instructions)))
 
 	#DO THE MAGIC
