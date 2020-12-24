@@ -7,16 +7,16 @@ This package contains tools and functions that can convert RISC-V Assembly code 
 
 Use the links below to jump to sections of the documentation:
 
-- Installation
-- Usage
-    - Convert
-    - Instruction Format Functions
-        - R Format
-        - I Format
-        - S Format
-        - SB Format
-        - U Format
-        - UJ Format
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Convert](##convert)
+    - [Instruction Format Functions](##instruction-format-functions)
+        - [R Format](###r_type)
+        - [I Format](###i_type)
+        - [S Format](###s_type)
+        - [SB Format](###sb_type)
+        - [U Format](###u_type)
+        - [UJ Format](###uj_type)
 - 
 # Installation
 
