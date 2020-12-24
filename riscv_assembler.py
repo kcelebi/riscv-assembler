@@ -4,6 +4,7 @@ from bitstring import BitArray
 import math as m
 from pathlib import Path
 
+__all__ = ["AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType"]
 class WrongInstructionSize( Exception ):
 	#raised when instruction size is not 32 bits
 	def __init__(self, message = "Instruction is not 32 bits, possible assembly file error"):
