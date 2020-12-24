@@ -9,14 +9,14 @@ Use the links below to jump to sections of the documentation:
 
 - [Installation](#installation)
 - [Usage](#usage)
-    - [Convert](##convert)
+    - [Convert](#convert)
     - [Instruction Format Functions](##instruction-format-functions)
-        - [R Format](###r_type)
-        - [I Format](###i_type)
-        - [S Format](###s_type)
-        - [SB Format](###sb_type)
-        - [U Format](###u_type)
-        - [UJ Format](###uj_type)
+        - [R Format](#r_type)
+        - [I Format](#i_type)
+        - [S Format](#s_type)
+        - [SB Format](#sb_type)
+        - [U Format](#u_type)
+        - [UJ Format](#uj_type)
 - 
 # Installation
 
