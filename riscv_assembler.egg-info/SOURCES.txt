@@ -1,0 +1,10 @@
+README.md
+setup.py
+riscv_assembler/__init__.py
+riscv_assembler/convert.py
+riscv_assembler.egg-info/PKG-INFO
+riscv_assembler.egg-info/SOURCES.txt
+riscv_assembler.egg-info/dependency_links.txt
+riscv_assembler.egg-info/top_level.txt
+riscv_assembler/data/instr_data.dat
+riscv_assembler/data/reg_map.dat
