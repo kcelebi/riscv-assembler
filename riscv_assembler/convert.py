@@ -161,7 +161,7 @@ class AssemblyConverter:
 			fin_str = ""
 			for i in range(0,len(e),4):
 				fin_str += (e[i:i+4] + "\t")
-			outarr.append(fin_str[-1:])
+			outarr.append(fin_str[:-1])
 		return outarr
 	#add custom pseudo instruction
 	#to be implemented later
