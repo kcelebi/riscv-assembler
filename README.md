@@ -58,7 +58,7 @@ Any empty files, fully commented files, or files without `.s` extension will not
 
 ## Instruction Format Functions
 
-This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. The outputs to these are written to text or binary files or printed to console, depending on how the constructor was initialized. For the below examples, they are being outputted to binary files.
+This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. The machine code is returned as a bitstring that can be printed to console. Check out the examples below for each instruction type:
 
 ### R_type()
 
@@ -70,8 +70,10 @@ Here is an example of translating `add x0 s0 s1`
 
     from riscv_assembler.convert import AssemblyConverter
     
-    cnv = AssemblyConverter() #output to binary   
-    cnv.R_type("add","x0","s0","s1") #convert the instruction
+    cnv = AssemblyConverter()   
+    instr = cnv.R_type("add","x0","s0","s1") #convert the instruction
+    
+    print(instr) 
 
 Note that the registers are being written as strings. The package maps them correctly to their respective binary values (ex. `s0` maps to `x8`).
 
@@ -86,7 +88,9 @@ Here is an example of translating `addi x0 x0 32`
     from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
-    cnv.I_type("addi","x0","32","x0") #convert the instruction
+    instr = cnv.I_type("addi","x0","32","x0") #convert the instruction
+    
+    print(instr)
 
 Note that the immediate is a string, not just a number. This was implemented this way for seamless integration with the convert() function, there is an easy workaround for using it on its own. 
 
@@ -101,7 +105,9 @@ Here is an example of translating `sw x0 0(sp)`
     from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
-    cnv.S_type("sw","x0","sp","0") #convert the instruction
+    instr = cnv.S_type("sw","x0","sp","0") #convert the instruction
+    
+    print(instr)
     
 ### SB_type()
 
@@ -114,7 +120,9 @@ Here is an example of translating `beq x0 x1 loop`:
     from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
-    cnv.SB_type("beq","x0","x1","loop") #convert the instruction
+    instr = cnv.SB_type("beq","x0","x1","loop") #convert the instruction
+    
+    print(instr)
 
 Note that the jump is written as a string, the appropriate instruction jump is calculated by the package.
 
@@ -129,7 +137,9 @@ Here is an example of converting `lui x0 10`:
     from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
-    cnv.U_type("lui","x0","10") #convert the instruction
+    instr = cnv.U_type("lui","x0","10") #convert the instruction
+    
+    print(instr)
     
 ### UJ_type()
 
@@ -142,7 +152,9 @@ Here is an example of converting `jal a0 func`:
     from riscv_assembler.convert import AssemblyConverter
     
     cnv = AssemblyConverter() #output to binary   
-    cnv.UJ_type("jal","func","a0") #convert the instruction
+    instr = cnv.UJ_type("jal","func","a0") #convert the instruction
+    
+    print(instr)
     
 ## Helper Functions
 
@@ -153,12 +165,13 @@ Here are a few functions that might be useful:
 This function simply prints the output type that has been initially selected. Example usage:
 
     cnv = AssemblyConverter("bt") #initially write to binary and text file
-    cnv.getOutputType()
+    output_type = cnv.getOutputType()
+    
+    print(output_type)
 
 This will print to console:
     
-    Writing to binary file
-    Writing to text file
+    bt
 
 ### setOutputType()
 
