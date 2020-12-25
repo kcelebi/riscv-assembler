@@ -23,4 +23,4 @@ include:
 install: 
   - pip3 install --upgrade pip  # all three OSes agree about 'pip3'
   - pip3 install -r -requirements.txt
-script: pytest -q test_class.py
+script: pytest
