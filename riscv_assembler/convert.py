@@ -43,7 +43,7 @@ class AssemblyConverter:
 				arr.extend(e)
 		return arr
 
-	def __init__(self, output_type='b'):
+	def __init__(self, output_type='b', nibble = False):
 		self.filename = ""
 			
 		self.code = []
@@ -55,6 +55,7 @@ class AssemblyConverter:
 		else:
 			self.output_type = output_type
 
+		self.nibble = nibble
 		#instr types
 		self.R_instr = [
 			"add","sub", "sll", 
@@ -154,7 +155,14 @@ class AssemblyConverter:
 	def instructionExists(self,x):
 		return x in self.all_instr
 
-
+	def __nibbleForm(self):
+		outarr = []
+		for e in self.instructions:
+			fin_str = ""
+			for i in range(0,len(e),4):
+				fin_str += (e[i:i+4] + "\t")
+			outarr.append(fin_str[-1:])
+		return outarr
 	#add custom pseudo instruction
 	#to be implemented later
 	'''
@@ -464,6 +472,8 @@ class AssemblyConverter:
 		self.r_map, self.instr_data = self.__pre()
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
+		if self.nibble:
+			self.instructions = self.__nibbleForm()
 		self.__post()
 
 	def convert_ret(self,filename):
@@ -473,4 +483,6 @@ class AssemblyConverter:
 		self.r_map, self.instr_data = self.__pre()
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
+		if self.nibble:
+			self.instructions = self.__nibbleForm()
 		return self.instructions

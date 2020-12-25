@@ -48,6 +48,18 @@ def func3():
 
 	return outarr
 
+def func4():
+	cnv = AssemblyConverter(nibble=True)
+
+	path = Path(__file__).parent / "assembly/test0.s"
+	return cnv.convert_ret(str(path))
+
+def func5():
+	cnv = AssemblyConverter(nibble=True)
+
+	path = Path(__file__).parent / "assembly/test1.s"
+	return cnv.convert_ret(str(path))
+
 def test_0():
 	assert func0() == ['00000000000000000000000010110011']
 
@@ -59,3 +71,9 @@ def test_2():
 
 def test_3():
 	assert func3() == [True, False, False, True, True]
+
+def test_4():
+	assert func4() == ['0000	0000	0000	0000	0000	0000	1011	0011']
+
+def test_5():
+	assert func5() == ['0000	0010	0000	0100	0000	0010	1001	0011']
