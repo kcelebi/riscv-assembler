@@ -9,7 +9,7 @@ TASKS
 '''
 import pytest
 from pathlib import Path
-from riscv_assembler.convert import *
+from riscv_assembler.convert import AssemblyConverter
 #TESTS
 
 #test simple.s file, writes to txt and bin
@@ -17,13 +17,13 @@ def func0():
 	cnv = AssemblyConverter()
 
 	path = Path(__file__).parent / "assembly/test0.s"
-	return cnv.convert_ret(path)
+	return cnv.convert_ret(str(path))
 
 def func1():
 	cnv = AssemblyConverter()
 
 	path = Path(__file__).parent / "assembly/test1.s"
-	return cnv.convert_ret(path)
+	return cnv.convert_ret(str(path))
 
 def func2():
 	outarr = []
@@ -36,11 +36,26 @@ def func2():
 
 	return outarr
 
+def func3():
+	outarr = []
+	cnv = AssemblyConverter()
+
+	outarr.append(cnv.instructionExists("add"))
+	outarr.append(cnv.instructionExists("rabu"))
+	outarr.append(cnv.instructionExists("bapu"))
+	outarr.append(cnv.instructionExists("sub"))
+	outarr.append(cnv.instructionExists("xori"))
+
+	return outarr
+
 def test_0():
-	assert func0() == ['01100110000000000000000010000000']
+	assert func0() == ['00000000000000000000000010110011']
 
 def test_1():
 	assert func1() == ['00000010000001000000001010010011']
 
 def test_2():
 	assert func2() == ["b", "bt"]
+
+def test_3():
+	assert func3() == [True, False, False, True, True]

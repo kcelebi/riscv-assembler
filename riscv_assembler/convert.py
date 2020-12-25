@@ -148,7 +148,7 @@ class AssemblyConverter:
 
 	#return output type
 	def getOutputType(self):
-		return self,output_type
+		return self.output_type
 
 	#checks whether instruction is in system
 	def instructionExists(self,x):
