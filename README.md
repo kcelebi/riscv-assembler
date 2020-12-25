@@ -1,6 +1,6 @@
 [![Gitter](https://badges.gitter.im/riscv-assembler/community.svg)](https://gitter.im/riscv-assembler/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/kcelebi/riscv-assembler.png?branch=master)](https://travis-ci.org/kcelebi/riscv-assembler)
+[![Build Status](https://travis-ci.org/kcelebi/riscv-assembler.svg?branch=main)](https://travis-ci.org/kcelebi/riscv-assembler)
 # riscv-assembler Documentation
 RISC-V Assembly code assembler package.
 
