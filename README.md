@@ -7,7 +7,7 @@ RISC-V Assembly code assembler package.
 
 This package contains tools and functions that can convert **RISC-V** Assembly code to machine code. The whole process is implemented using Python purely for understandability, less so for efficiency in computation. These tools can be used to **convert given lines of code or [whole files](#convert) to machine code**. For conversion, output file types are binary, text files, and printing to console. The supported instruction types are **R, I, S, SB, U, and UJ**. Almost all standard instructions are supported, most pseudo instructions are also supported (see [helper functions](#helper-functions) about adding pseudo/missing instructions).
 
-Feel free to open an issue or contact me at [kayacelebi17@gmail.com](kayacelebi17@gmail.com) with an questions/inquiries.
+Feel free to open an issue or contact me at [kayacelebi17@gmail.com](mailto:kayacelebi17@gmail.com?subject=[GitHub]%20riscv-assembler) with any questions/inquiries.
 
 # Table of Contents
 
@@ -186,7 +186,7 @@ This package was designed with the intention of helping with CPU architecture en
 
 # Future Plans
 
-I created this package purely to provide an extra set of tools for a difficult job and also to display my understanding of Computer Architecture systems in RISC-V. This package was first released when I was a 2nd-year student in college, and I intend to keep improving it overtime in a professional manner. I have many ideas for new implementations which I will update this README.md with. For any questions or inquiries, please feel free to contact me at [kayacelebi17@gmail.com](kayacelebi17@gmail.com).
+I created this package purely to provide an extra set of tools for a difficult job and also to display my understanding of Computer Architecture systems in RISC-V. This package was first released when I was a 2nd-year student in college, and I intend to keep improving it overtime in a professional manner. I have many ideas for new implementations which I will update this README.md with. For any questions or inquiries, please feel free to contact me at [kayacelebi17@gmail.com](mailto:kayacelebi17@gmail.com?subject=[GitHub]%20riscv-assembler).
 
 ## Project Files
 
