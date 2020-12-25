@@ -25,6 +25,10 @@ The package can be installed using pip:
 
 `$ pip install riscv-assembler`
 
+If issues arise try:
+
+`$ python3 -m pip install riscv-assembler`
+
 No other actions necessary.
 
 # Usage
@@ -165,11 +169,13 @@ This function allows the option to change the output type after initialization. 
 
 This function returns a boolean for whether a provided instruction exists in the system. Example usage:
 
-    instructionExists("add") #yields true
-    instructionExists("hello world") #yields false
+    cnv = AssemblyConverter()
+    cnv.instructionExists("add") #yields true
+    cnv.instructionExists("hello world") #yields false
     
 <!-- ### addPseudo()-->
 For functions that do not exist in the system that are used often, feel free to contact me to have it implemented. Most functions are readily available, however, with a growing library it is possible that a pseudo instruction or two slipped past. I intend on implementing functions that allow for the user to bypass any shortfalls like this (see [future plans](#future-plans) )
+
 # How it Works
 
 This package works by parsing through given `.s` files, filtering through comments and empty space to find instructions, categorizing them by their instruction type, then constructing the machine code. These tools have been tested quite thoroughly and work well for individual files. Files grouped in projects have not been implemented yet, but should be [soon](#future-plans).
