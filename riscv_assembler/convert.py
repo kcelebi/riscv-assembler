@@ -4,7 +4,7 @@ from bitstring import BitArray
 import math as m
 from pathlib import Path
 
-__all__ = ['riscv-assembler',"riscv_assembler","AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType"]
+__all__ = ["riscv_assembler","AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType"]
 class WrongInstructionSize( Exception ):
 	#raised when instruction size is not 32 bits
 	def __init__(self, message = "Instruction is not 32 bits, possible assembly file error"):
@@ -56,16 +56,46 @@ class AssemblyConverter:
 			self.output_type = output_type
 
 		#instr types
-		self.R_instr = ["add","sub", "sll", "sltu", "xor", "srl", "sra", "or", "and", "addw", "subw", "sllw", "slrw", "sraw", "mul", "mulh", "mulu", "mulsu", "div", "divu", "rem", "remu"]
-		self.I_instr = ["addi", "lb", "lw", "ld", "lbu", "lhu", "lwu", "fence", "fence.i", "slli", "slti", "sltiu", "xori", 
-		"slri", "srai", "ori", "andi", "addiw", "slliw", "srliw", "sraiw", "jalr", "ecall", "ebreak", "CSRRW", "CSRRS",
-		 "CSRRC", "CSRRWI", "CSRRSI", "CSRRCI"]
-		self.S_instr = ["sw", "sb", "sh", "sd"]
-		self.SB_instr = ["beq", "bne", "blt", "bge", "bltu", "bgeu"]
+		self.R_instr = [
+			"add","sub", "sll", 
+			"sltu", "xor", "srl", 
+			"sra", "or", "and",
+			"addw", "subw", "sllw",
+			"slrw", "sraw", "mul",
+			"mulh", "mulu", "mulsu",
+			"div", "divu", "rem",
+			"remu"
+		]
+		self.I_instr = [
+			"addi", "lb", "lw",
+			"ld", "lbu", "lhu",
+			"lwu", "fence", "fence.i", 
+			"slli", "slti", "sltiu", 
+			"xori", "slri", "srai",
+			"ori", "andi", "addiw",
+			"slliw", "srliw", "sraiw", 
+			"jalr", "ecall", "ebreak", 
+			"CSRRW", "CSRRS","CSRRC", 
+			"CSRRWI", "CSRRSI", "CSRRCI" 
+		]
+		self.S_instr = [
+			"sw", "sb", "sh", 
+			"sd"
+		]
+		self.SB_instr = [
+			"beq", "bne", "blt", 
+			"bge", "bltu", "bgeu"
+		]
 		self.U_instr = ["auipc", "lui"]
 		self.UJ_instr = ["jal"]
 
-		self.pseudo_instr = ["beqz", "bnez", "li", "mv", "j", "jr", "la", "neg", "nop", "not", "ret", "seqz", "snez", "bgt", "ble"]
+		self.pseudo_instr = [
+			"beqz", "bnez", "li", 
+			"mv", "j", "jr", 
+			"la", "neg", "nop", 
+			"not", "ret", "seqz", 
+			"snez", "bgt", "ble"
+		]
 
 		self.all_instr = self.__flatten([self.R_instr, self.I_instr, self.S_instr, self.SB_instr, self.U_instr, self.UJ_instr, self.pseudo_instr])
 	#helper methods
@@ -142,7 +172,9 @@ class AssemblyConverter:
 	'''
 	
 	#create instruction
-	def R_type(self,instr, rs1, rs2, rd):
+	def R_type(
+			self, instr, rs1, 
+			rs2, rd):
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.instr_data[instr][f7],
@@ -153,7 +185,9 @@ class AssemblyConverter:
 			self.instr_data[instr][opcode]
 		])
 
-	def I_type(self, instr, rs1, imm, rd):
+	def I_type(
+			self, instr, rs1, 
+			imm, rd):
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),12),
@@ -163,7 +197,9 @@ class AssemblyConverter:
 			self.instr_data[instr][opcode]
 		])
 
-	def S_type(self, instr, rs1, rs2, imm):
+	def S_type(
+			self, instr, rs1, 
+			rs2, imm):
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),12)[::-1][5:12][::-1],
@@ -174,7 +210,9 @@ class AssemblyConverter:
 			self.instr_data[instr][opcode]
 		])
 
-	def SB_type(self, instr, rs1, rs2, imm):
+	def SB_type(
+			self, instr, rs1, 
+			rs2, imm):
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			"".join([self.__binary(int(imm),13)[::-1][12][::-1],self.__binary(int(imm),13)[::-1][5:11][::-1]]),
@@ -186,7 +224,9 @@ class AssemblyConverter:
 		])
 
 
-	def U_type(self, instr, imm, rd):
+	def U_type(
+			self, instr, 
+			imm, rd):
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),32)[::-1][12:32][::-1],
@@ -194,7 +234,9 @@ class AssemblyConverter:
 			self.instr_data[instr][opcode]
 		])
 
-	def UJ_type(self, instr, imm, rd):
+	def UJ_type(
+			self, instr, 
+			imm, rd):
 		opcode = 0;f3 = 1;f7 = 2
 		return  "".join([
 			"".join([self.__binary(int(imm),21)[::-1][20][::-1],self.__binary(int(imm),21)[::-1][1:11][::-1],self.__binary(int(imm),21)[::-1][11][::-1],self.__binary(int(imm),21)[::-1][12:20][::-1]]),		
