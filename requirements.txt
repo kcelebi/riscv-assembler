@@ -1,3 +1,2 @@
 bitstring==3.1.7
 pytest==6.2.1
-PyYAML==5.3.1
