@@ -4,7 +4,7 @@ from bitstring import BitArray
 import math as m
 from pathlib import Path
 
-__all__ = ["riscv_assembler","AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType"]
+__all__ = ["riscv_assembler","AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType", "convert_ret"]
 class WrongInstructionSize( Exception ):
 	#raised when instruction size is not 32 bits
 	def __init__(self, message = "Instruction is not 32 bits, possible assembly file error"):
@@ -148,16 +148,7 @@ class AssemblyConverter:
 
 	#return output type
 	def getOutputType(self):
-		for e in self.output_type:
-			if e == "p":
-				print("Printing to console")
-			elif e == "b":
-				print("Writing to binary file")
-			elif e == "t":
-				print("Writing to text file")
-			else:
-				print("Messed up output type")
-				raise IncorrectOutputType(e)
+		return self,output_type
 
 	#checks whether instruction is in system
 	def instructionExists(self,x):
@@ -417,7 +408,7 @@ class AssemblyConverter:
 		if len(self.instructions) == 0:
 			raise EmptyFile
 		if "b" in self.output_type:
-			print("-----Writing to __binary file-----")
+			print("-----Writing to binary file-----")
 			#make it [their .s file name].bin
 			fname = self.filename.split("/")[-1]
 			print("Output file: " + fname[:-2] + ".bin")
