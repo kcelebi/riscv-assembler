@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="riscv-assembler",
-    version="1.0.10",
+    version="0.1.4",
     author="Kaya Çelebi",
     author_email="kayacelebi17@gmail.com",
     description="RISC-V assembler",
@@ -20,6 +20,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent"
     ],
-    install_requires=['bitstring']
+    install_requires=['bitstring'],
     python_requires='>=3'
 )
