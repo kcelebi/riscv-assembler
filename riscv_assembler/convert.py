@@ -65,18 +65,20 @@ def nibbleForm(x):
 		fin_str += (x[i:i+4] + "\t")
 	return fin_str[:-1]
 
+
+
 #-----------------------------------------------------------------------------------------		
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
 
 class AssemblyConverter:
-	def __init__(self, output_type='b', nibble = False, filename = ""):
+	def __init__(self, output_type='b', nibble = False, filename = "", hexMode = False):
 		self.filename = filename
-			
 		self.code = []
 		self.instructions = []
 		self.r_map = {}
 		self.instr_data = {}
+		self.hexMode = hexMode
 		if "b" not in output_type and "t" not in output_type and "p" not in output_type:
 			raise IncorrectOutputType()
 		else:
@@ -195,7 +197,13 @@ class AssemblyConverter:
 	def instructionExists(self,x):
 		return x in self.all_instr
 
-	
+	#convert instructions from binary to hex
+	def hex(self,x,leading_zero=True):
+		if leading_zero:
+			num = str(hex(int(x,2)))
+			return "0x"+num[2::].zfill(8)
+		else:
+			return str(hex(int(x,2)))
 
 	#add custom pseudo instruction
 	#to be implemented later
@@ -516,9 +524,8 @@ class AssemblyConverter:
 
 		if "p" in self.output_type:
 			print("------Printing Output------")
-			for e in self.instructions:
+			for elem in self.instructions:
 				print(e)
-
 		print("Number of instructions: {}".format(len(self.instructions)))
 
 	#DO THE MAGIC
@@ -528,9 +535,14 @@ class AssemblyConverter:
 		self.filename = filename
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
-		if self.nibble:
+
+		if self.hexMode:
+			for i in range(len(self.instructions)):
+				self.instructions[i] = self.hex(self.instructions[i])
+		if self.nibble and not self.hexMode:
 			for i in range(len(self.instructions)):
 				self.instructions[i] = nibbleForm(self.instructions[i])
+
 		self.__post()
 
 	def convert_ret(self,filename):
@@ -540,7 +552,11 @@ class AssemblyConverter:
 		#self.r_map, self.instr_data = self.__pre()
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
-		if self.nibble:
+
+		if self.hexMode:
+			for i in range(len(self.instructions)):
+				self.instructions[i] = self.hex(self.instructions[i])
+		if self.nibble and not self.hexMode:
 			for i in range(len(self.instructions)):
 				self.instructions[i] = nibbleForm(self.instructions[i])
 		return self.instructions

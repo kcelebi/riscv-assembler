@@ -75,6 +75,23 @@ def func7():
 
 	return cnv.calcJump("loop",2) #3-1
 
+def func8():
+	#test hex
+	out_arr = []
+	cnv = AssemblyConverter(hexMode = True)
+
+	path = Path(__file__).parent / "assembly/test0.s"
+	out_arr.extend(cnv.convert_ret(str(path)))
+
+	path = Path(__file__).parent / "assembly/test1.s"
+	out_arr.extend(cnv.convert_ret(str(path)))
+
+	return out_arr
+
+#-----------------------------------------------------------------------------------------		
+#-----------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------
+
 
 def test_0():
 	assert func0() == ['00000000000000000000000010110011']
@@ -99,3 +116,6 @@ def test_6():
 
 def test_7():
 	assert func7() == 4
+
+def test_8():
+	assert func8() == ['0x000000b3', '0x02040293']

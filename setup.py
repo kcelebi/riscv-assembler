@@ -14,7 +14,6 @@ setuptools.setup(
     url="https://github.com/kcelebi/riscv-assembler",
     packages=setuptools.find_packages(),
     package_data={'riscv_assembler':['data/*.dat']},
-    package_dir={'riscv_assembler':['.']}
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
