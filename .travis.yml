@@ -16,11 +16,12 @@ include:         # this works for Linux but is ignored on macOS or Windows
     before_install:
       - choco install python --version 3.8.0
       - python -m pip install --upgrade pip
+      - python setup.py install
     env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 install: 
   - pip3 install --upgrade pip  # all three OSes agree about 'pip3'
   - pip3 install -r requirements.txt
-  - pip3 install -i https://test.pypi.org/simple/ riscv-assembler==0.1.10 #giving test version
+  #- pip3 install -i https://test.pypi.org/simple/ riscv-assembler==0.1.10 #giving test version
 script: pytest
 
 #TASKS
