@@ -4,7 +4,15 @@ from bitstring import BitArray
 import math as m
 from pathlib import Path
 
-__all__ = ["riscv_assembler","AssemblyConverter","R_type","I_type","S_type","SB_type", "U_type", "UJ_type", "instructionExists", "getOutputType", "setOutputType", "convert_ret"]
+'''__all__ = [
+	"AssemblyConverter","convert",
+	"R_type","I_type","S_type",
+	"SB_type", "U_type", "UJ_type", 
+	"instructionExists", "getOutputType", "setOutputType",
+	 "convert_ret","nibbleForm"
+ ]'''
+
+__all__ = ['AssemblyConverter', 'nibbleForm']
 class WrongInstructionSize( Exception ):
 	#raised when instruction size is not 32 bits
 	def __init__(self, message = "Instruction is not 32 bits, possible assembly file error"):
@@ -31,20 +39,39 @@ class EmptyFile( Exception ):
 	def __init__(self, message = "File either doesn't exist, has no code, or all is commented out.\nInvestigate any tab/spacing syntax issues"):
 		self.message = message
 		super().__init__(self.message)
+
+class WrongInstructionType( Exception ):
+	def __init__(self, message = "This instruction does not fit this instruction type"):
+		self.message = message
+		super().__init__(self.message)
+
+#-----------------------------------------------------------------------------------------		
+#-----------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------
+
+#flatten__ an array
+def flatten(x):
+	arr = []
+	for e in x:
+		if not isinstance(e, list):
+			arr.append(e)
+		else:
+			arr.extend(e)
+	return arr
+
+def nibbleForm(x):
+	fin_str = ""
+	for i in range(0,len(x),4):
+		fin_str += (x[i:i+4] + "\t")
+	return fin_str[:-1]
+
+#-----------------------------------------------------------------------------------------		
+#-----------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------
+
 class AssemblyConverter:
-
-	#	__flatten__ an array
-	def __flatten(self,x):
-		arr = []
-		for e in x:
-			if not isinstance(e, list):
-				arr.append(e)
-			else:
-				arr.extend(e)
-		return arr
-
-	def __init__(self, output_type='b', nibble = False):
-		self.filename = ""
+	def __init__(self, output_type='b', nibble = False, filename = ""):
+		self.filename = filename
 			
 		self.code = []
 		self.instructions = []
@@ -55,6 +82,10 @@ class AssemblyConverter:
 		else:
 			self.output_type = output_type
 
+
+		if filename != "":
+			self.code = self.__read_in_advance()
+		print(len(self.code))
 		self.nibble = nibble
 		#instr types
 		self.R_instr = [
@@ -98,7 +129,16 @@ class AssemblyConverter:
 			"snez", "bgt", "ble"
 		]
 
-		self.all_instr = self.__flatten([self.R_instr, self.I_instr, self.S_instr, self.SB_instr, self.U_instr, self.UJ_instr, self.pseudo_instr])
+		self.all_instr = flatten([
+			self.R_instr, self.I_instr, self.S_instr,
+			self.SB_instr, self.U_instr, self.UJ_instr, 
+			self.pseudo_instr
+		])
+
+		#get instruction data and register mapping
+		self.r_map, self.instr_data = self.__pre()
+
+
 	#helper methods
 	def __reg_map(self,x):
 		return self.r_map[x]
@@ -107,13 +147,13 @@ class AssemblyConverter:
 		return self.__binary(int(x[1::]), 5)
 
 	#for jumps, calculates hex address of func
-	def calc_jump(self, x,line_num):
+	def calcJump(self, x,line_num):
 		#calc line number of func
 		for i in range(len(self.code)):
 			if x+":" == self.code[i]:
 				return (i - line_num)*4 #how many instructions to jump ahead/behind
 		#print("Address not found")
-		return 0 #if not found
+		return -10 #if not found
 
 	def __binary(self, x, size):
 		byte_num = m.ceil(size/8)
@@ -155,14 +195,8 @@ class AssemblyConverter:
 	def instructionExists(self,x):
 		return x in self.all_instr
 
-	def __nibbleForm(self):
-		outarr = []
-		for e in self.instructions:
-			fin_str = ""
-			for i in range(0,len(e),4):
-				fin_str += (e[i:i+4] + "\t")
-			outarr.append(fin_str[:-1])
-		return outarr
+	
+
 	#add custom pseudo instruction
 	#to be implemented later
 	'''
@@ -174,6 +208,10 @@ class AssemblyConverter:
 	def R_type(
 			self, instr, rs1, 
 			rs2, rd):
+
+		if instr not in self.R_instr:
+			raise WrongInstructionType()
+
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.instr_data[instr][f7],
@@ -187,6 +225,10 @@ class AssemblyConverter:
 	def I_type(
 			self, instr, rs1, 
 			imm, rd):
+
+		if instr not in self.I_instr:
+			raise WrongInstructionType()
+
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),12),
@@ -199,6 +241,10 @@ class AssemblyConverter:
 	def S_type(
 			self, instr, rs1, 
 			rs2, imm):
+
+		if instr not in self.S_instr:
+			raise WrongInstructionType()
+
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),12)[::-1][5:12][::-1],
@@ -212,6 +258,10 @@ class AssemblyConverter:
 	def SB_type(
 			self, instr, rs1, 
 			rs2, imm):
+
+		if instr not in self.SB_instr:
+			raise WrongInstructionType()
+
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			"".join([self.__binary(int(imm),13)[::-1][12][::-1],self.__binary(int(imm),13)[::-1][5:11][::-1]]),
@@ -226,6 +276,9 @@ class AssemblyConverter:
 	def U_type(
 			self, instr, 
 			imm, rd):
+
+		if instr not in self.U_instr:
+			raise WrongInstructionType()
 		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),32)[::-1][12:32][::-1],
@@ -236,6 +289,10 @@ class AssemblyConverter:
 	def UJ_type(
 			self, instr, 
 			imm, rd):
+
+		if instr not in self.UJ_instr:
+			raise WrongInstructionType()
+
 		opcode = 0;f3 = 1;f7 = 2
 		return  "".join([
 			"".join([self.__binary(int(imm),21)[::-1][20][::-1],self.__binary(int(imm),21)[::-1][1:11][::-1],self.__binary(int(imm),21)[::-1][11][::-1],self.__binary(int(imm),21)[::-1][12:20][::-1]]),		
@@ -296,7 +353,7 @@ class AssemblyConverter:
 		line = file.readline()
 		while line != "":
 			line = line.strip()
-			clean = self.__flatten([elem.replace("\n","").split(",") for elem in line.split(" ")])
+			clean = flatten([elem.replace("\n","").split(",") for elem in line.split(" ")])
 			if line == "" or not self.__valid_line(clean, True):
 				line = file.readline()
 				continue
@@ -324,7 +381,7 @@ class AssemblyConverter:
 		line = self.__handle_inline_comments(line)
 		line = line.strip()
 		#print(line)
-		clean = self.__flatten([elem.replace("\n","").split(",") for elem in line.split(" ")])
+		clean = flatten([elem.replace("\n","").split(",") for elem in line.split(" ")])
 
 		while "" in clean:
 			clean.remove("")
@@ -348,7 +405,7 @@ class AssemblyConverter:
 		elif clean[0] in self.I_instr:
 			if clean[0] == "jalr":
 				if len(clean) == 4:
-					res = self.I_type(clean[0], self.__reg_map(clean[2]), self.calc_jump(clean[3],i),self.__reg_map(clean[1]))
+					res = self.I_type(clean[0], self.__reg_map(clean[2]), self.calcJump(clean[3],i),self.__reg_map(clean[1]))
 				else:
 					res = self.I_type(clean[0], self.__reg_map(clean[1]), "0", self.__reg_map("x1"))
 			elif clean[0] == "lw":
@@ -360,22 +417,22 @@ class AssemblyConverter:
 			res = self.S_type(clean[0], self.__reg_map(clean[3]), self.__reg_map(clean[1]), clean[2])
 			#print(res)
 		elif clean[0] in self.SB_instr:
-			res = self.SB_type(clean[0], self.__reg_map(clean[1]), self.__reg_map(clean[2]), self.calc_jump(clean[3],i))
+			res = self.SB_type(clean[0], self.__reg_map(clean[1]), self.__reg_map(clean[2]), self.calcJump(clean[3],i))
 			#print(res)
 		elif clean[0] in self.U_instr:
 			res = self.U_type(clean[0], clean[1], self.__reg_map(clean[2]))
 			#print(res)
 		elif clean[0] in self.UJ_instr:
 			if len(clean) == 3:
-				res = self.UJ_type(clean[0], self.calc_jump(clean[2],i), self.__reg_map(clean[1]))
+				res = self.UJ_type(clean[0], self.calcJump(clean[2],i), self.__reg_map(clean[1]))
 			else:
-				res = self.UJ_type(clean[0], self.calc_jump(clean[1],i), self.__reg_map("x1"))
+				res = self.UJ_type(clean[0], self.calcJump(clean[1],i), self.__reg_map("x1"))
 			#print(res)
 		elif clean[0] in self.pseudo_instr:
 			#print(clean[0]  + " pseudo")
 
 			if clean[0] == "li":
-				res = self.I_type("addi",self.__reg_map(clean[1]), self.calc_jump(clean[2],i), self.__reg_map(clean[1]))
+				res = self.I_type("addi",self.__reg_map(clean[1]), self.calcJump(clean[2],i), self.__reg_map(clean[1]))
 			elif clean[0] == "nop":
 				res = self.I_type("addi", self.__reg_map("x0"), "0", self.__reg_map("x0"))
 			elif clean[0] == "mv":
@@ -385,17 +442,17 @@ class AssemblyConverter:
 			elif clean[0] == "neg":
 				res = self.R_type("sub", self.__reg_map("x0"), self.__reg_map(clean[2]), self.__reg_map(clean[1]))
 			elif clean[0] == "la":
-				res = self.U_type("auipc", self.calc_jump(clean[2],i), self.__reg_map(clean[1]))
+				res = self.U_type("auipc", self.calcJump(clean[2],i), self.__reg_map(clean[1]))
 			elif clean[0] == "j":
-				res = self.UJ_type("jal", self.calc_jump(clean[1],i), self.__reg_map("x0"))
+				res = self.UJ_type("jal", self.calcJump(clean[1],i), self.__reg_map("x0"))
 			elif clean[0] == "jr":
 				res = self.I_type("jalr", self.__reg_map(clean[1]), "0", self.__reg_map("x0"))
 			elif clean[0] == "ret":
 				res = self.I_type("jalr", self.__reg_map("x1"), "0", self.__reg_map("x0"))
 			elif clean[0] == "bgt":
-				res = self.SB_type("blt", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calc_jump(clean[3],i))
+				res = self.SB_type("blt", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calcJump(clean[3],i))
 			elif clean[0] == "ble":
-				res = self.SB_type("bge", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calc_jump(clean[3], i))
+				res = self.SB_type("bge", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calcJump(clean[3], i))
 		else:
 			#debugging
 			print("Error: " + line)
@@ -469,20 +526,21 @@ class AssemblyConverter:
 		if filename[-2::] != ".s":
 			raise WrongFileType
 		self.filename = filename
-		self.r_map, self.instr_data = self.__pre()
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
 		if self.nibble:
-			self.instructions = self.__nibbleForm()
+			for i in range(len(self.instructions)):
+				self.instructions[i] = nibbleForm(self.instructions[i])
 		self.__post()
 
 	def convert_ret(self,filename):
 		if filename[-2::] != ".s":
 			raise WrongFileType
 		self.filename = filename
-		self.r_map, self.instr_data = self.__pre()
+		#self.r_map, self.instr_data = self.__pre()
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
 		if self.nibble:
-			self.instructions = self.__nibbleForm()
+			for i in range(len(self.instructions)):
+				self.instructions[i] = nibbleForm(self.instructions[i])
 		return self.instructions
