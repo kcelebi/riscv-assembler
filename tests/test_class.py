@@ -1,6 +1,7 @@
 import pytest
 from pathlib import Path
 from riscv_assembler.convert import *
+from riscv_assembler.utils import *
 #TESTS
 
 #test simple.s file, writes to txt and bin
