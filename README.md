@@ -5,7 +5,7 @@
 # riscv-assembler Documentation
 RISC-V Assembly code assembler package.
 
-This package contains tools and functions that can convert **RISC-V** Assembly code to machine code. The whole process is implemented using Python purely for understandability, less so for efficiency in computation. These tools can be used to **convert given lines of code or [whole files](#convert) to machine code**. For conversion, output file types are binary, text files, and printing to console. The supported instruction types are **R, I, S, SB, U, and UJ**. Almost all standard instructions are supported, most pseudo instructions are also supported (see [helper functions](#helper-functions) about adding pseudo/missing instructions).
+This package contains tools and functions that can convert **RISC-V Assembly code to machine code**. The whole process is implemented using Python purely for understandability, less so for efficiency in computation. These tools can be used to **convert given lines of code or [whole files](#convert) to machine code**. For conversion, output file types are binary, text files, and printing to console. The supported instruction types are **R, I, S, SB, U, and UJ**. Almost all standard instructions are supported, most pseudo instructions are also supported (see [helper functions](#helper-functions) about adding pseudo/missing instructions).
 
 Feel free to open an issue or contact me at [kayacelebi17@gmail.com](mailto:kayacelebi17@gmail.com?subject=[GitHub]%20riscv-assembler) with any questions/inquiries.
 
@@ -35,20 +35,26 @@ No other actions necessary.
 
 # Usage
 
-The package works through an `AssemblyConverter` class. We would first need to import this class:
+The package works through an `AssemblyConverter` class. We would first need to import this class and all other functions:
 
-`from riscv_assembler.convert import AssemblyConverter`
+`from riscv_assembler.convert import *`
 
-We can now instantiate an object. The constructor requires a string that specifies the output file as any combination of binary or text file, or printing to console. Here are acceptable usages:
+We can now instantiate an object. The constructor is initialized as so:
+
+    AssemblyConverter(output_type = "b", nibble = False, filename = "", hexMode = False)
     
-    cnv = AssemblyConverter("btp") #binary and text and printing
-    cnv = AssemblyConverter("pbt") #works same as above ^
-    cnv = AssemblyConverter("b") #just binary
-    cnv = AssemblyConverter("t") #just text
-    cnv = AssemblyConverter("p") #just printing
+`output_type` refers to whether a converted file should be outputted to a binary file ("b"), a text file ("t"), or to console ("p"). The three of these options can be used in any sort of combination. Here are acceptable usages:
+    
+    cnv = AssemblyConverter(output_type = "btp") #binary and text and printing
+    cnv = AssemblyConverter(output_type = "pbt") #works same as above ^
+    cnv = AssemblyConverter(output_type = "b") #just binary
+    cnv = AssemblyConverter(output_type = "t") #just text
+    cnv = AssemblyConverter(output_type = "p") #just printing
     cnv = AssemblyConverter() #binary by default
     
+`nibble` refers to whether (for text file and console outputs) the binary representations should be split in nibbles or kept as an unbroken string. An example output for `nibble = True` would be:
 
+    `1101    0110    0000   0000 ...`
 ## Convert
 With this object we can apply our most powerful function : `convert()`. This function takes in a file name (with .s extension) from the local directory and converts it to the output file of your choice, specified by the object construction. Let's convert the file `simple.s`:
 
