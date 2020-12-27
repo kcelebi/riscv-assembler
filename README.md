@@ -52,9 +52,17 @@ We can now instantiate an object. The constructor is initialized as so:
     cnv = AssemblyConverter(output_type = "p") #just printing
     cnv = AssemblyConverter() #binary by default
     
-`nibble` refers to whether (for text file and console outputs) the binary representations should be split in nibbles or kept as an unbroken string. An example output for `nibble = True` would be:
+`nibble` refers to whether (for text file and console outputs) the 32-bit binary numbers should be split in nibbles or kept as an unbroken string. An example output for `nibble = True` would be:
 
-    `1101    0110    0000   0000 ...`
+    1101    0110    0000   0000 ...
+
+An example for the default `nibble = False` would be:
+
+    11010110000000...
+
+`filename` refers to the file that you wish to convert. **NOTE** you should only modify this variable if you wish to use the [individual instruction format functions](#instruction-format-functions) or some of the other [helper methods](#helper-functions). If you simply want to convert multiple files, you can see how the filename is given in the [convert](#convert) section. **Unless you are using certain helper functions or individual instruction format functions, ignore this variable**.
+
+`hexMode` gives the option (for text file and console outputs) to output in hexadecimal form instead of binary. By default, the outputs are in binary.
 ## Convert
 With this object we can apply our most powerful function : `convert()`. This function takes in a file name (with .s extension) from the local directory and converts it to the output file of your choice, specified by the object construction. Let's convert the file `simple.s`:
 
