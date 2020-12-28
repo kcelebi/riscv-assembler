@@ -16,8 +16,9 @@ Use the links below to jump to sections of the documentation:
 - [Installation](#installation)
 - [Usage](#usage)
     - [Convert](#convert)
-    - [Instruction Format Functions](#instruction-format-functions)
-    - [Helper Functions](#helper-functions)
+    - [Toolkit](#toolkit)
+        - [Instruction Format Functions](#instruction-format-functions)
+        - [Helper Functions](#helper-functions)
 - [How it Works](#how-it-works)
 - [Future Plans](#future-plans)
 
