@@ -15,10 +15,12 @@ Use the links below to jump to sections of the documentation:
 
 - [Installation](#installation)
 - [Usage](#usage)
-    - [Convert](#convert)
+    - [AssemblyConverter](#assemblyconverter)
+        - [Convert](#convert)
+        - [Helper Functions](#helper-functions)
     - [Toolkit](#toolkit)
         - [Instruction Format Functions](#instruction-format-functions)
-        - [Helper Functions](#helper-functions)
+        - [Debugger Functions](#debugger-functions)
 - [How it Works](#how-it-works)
 - [Future Plans](#future-plans)
 
@@ -32,17 +34,24 @@ If issues arise try:
 
 `$ python3 -m pip install riscv-assembler`
 
+It is possible that the `bitstring` dependency might not install correctly. If this occurs, you can simply pip install it separately:
+
+`$ pip install bitstring`
+
 No other actions necessary.
 
 # Usage
 
-The package works through an `AssemblyConverter` class. We would first need to import this class and all other functions:
+The package works through an `AssemblyConverter` class and a `Toolkit` class. The `AssemblyConverter` class contains functions to convert whole files and projects from Assembly code to machine code. The `Toolkit` class contains tools to convert individual lines, apply specific instruction format types, calculate branching immediates, and many other [functions](#toolkit).
 
-`from riscv_assembler.convert import *`
+## AssemblyConverter
+Let's check out how to use `AssemblyConverter`. First, we need to import it into our Python file:
+
+`from riscv_assembler.convert import AssemblyConvert`
 
 We can now instantiate an object. The constructor is initialized as so:
 
-    AssemblyConverter(output_type = "b", nibble = False, filename = "", hexMode = False)
+    AssemblyConverter(output_type = "b", nibble = False, hexMode = False)
     
 `output_type` refers to whether a converted file should be outputted to a binary file ("b"), a text file ("t"), or to console ("p"). The three of these options can be used in any sort of combination. Here are acceptable usages:
     
@@ -52,7 +61,9 @@ We can now instantiate an object. The constructor is initialized as so:
     cnv = AssemblyConverter(output_type = "t") #just text
     cnv = AssemblyConverter(output_type = "p") #just printing
     cnv = AssemblyConverter() #binary by default
-    
+
+Jump to [convert](#convert) for more details on outputs for `AssemblyConverter`.
+
 `nibble` refers to whether (for text file and console outputs) the 32-bit binary numbers should be split in nibbles or kept as an unbroken string. An example output for `nibble = True` would be:
 
     1101    0110    0000   0000 ...
@@ -61,21 +72,64 @@ An example for the default `nibble = False` would be:
 
     11010110000000...
 
-`filename` refers to the file that you wish to convert. **NOTE** you should only modify this variable if you wish to use the [individual instruction format functions](#instruction-format-functions) or some of the other [helper methods](#helper-functions). If you simply want to convert multiple files, you can see how the filename is given in the [convert](#convert) section. **Unless you are using certain helper functions or individual instruction format functions, ignore this variable**.
+`hexMode` gives the option (for text file and console outputs) to output in hexadecimal form instead of binary. By default, the outputs are in binary. Leading zeros are included to properly represent a 32-bit instruction.
 
-`hexMode` gives the option (for text file and console outputs) to output in hexadecimal form instead of binary. By default, the outputs are in binary.
-## Convert
+### Convert
 With this object we can apply our most powerful function : `convert()`. This function takes in a file name (with .s extension) from the local directory and converts it to the output file of your choice, specified by the object construction. Let's convert the file `simple.s`:
 
-`cnv.convert("simple.s")`
+    cnv.convert("simple.s")
 
 Any empty files, fully commented files, or files without `.s` extension will not be accepted. The function creates a directory by truncating the extension of the file along with two subdirectories called `bin` and `txt` for the respective output files (for `simple.s` the directory would be `simple`). Output files will be stored there for usage and/or printed to console.
 
-## Instruction Format Functions
+### Helper Functions
+
+Here are a few functions that might be useful:
+
+#### getOutputType()
+
+This function simply prints the output type that has been initially selected. Example usage:
+
+    cnv = AssemblyConverter("bt") #initially write to binary and text file
+    output_type = cnv.getOutputType()
+    
+    print(output_type)
+
+This will print to console:
+    
+    bt
+
+#### setOutputType()
+
+This function allows the option to change the output type after initialization. Example usage:
+
+    cnv = AssemblyConverter("bt") #initially write to binary and text file
+    cnv.setOutputType("p") #now only print to console
+
+#### instructionExists()
+
+This function returns a boolean for whether a provided instruction exists in the system. Example usage:
+
+    cnv = AssemblyConverter()
+    cnv.instructionExists("add") #yields true
+    cnv.instructionExists("hello world") #yields false
+    
+## Toolkit
+
+Let's check out how to use `Toolkit`. `Toolkit` contains functions that can be used to interpret specific lines, calculate jumps, and other debugging tools. First, let's import the class and functions:
+
+    from riscv_assembler.utils import *
+
+**Some of these functions rely on the class, some do not**. First, let's look at those that rely on the `Toolkit` class. Let's instantiate an object.
+
+    tk = Toolkit(filename = "")
+
+All that could be provided is a filename. Some functions do not need files, such as the [instruction format functions](#instruction-format-functions), some do like [calcJump](#calcjump). For this reason, the default is an empty string. Let's now look at some functions.
+
+### Instruction Format Functions
 
 This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. The machine code is returned as a bitstring that can be printed to console. Check out the examples below for each instruction type:
 
-### R_type()
+#### R_type()
 
 This functions converts individual lines of assembly with R type instructions to machine code. The function usage is:
 
@@ -92,7 +146,7 @@ Here is an example of translating `add x0 s0 s1`
 
 Note that the registers are being written as strings. The package maps them correctly to their respective binary values (ex. `s0` maps to `x8`).
 
-### I_type()
+#### I_type()
 
 This functions converts individual lines of assembly with I type instructions to machine code. The function usage is:
 
@@ -109,7 +163,7 @@ Here is an example of translating `addi x0 x0 32`
 
 Note that the immediate is a string, not just a number. This was implemented this way for seamless integration with the convert() function, there is an easy workaround for using it on its own. 
 
-### S_type()
+#### S_type()
 
 This functions converts individual lines of assembly with S type instructions to machine code. The function usage is:
 
@@ -124,7 +178,7 @@ Here is an example of translating `sw x0 0(sp)`
     
     print(instr)
     
-### SB_type()
+#### SB_type()
 
 This functions converts individual lines of assembly with SB type instructions to machine code. The function usage is:
 
@@ -141,7 +195,7 @@ Here is an example of translating `beq x0 x1 loop`:
 
 Note that the jump is written as a string, the appropriate instruction jump is calculated by the package.
 
-### U_type()
+#### U_type()
 
 This functions converts individual lines of assembly with U type instructions to machine code. The function usage is:
 
@@ -156,7 +210,7 @@ Here is an example of converting `lui x0 10`:
     
     print(instr)
     
-### UJ_type()
+#### UJ_type()
 
 This functions converts individual lines of assembly with UJ type instructions to machine code. The function usage is:
 
@@ -171,37 +225,7 @@ Here is an example of converting `jal a0 func`:
     
     print(instr)
     
-## Helper Functions
 
-Here are a few functions that might be useful:
-
-### getOutputType()
-
-This function simply prints the output type that has been initially selected. Example usage:
-
-    cnv = AssemblyConverter("bt") #initially write to binary and text file
-    output_type = cnv.getOutputType()
-    
-    print(output_type)
-
-This will print to console:
-    
-    bt
-
-### setOutputType()
-
-This function allows the option to change the output type after initialization. Example usage:
-
-    cnv = AssemblyConverter("bt") #initially write to binary and text file
-    cnv.setOutputType("p") #now only print to console
-
-### instructionExists()
-
-This function returns a boolean for whether a provided instruction exists in the system. Example usage:
-
-    cnv = AssemblyConverter()
-    cnv.instructionExists("add") #yields true
-    cnv.instructionExists("hello world") #yields false
     
 <!-- ### addPseudo()-->
 For functions that do not exist in the system that are used often, feel free to contact me to have it implemented. Most functions are readily available, however, with a growing library it is possible that a pseudo instruction or two slipped past. I intend on implementing functions that allow for the user to bypass any shortfalls like this (see [future plans](#future-plans) )
