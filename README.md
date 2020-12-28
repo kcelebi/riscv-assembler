@@ -21,6 +21,7 @@ Use the links below to jump to sections of the documentation:
     - [Toolkit](#toolkit)
         - [Instruction Format Functions](#instruction-format-functions)
         - [Debugger Functions](#debugger-functions)
+- [What is this?](#what-is-this)
 - [How it Works](#how-it-works)
 - [Future Plans](#future-plans)
 
@@ -121,9 +122,9 @@ Let's check out how to use `Toolkit`. `Toolkit` contains functions that can be u
 
 **Some of these functions rely on the class, some do not**. First, let's look at those that rely on the `Toolkit` class. Let's instantiate an object.
 
-    tk = Toolkit(filename = "")
+    tk = Toolkit()
 
-All that could be provided is a filename. Some functions do not need files, such as the [instruction format functions](#instruction-format-functions), some do like [calcJump](#calcjump). For this reason, the default is an empty string. Let's now look at some functions.
+No parameters required. Let's now look at some functions.
 
 ### Instruction Format Functions
 
@@ -260,10 +261,13 @@ This function takes in a filename, a name of a function to jump to, and the line
     
     tk = Tookit()
     
-    print( tk.calcJump("myfile.s", )
+    print( tk.calcJump(filename = "myfile.s", x = 'loop', line_num = 42) #outputs an immediate according to how
+                                                                         #many instructions need to be jumped to get to the function
     
 <!-- ### addPseudo()-->
 For functions that do not exist in the system that are used often, feel free to contact me to have it implemented. Most functions are readily available, however, with a growing library it is possible that a pseudo instruction or two slipped past. I intend on implementing functions that allow for the user to bypass any shortfalls like this (see [future plans](#future-plans) )
+
+# What is this?
 
 # How it Works
 
