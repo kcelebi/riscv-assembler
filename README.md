@@ -225,7 +225,42 @@ Here is an example of converting `jal a0 func`:
     
     print(instr)
     
+### Debugger Functions
 
+#### hex()
+
+**Note that this is an overrided verison of the default hex() function**. This function converts an inputted string of binary to 32-bits in hexadecimal. There is an option to maintain leading zeros or not. The function usage is:
+
+    from riscv_assembler.utils import *
+    
+    tk = Toolkit()
+    
+    string  = '00000000000000000000111100110011'
+    
+    print(tk.hex(string,leading_zero=True)) #outputs '0x00000F33'
+    print(tk.hex(string,leading_zero=False)) #outputs '0xF33'
+
+#### nibbleForm()
+
+This function takes an inputted string of unbroken binary and outputs it in nibbles separated by an inputted delimeter. The function usage is:
+
+    from riscv_assembler.utils import *
+ 
+    string  = '00000000000000000000111100110011'
+
+    print(nibbleForm(string, delim = '\t')) #outputs separed by tabs '0000    0000    0000    0000    0000    1111    0011    0011'
+    
+    print(nibbleForm(string, delim = 'qqq') #outputs '0000qqq0000qqq0000qqq0000qqq0000qqq1111qqq0011qqq0011'
+
+#### calcJump()
+
+This function takes in a filename, a name of a function to jump to, and the line number of a branch statement to calculate the branch jump immediate. The line number should **not** just be the line number in your text editor; ignore empty lines, comments, and lines that indicate the start of a function (such as `loop:`). **Consider the first valid line as line 0**. The function usage is:
+
+    from riscv_assembler.utils import *
+    
+    tk = Tookit()
+    
+    print( tk.calcJump("myfile.s", )
     
 <!-- ### addPseudo()-->
 For functions that do not exist in the system that are used often, feel free to contact me to have it implemented. Most functions are readily available, however, with a growing library it is possible that a pseudo instruction or two slipped past. I intend on implementing functions that allow for the user to bypass any shortfalls like this (see [future plans](#future-plans) )
@@ -240,12 +275,12 @@ This package was designed with the intention of helping with CPU architecture en
 
 I created this package purely to provide an extra set of tools for a difficult job and also to display my understanding of Computer Architecture systems in RISC-V. This package was first released when I was a 2nd-year student in college, and I intend to keep improving it overtime in a professional manner. I have many ideas for new implementations which I will update this README.md with. For any questions or inquiries, please feel free to contact me at [kayacelebi17@gmail.com](mailto:kayacelebi17@gmail.com?subject=[GitHub]%20riscv-assembler).
 
-## Project Files
+### Project Files
 
 One of the bigger problems I intend to tackle is dealing with multiple files in a project. Currently, this package can only handle files that exist on their own. This implementation will be coming soon. 
 
-## Adding Custom Instructions
+### Adding Custom Instructions
 A function that I intend to implement is `addPseudo()` which gives users the opportunity to add their own custom functions or fill in functions that might be missing from the package data. 
 
-## Machine Code Decoder
+### Machine Code Decoder
 The next logical project to tackle would be to create the reverse system: decoding machine code to create `.s` files. This is much more ambitious and can be achieved down the line. 
