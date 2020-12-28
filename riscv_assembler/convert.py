@@ -1,5 +1,3 @@
-import sys
-import os
 from bitstring import BitArray
 import math as m
 from pathlib import Path

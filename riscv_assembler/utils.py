@@ -6,10 +6,10 @@ __all__ = ['Toolkit','nibbleForm']
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
 
-def nibbleForm(x):
+def nibbleForm(x,delim = '\t'):
 	fin_str = ""
 	for i in range(0,len(x),4):
-		fin_str += (x[i:i+4] + "\t")
+		fin_str += (x[i:i+4] + delim)
 	return fin_str[:-1]
 
 def flatten(x):
@@ -76,8 +76,7 @@ class Toolkit:
 		pseudo_instr
 	])
 
-	opcode = 0;f3 = 1;f7 = 2
-
+	
 	def __init__(self, filename = ""):
 		self.instructions = []
 		self.filename = filename
@@ -85,6 +84,8 @@ class Toolkit:
 		self.r_map, self.instr_data = self.__pre()
 		if filename != "":
 			self.code = self.__read_in_advance()
+
+			
 
 	def hex(self,x,leading_zero=True):
 		if leading_zero:
@@ -162,8 +163,10 @@ class Toolkit:
 			return fin_bin
 		return fin_bin[len(fin_bin)-size:len(fin_bin)]
 
-	def calcJump(self, x,line_num):
+	def calcJump(self, x,line_num, filename):
 		#calc line number of func
+		self.filename = filename
+		self.code = self.__read_in_advance()
 		for i in range(len(self.code)):
 			if x+":" == self.code[i]:
 				return (i - line_num)*4 #how many instructions to jump ahead/behind
@@ -177,6 +180,7 @@ class Toolkit:
 		if instr not in self.R_instr:
 			raise WrongInstructionType()
 
+		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.instr_data[instr][f7],
 			self.__reg_to_bin(rs2),
@@ -193,6 +197,7 @@ class Toolkit:
 		if instr not in self.I_instr:
 			raise WrongInstructionType()
 
+		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),12),
 			self.__reg_to_bin(rs1),
@@ -208,6 +213,7 @@ class Toolkit:
 		if instr not in self.S_instr:
 			raise WrongInstructionType()
 
+		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),12)[::-1][5:12][::-1],
 			self.__reg_to_bin(rs2),
@@ -224,6 +230,7 @@ class Toolkit:
 		if instr not in self.SB_instr:
 			raise WrongInstructionType()
 
+		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			"".join([
 				self.__binary(int(imm),13)[::-1][12][::-1],
@@ -247,6 +254,7 @@ class Toolkit:
 		if instr not in self.U_instr:
 			raise WrongInstructionType()
 
+		opcode = 0;f3 = 1;f7 = 2
 		return "".join([
 			self.__binary(int(imm),32)[::-1][12:32][::-1],
 			self.__reg_to_bin(rd),
@@ -260,6 +268,7 @@ class Toolkit:
 		if instr not in self.UJ_instr:
 			raise WrongInstructionType()
 
+		opcode = 0;f3 = 1;f7 = 2
 		return  "".join([
 			"".join([
 				self.__binary(int(imm),21)[::-1][20][::-1], self.__binary(int(imm),21)[::-1][1:11][::-1],
