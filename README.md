@@ -269,6 +269,11 @@ For functions that do not exist in the system that are used often, feel free to 
 
 # What is this?
 
+Your computer relies on streams of 1's and 0's to do all of its operations. This is the lowest level of code, called machine code, that can be used on a computer. Of course, machine code is quite annoying/impossible to interpret on the fly, so we have other higher levels of code, such as Python, Java, and C, that allow us to give instructions that get translated to machine code. The second-lowest level of code is called Assembly code, and it is mostly used to program Operating Systems and basic hardware functions of a computer.
+
+Writing Assembly code to test hardware is quite annoying because you have to deal with machine code and the long 32 or 64-bit binary numbers. This package provides tools to help make tests and debug Assembly code that might be used to test/create hardware. This package also serves an educational purpose for those learning about Computer Architecture and RISC-V.
+
+In our computer, there are different ways that we can format our hardware to interpret the 1's and 0's. Intel has a format called x86 that has been used in computers for many years. It has its own kind of formatting and way of interpreting Assembly code. More recently, there has been an emergence in popularity of a different format called RISC-V, owned by a company called ARM. These chips are mostly used in phones, and have been incredibly successful with the iPhone. ARM chips recently became even more popular with Apple's new M1 Macbook Pro which uses an ARM architecture to structure its hardware. This new computer has been known to absolutely wipe out its competitors in processing power and capability. 
 # How it Works
 
 This package works by parsing through given `.s` files, filtering through comments and empty space to find instructions, categorizing them by their instruction type, then constructing the machine code. These tools have been tested quite thoroughly and work well for individual files. Files grouped in projects have not been implemented yet, but should be [soon](#future-plans).
