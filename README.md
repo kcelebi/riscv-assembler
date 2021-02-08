@@ -48,7 +48,7 @@ The package works through an `AssemblyConverter` class and a `Toolkit` class. Th
 ## AssemblyConverter
 Let's check out how to use `AssemblyConverter`. First, we need to import it into our Python file:
 
-`from riscv_assembler.convert import AssemblyConvert`
+`from riscv_assembler.convert import AssemblyConverter`
 
 We can now instantiate an object. The constructor is initialized as so:
 
