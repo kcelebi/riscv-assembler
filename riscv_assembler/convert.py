@@ -268,7 +268,7 @@ class AssemblyConverter:
 			]),
 			self.__reg_to_bin(rs2),
 			self.__reg_to_bin(rs1),
-			instr_data[instr][f3],
+			self.instr_data[instr][f3],
 			"".join([
 				self.__binary(int(imm),13)[::-1][1:5][::-1],
 				self.__binary(int(imm),13)[::-1][11][::-1]
