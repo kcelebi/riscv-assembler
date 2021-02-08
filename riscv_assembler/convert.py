@@ -1,6 +1,7 @@
 from bitstring import BitArray
 import math as m
 from pathlib import Path
+import os
 
 __all__ = ['AssemblyConverter']
 class WrongInstructionSize( Exception ):
@@ -487,11 +488,11 @@ class AssemblyConverter:
 			print("Output file: " + fname[:-2] + ".bin")
 
 			if not os.path.exists(fname[:-2]):
-				os.system("mkdir {}".format(fname[:-2]))
-				os.system("mkdir {}/bin".format(fname[:-2]))
+				os.mkdir(fname[:-2])
+				os.mkdir(f"{fname[:-2]}/bin")
 			else:
 				if not os.path.exists("bin"):
-					os.system("mkdir {}/bin".format(fname[:-2]))
+					os.mkdir(f"{fname[:-2]}/bin")
 
 			#with open("output/"+fname[:-2]+"/bin/" + fname[:-2] + ".bin", "wb") as f:
 			with open(fname[:-2]+"/bin/" + fname[:-2] + ".bin", "wb") as f:
@@ -511,11 +512,11 @@ class AssemblyConverter:
 			print("Output file: " + fname[:-2] + ".txt")
 
 			if not os.path.exists(fname[:-2]):
-				os.system("mkdir {}".format(fname[:-2]))
-				os.system("mkdir {}/txt".format(fname[:-2]))
+				os.mkdir(fname[:-2])
+				os.mkdir(f"{fname[:-2]}/txt")
 			else:
 				if not os.path.exists("txt"):
-					os.system("mkdir {}/txt".format(fname[:-2]))
+					os.mkdir(f"{fname[:-2]}/txt")
 
 			#with open("output/"+fname[:-2]+"text/" + fname[:-2] + ".txt", "w") as f:
 			with open(fname[:-2]+"/txt/" + fname[:-2] + ".txt", "w") as f:
