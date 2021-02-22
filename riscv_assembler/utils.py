@@ -27,55 +27,6 @@ def flatten(x):
 #-----------------------------------------------------------------------------------------
 
 class Toolkit:
-	r_map = {}
-	instr_data = {}
-
-	R_instr = [
-		"add","sub", "sll", 
-		"sltu", "xor", "srl", 
-		"sra", "or", "and",
-		"addw", "subw", "sllw",
-		"slrw", "sraw", "mul",
-		"mulh", "mulu", "mulsu",
-		"div", "divu", "rem",
-		"remu"
-	]
-	I_instr = [
-		"addi", "lb", "lw",
-		"ld", "lbu", "lhu",
-		"lwu", "fence", "fence.i", 
-		"slli", "slti", "sltiu", 
-		"xori", "slri", "srai",
-		"ori", "andi", "addiw",
-		"slliw", "srliw", "sraiw", 
-		"jalr", "ecall", "ebreak", 
-		"CSRRW", "CSRRS","CSRRC", 
-		"CSRRWI", "CSRRSI", "CSRRCI" 
-	]
-	S_instr = [
-		"sw", "sb", "sh", 
-		"sd"
-	]
-	SB_instr = [
-		"beq", "bne", "blt", 
-		"bge", "bltu", "bgeu"
-	]
-	U_instr = ["auipc", "lui"]
-	UJ_instr = ["jal"]
-	pseudo_instr = [
-		"beqz", "bnez", "li", 
-		"mv", "j", "jr", 
-		"la", "neg", "nop", 
-		"not", "ret", "seqz", 
-		"snez", "bgt", "ble"
-	]
-
-	all_instr = flatten([
-		R_instr, I_instr, S_instr,
-		SB_instr, U_instr, UJ_instr, 
-		pseudo_instr
-	])
-
 	
 	def __init__(self, filename = ""):
 		self.instructions = []
@@ -84,6 +35,54 @@ class Toolkit:
 		self.r_map, self.instr_data = self.__pre()
 		if filename != "":
 			self.code = self.__read_in_advance()
+		self.r_map = {}
+		self.instr_data = {}
+
+		self.R_instr = [
+			"add","sub", "sll", 
+			"sltu", "xor", "srl", 
+			"sra", "or", "and",
+			"addw", "subw", "sllw",
+			"slrw", "sraw", "mul",
+			"mulh", "mulu", "mulsu",
+			"div", "divu", "rem",
+			"remu"
+		]
+		self.I_instr = [
+			"addi", "lb", "lw",
+			"ld", "lbu", "lhu",
+			"lwu", "fence", "fence.i", 
+			"slli", "slti", "sltiu", 
+			"xori", "slri", "srai",
+			"ori", "andi", "addiw",
+			"slliw", "srliw", "sraiw", 
+			"jalr", "ecall", "ebreak", 
+			"CSRRW", "CSRRS","CSRRC", 
+			"CSRRWI", "CSRRSI", "CSRRCI" 
+		]
+		self.S_instr = [
+			"sw", "sb", "sh", 
+			"sd"
+		]
+		self.SB_instr = [
+			"beq", "bne", "blt", 
+			"bge", "bltu", "bgeu"
+		]
+		self.U_instr = ["auipc", "lui"]
+		self.UJ_instr = ["jal"]
+		self.pseudo_instr = [
+			"beqz", "bnez", "li", 
+			"mv", "j", "jr", 
+			"la", "neg", "nop", 
+			"not", "ret", "seqz", 
+			"snez", "bgt", "ble"
+		]
+
+		self.all_instr = flatten([
+			R_instr, I_instr, S_instr,
+			SB_instr, U_instr, UJ_instr, 
+			pseudo_instr
+		])
 
 			
 
