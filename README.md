@@ -9,4 +9,4 @@ This package contains tools and functions that can convert **RISC-V Assembly cod
 
 Feel free to open an issue or contact me at [kayacelebi17@gmail.com](mailto:kayacelebi17@gmail.com?subject=[GitHub]%20riscv-assembler) with any questions/inquiries.
 
-[View the full documentation here](riscvassembler.org)
+[View the full documentation here](https://www.riscvassembler.org)
