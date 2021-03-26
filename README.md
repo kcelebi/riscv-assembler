@@ -11,4 +11,4 @@ Feel free to open an issue or contact me at [kayacelebi17@gmail.com](mailto:kaya
 
 # Installation
 
-``$ pip install riscv-assembler``
+  $ pip install riscv-assembler
