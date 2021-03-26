@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: riscv-assembler
+Version: 1.0.14
+Summary: RISC-V assembler
+Home-page: https://github.com/kcelebi/riscv-assembler
+Author: Kaya Çelebi
+Author-email: kayacelebi17@gmail.com
+License: UNKNOWN
+Description: [![Build Status](https://travis-ci.org/kcelebi/riscv-assembler.svg?branch=main)](https://travis-ci.org/kcelebi/riscv-assembler)
+        [![Gitter](https://badges.gitter.im/riscv-assembler/community.svg)](https://gitter.im/riscv-assembler/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+        [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+        
+        # riscv-assembler Documentation
+        RISC-V Assembly code assembler package. [View the full documentation here](https://www.riscvassembler.org)
+        
+        This package contains tools and functions that can convert **RISC-V Assembly code to machine code**. The whole process is implemented using Python purely for understandability, less so for efficiency in computation. These tools can be used to **convert given lines of code or [whole files](#convert) to machine code**. For conversion, output file types are binary, text files, and printing to console. The supported instruction types are **R, I, S, SB, U, and UJ**. Almost all standard instructions are supported, most pseudo instructions are also supported (see [helper functions](#helper-functions) about adding pseudo/missing instructions).
+        
+        Feel free to open an issue or contact me at [kayacelebi17@gmail.com](mailto:kayacelebi17@gmail.com?subject=[GitHub]%20riscv-assembler) with any questions/inquiries.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3
+Description-Content-Type: text/markdown
