@@ -12,7 +12,7 @@ Feel free to open an issue or contact me at [kayacelebi17@gmail.com](mailto:kaya
 # Installation
 The package can be installed using pip:
 
-    $ pip install riscv-assembler'
+    $ pip install riscv-assembler
 
 If issues arise try:
 
