@@ -117,7 +117,7 @@ class AssemblyConverter:
 		self.instructions = []
 		self.hexMode = hexMode
 
-		if "b" not in output_type and "t" not in output_type and "p" not in output_type:
+		if "b" not in output_type and "t" not in output_type and "p" not in output_type and "r" not in output_type:
 			raise IncorrectOutputType()
 		else:
 			self.output_type = output_type
@@ -534,6 +534,10 @@ class AssemblyConverter:
 			print("------Printing Output------")
 			for elem in self.instructions:
 				print(e)
+
+		if "r" in self.output_type:
+			return self.instructions
+		
 		print("Number of instructions: {}".format(len(self.instructions)))
 
 	#DO THE MAGIC
