@@ -390,14 +390,14 @@ class AssemblyConverter:
 			line = self.code[i]
 
 			response = self.__interpret(line,i)
-			if response != -1:
-				instructions.append(response)
+			if -1 not in response:
+				instructions.extend(response)
 
 		return instructions
 
 	#interpret each line and form instructions
 	def __interpret(self,line,i):
-		res = ""
+		res = []
 		line = self.__handle_inline_comments(line)
 		line = line.strip()
 		#print(line)
@@ -420,33 +420,33 @@ class AssemblyConverter:
 			clean.append(w_spl[1].replace(")",""))
 
 		if clean[0] in self.R_instr:
-			res = self.R_type(clean[0], self.__reg_map(clean[2]), self.__reg_map(clean[3]), self.__reg_map(clean[1]))
+			res.append(self.R_type(clean[0], self.__reg_map(clean[2]), self.__reg_map(clean[3]), self.__reg_map(clean[1])))
 			#print(res)
 		elif clean[0] in self.I_instr:
 			if clean[0] == "jalr":
 				if len(clean) == 4:
-					res = self.I_type(clean[0], self.__reg_map(clean[2]), self.calcJump(clean[3],i),self.__reg_map(clean[1]))
+					res.append(self.I_type(clean[0], self.__reg_map(clean[2]), self.calcJump(clean[3],i),self.__reg_map(clean[1])))
 				else:
-					res = self.I_type(clean[0], self.__reg_map(clean[1]), "0", self.__reg_map("x1"))
+					res.append(self.I_type(clean[0], self.__reg_map(clean[1]), "0", self.__reg_map("x1")))
 			elif clean[0] == "lw":
-				res = self.I_type(clean[0], self.__reg_map(clean[3]), clean[2], self.__reg_map(clean[1]))
+				res.append(self.I_type(clean[0], self.__reg_map(clean[3]), clean[2], self.__reg_map(clean[1])))
 			else:
-				res = self.I_type(clean[0], self.__reg_map(clean[2]), clean[3], self.__reg_map(clean[1]))
+				res.append(self.I_type(clean[0], self.__reg_map(clean[2]), clean[3], self.__reg_map(clean[1])))
 			#print(res)
 		elif clean[0] in self.S_instr:
-			res = self.S_type(clean[0], self.__reg_map(clean[3]), self.__reg_map(clean[1]), clean[2])
+			res.append(self.S_type(clean[0], self.__reg_map(clean[3]), self.__reg_map(clean[1]), clean[2]))
 			#print(res)
 		elif clean[0] in self.SB_instr:
-			res = self.SB_type(clean[0], self.__reg_map(clean[1]), self.__reg_map(clean[2]), self.calcJump(clean[3],i))
+			res.append(self.SB_type(clean[0], self.__reg_map(clean[1]), self.__reg_map(clean[2]), self.calcJump(clean[3],i)))
 			#print(res)
 		elif clean[0] in self.U_instr:
-			res = self.U_type(clean[0], clean[1], self.__reg_map(clean[2]))
+			res.append(self.U_type(clean[0], clean[1], self.__reg_map(clean[2])))
 			#print(res)
 		elif clean[0] in self.UJ_instr:
 			if len(clean) == 3:
-				res = self.UJ_type(clean[0], self.calcJump(clean[2],i), self.__reg_map(clean[1]))
+				res.append(self.UJ_type(clean[0], self.calcJump(clean[2],i), self.__reg_map(clean[1])))
 			else:
-				res = self.UJ_type(clean[0], self.calcJump(clean[1],i), self.__reg_map("x1"))
+				res.append(self.UJ_type(clean[0], self.calcJump(clean[1],i), self.__reg_map("x1")))
 			#print(res)
 		elif clean[0] in self.pseudo_instr:
 			#print(clean[0]  + " pseudo")
@@ -455,37 +455,38 @@ class AssemblyConverter:
 				#res = self.I_type("addi",self.__reg_map(clean[1]), self.calcJump(clean[2],i), self.__reg_map(clean[1]))
 				'''if len(clean[2]) > 12:
 					self.###'''
-				res = self.I_type("addi",self.__reg_map(clean[1]), clean[2], self.__reg_map(clean[1]))
+				res.append(self.I_type("addi",self.__reg_map(clean[1]), clean[2], self.__reg_map(clean[1])))
 			elif clean[0] == "nop":
-				res = self.I_type("addi", self.__reg_map("x0"), "0", self.__reg_map("x0"))
+				res.append(self.I_type("addi", self.__reg_map("x0"), "0", self.__reg_map("x0")))
 			elif clean[0] == "mv":
-				res = self.I_type("addi", self.__reg_map(clean[2]), "0", self.__reg_map(clean[1]))
+				res.append(self.I_type("addi", self.__reg_map(clean[2]), "0", self.__reg_map(clean[1])))
 			elif clean[0] == "not":
-				res = self.I_type("xori", self.__reg_map(clean[2]), "-1", self.__reg_map(clean[1]))
+				res.append(self.I_type("xori", self.__reg_map(clean[2]), "-1", self.__reg_map(clean[1])))
 			elif clean[0] == "neg":
-				res = self.R_type("sub", self.__reg_map("x0"), self.__reg_map(clean[2]), self.__reg_map(clean[1]))
+				res.append(self.R_type("sub", self.__reg_map("x0"), self.__reg_map(clean[2]), self.__reg_map(clean[1])))
 			elif clean[0] == "la":
-				res = self.U_type("auipc", self.calcJump(clean[2],i), self.__reg_map(clean[1]))
+				res.append(self.U_type("auipc", self.calcJump(clean[2],i), self.__reg_map(clean[1])))
 			elif clean[0] == "j":
-				res = self.UJ_type("jal", self.calcJump(clean[1],i), self.__reg_map("x0"))
+				res.append(self.UJ_type("jal", self.calcJump(clean[1],i), self.__reg_map("x0")))
 			elif clean[0] == "jr":
-				res = self.I_type("jalr", self.__reg_map(clean[1]), "0", self.__reg_map("x0"))
+				res.append(self.I_type("jalr", self.__reg_map(clean[1]), "0", self.__reg_map("x0")))
 			elif clean[0] == "ret":
-				res = self.I_type("jalr", self.__reg_map("x1"), "0", self.__reg_map("x0"))
+				res.append(self.I_type("jalr", self.__reg_map("x1"), "0", self.__reg_map("x0")))
 			elif clean[0] == "bgt":
-				res = self.SB_type("blt", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calcJump(clean[3],i))
+				res.append(self.SB_type("blt", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calcJump(clean[3],i)))
 			elif clean[0] == "ble":
-				res = self.SB_type("bge", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calcJump(clean[3], i))
+				res.append(self.SB_type("bge", self.__reg_map(clean[2]), self.__reg_map(clean[1]), self.calcJump(clean[3], i)))
 		else:
 			#debugging
 			print("Error: " + line)
 
 			#check for critical errors
-			for e in res:
+			for r in res:
+			for e in r:
 				if int(e) != 0 and int(e) != 1:
-					raise Not__binaryNumber(res)
-			if len(res) != 32:
-				raise WrongInstructionSize(len(res))
+					raise Not__binaryNumber(r)
+			if len(r) != 32:
+				raise WrongInstructionSize(len(r))
 
 		#return instruction
 		return res
