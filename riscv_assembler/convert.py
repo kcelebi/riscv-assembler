@@ -448,7 +448,10 @@ class AssemblyConverter:
 			#print(clean[0]  + " pseudo")
 
 			if clean[0] == "li": #need to consider larger than 12 bits
-				res = self.I_type("addi",self.__reg_map(clean[1]), self.calcJump(clean[2],i), self.__reg_map(clean[1]))
+				#res = self.I_type("addi",self.__reg_map(clean[1]), self.calcJump(clean[2],i), self.__reg_map(clean[1]))
+				'''if len(clean[2]) > 12:
+					self.###'''
+				res = self.I_type("addi",self.__reg_map(clean[1]), clean[2], self.__reg_map(clean[1]))
 			elif clean[0] == "nop":
 				res = self.I_type("addi", self.__reg_map("x0"), "0", self.__reg_map("x0"))
 			elif clean[0] == "mv":
@@ -533,7 +536,7 @@ class AssemblyConverter:
 		if "p" in self.output_type:
 			print("------Printing Output------")
 			for elem in self.instructions:
-				print(e)
+				print(elem)
 
 		if "r" in self.output_type:
 			return self.instructions
