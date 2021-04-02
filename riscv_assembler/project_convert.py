@@ -30,4 +30,4 @@ class ProjectConverter:
 		)
 
 	#convert the whole project to machine
-	def convert(self):
+	#def convert(self):
