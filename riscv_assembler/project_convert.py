@@ -3,6 +3,11 @@ import os
 
 __all__ = ['ProjectConverter']
 
+class NoAssemblyDirectory( Exception ):
+	def __init__(self, message = "The provided directory has no Assembly (.s) files in it"):
+		self.message = message
+		super().__init__(self.message)
+
 class ProjectConverter:
 
 	def __init__(self, root = '', output_type='b', nibble = False, filename = "", hexMode = False):
@@ -19,6 +24,8 @@ class ProjectConverter:
 			self.output_type = output_type
 
 		self.files = [x for x in os.listdir(self.root) if x[-2:] == '.s'] #need to raise error just in case
+		if len(self.files) == 0:
+			raise NoAssemblyDirectory()
 		#take only .s files
 
 	def __str__(self):
