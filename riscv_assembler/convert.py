@@ -561,3 +561,11 @@ class AssemblyConverter:
 			for i in range(len(self.instructions)):
 				self.instructions[i] = nibbleForm(self.instructions[i])
 		return self.instructions
+
+
+	##-----------PROJECT ASSEMBLY PROTOCOLS-----------##
+
+	# - main idea is to track variables/funcs/filenames through diff files
+	# - branching is important
+	# - hierarchy of files: ie what is utils, what is used where
+	# - func that searches thru files and finds instances, def instance
