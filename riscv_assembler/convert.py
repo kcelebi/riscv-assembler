@@ -127,7 +127,7 @@ class AssemblyConverter:
 		if filename != "":
 			self.code = self.__read_in_advance()
 
-		print(len(self.code))
+		#print(len(self.code))
 		self.nibble = nibble
 		#get instruction data and register mapping
 		self.r_map, self.instr_data = self.__pre()
@@ -487,7 +487,7 @@ class AssemblyConverter:
 	def __post(self):
 
 		if len(self.instructions) == 0:
-			raise EmptyFile
+			raise EmptyFile()
 		if "b" in self.output_type:
 			print("-----Writing to binary file-----")
 			#make it [their .s file name].bin
@@ -537,13 +537,13 @@ class AssemblyConverter:
 
 		if "r" in self.output_type:
 			return self.instructions
-		
+
 		print("Number of instructions: {}".format(len(self.instructions)))
 
 	#DO THE MAGIC
 	def convert(self,filename):
 		if filename[-2::] != ".s":
-			raise WrongFileType
+			raise WrongFileType()
 		self.filename = filename
 		self.code = self.__read_in_advance()
 		self.instructions = self.__get_instructions()
@@ -555,11 +555,11 @@ class AssemblyConverter:
 			for i in range(len(self.instructions)):
 				self.instructions[i] = nibbleForm(self.instructions[i])
 
-		self.__post()
+		return self.__post()
 
 	def convert_ret(self,filename):
 		if filename[-2::] != ".s":
-			raise WrongFileType
+			raise WrongFileType()
 		self.filename = filename
 		#self.r_map, self.instr_data = self.__pre()
 		self.code = self.__read_in_advance()
