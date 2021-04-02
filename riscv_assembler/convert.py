@@ -203,6 +203,10 @@ class AssemblyConverter:
 		else:
 			return str(hex(int(x,2)))
 
+	#set hexMode to T/F
+	def setHex(self, x):
+		self.hexMode = x
+
 	#add custom pseudo instruction
 	#to be implemented later
 	'''
