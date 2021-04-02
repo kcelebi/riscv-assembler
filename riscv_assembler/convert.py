@@ -447,7 +447,7 @@ class AssemblyConverter:
 		elif clean[0] in self.pseudo_instr:
 			#print(clean[0]  + " pseudo")
 
-			if clean[0] == "li":
+			if clean[0] == "li": #need to consider larger than 12 bits
 				res = self.I_type("addi",self.__reg_map(clean[1]), self.calcJump(clean[2],i), self.__reg_map(clean[1]))
 			elif clean[0] == "nop":
 				res = self.I_type("addi", self.__reg_map("x0"), "0", self.__reg_map("x0"))
