@@ -111,6 +111,7 @@ class AssemblyConverter:
 		SB_instr, U_instr, UJ_instr, 
 		pseudo_instr
 	])
+
 	def __init__(self, output_type='b', nibble = False, filename = "", hexMode = False):	
 		self.code = []
 		self.instructions = []
@@ -130,6 +131,12 @@ class AssemblyConverter:
 		self.nibble = nibble
 		#get instruction data and register mapping
 		self.r_map, self.instr_data = self.__pre()
+
+	def __str__():
+		return "AssemblyConverter(output_type={}, nibble={}, filename={}, hexmode={})".format(
+			self.output_type, self.nibble,
+			self.filename, self.hexMode
+		)
 
 
 	#helper methods
@@ -569,3 +576,6 @@ class AssemblyConverter:
 	# - branching is important
 	# - hierarchy of files: ie what is utils, what is used where
 	# - func that searches thru files and finds instances, def instance
+	# - make as new file? 
+
+
