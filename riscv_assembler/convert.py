@@ -240,8 +240,10 @@ class AssemblyConverter:
 			raise WrongInstructionType()
 
 		opcode = 0;f3 = 1;f7 = 2
+		mod_imm = int(imm) - ((int(imm)>>12)<<12)
 		return "".join([
-			self.__binary(int(imm),12),
+			#self.__binary(int(imm),12),
+			self.__binary(mod_imm,12),
 			self.__reg_to_bin(rs1),
 			self.instr_data[instr][f3],
 			self.__reg_to_bin(rd),
@@ -296,8 +298,10 @@ class AssemblyConverter:
 		if instr not in self.U_instr:
 			raise WrongInstructionType()
 		opcode = 0;f3 = 1;f7 = 2
+		mod_imm = (int(imm) >> 12)
 		return "".join([
-			self.__binary(int(imm),32)[::-1][12:32][::-1],
+			#self.__binary(int(imm),32)[::-1][12:32][::-1],
+			self.__binary(mod_imm,20),
 			self.__reg_to_bin(rd),
 			self.instr_data[instr][opcode]
 		])
@@ -453,8 +457,8 @@ class AssemblyConverter:
 
 			if clean[0] == "li": #need to consider larger than 12 bits
 				#res = self.I_type("addi",self.__reg_map(clean[1]), self.calcJump(clean[2],i), self.__reg_map(clean[1]))
-				'''if len(clean[2]) > 12:
-					self.###'''
+				if int(clean[2]) > 2**11:
+					res.append(self.U_type(instr='lui', imm=clean[2], rd=self.__reg_map(clean[1])))
 				res.append(self.I_type("addi",self.__reg_map(clean[1]), clean[2], self.__reg_map(clean[1])))
 			elif clean[0] == "nop":
 				res.append(self.I_type("addi", self.__reg_map("x0"), "0", self.__reg_map("x0")))
