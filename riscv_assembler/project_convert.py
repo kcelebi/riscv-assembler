@@ -29,6 +29,18 @@ class ProjectConverter:
 			self.files
 		)
 
+	def setOutputType(self, x):
+		self.converter.setOutputType(x)
+
+	def getOutputType(self):
+		return self.converter.getOutputType()
+
+	def instructionExists(self, x):
+		return self.converter.instructionExists(x)
+
+	def setHex(self, x):
+		self.convert.setHex(x)
+
 	#convert the whole project to machine
 	#def convert(self):
 
