@@ -84,6 +84,9 @@ class Toolkit:
 			pseudo_instr
 		])
 
+	def __str__():
+		return "Toolkit(filename={})".format(self.filename)
+
 			
 
 	def hex(self,x,leading_zero=True):
