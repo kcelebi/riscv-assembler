@@ -22,7 +22,7 @@ class ProjectConverter:
 			raise NoAssemblyDirectory()
 		#take only .s files
 
-		self.instr = []
+		self.instr = {}
 		self.failed = []
 ####--------------------------------------------------------------------------------------------------------
 	def __str__(self):
@@ -59,20 +59,24 @@ class ProjectConverter:
 
 	def getFailedConvert(self):
 		return self.failed
+
+	def addDict(self, f, x):
+		if x != None:
+			self.instr[f] = x
 ####--------------------------------------------------------------------------------------------------------
 	#convert the whole project to machine
 	def convert(self, files = []):
 		self.failed = []
 		if len(files) == 0: files = self.files
 		if self.getOutputType() == 'r':
-			self.instr.append([self.catch_convert(f) for f in files])
-			return self.instr[-1]
+			g = [self.addDict(f, self.catch_convert(f)) for f in files]
+			return self.instr
 		no_ret = [catch_convert(f) for f in files]
 
 	def catch_convert(self,f):
 		try:
 			return self.converter.convert(self.root + '/' + f)
-		except Exception:
+		except:
 			print("File " + f + " assembly failed")
 			self.failed.append(f)
 	
