@@ -31,3 +31,12 @@ class ProjectConverter:
 
 	#convert the whole project to machine
 	#def convert(self):
+
+	
+	##-----------PROJECT ASSEMBLY PROTOCOLS-----------##
+
+	# - main idea is to track variables/funcs/filenames through diff files
+	# - branching is important
+	# - hierarchy of files: ie what is utils, what is used where
+	# - func that searches thru files and finds instances, def instance
+	# - make as new file? 
