@@ -22,6 +22,9 @@ class ProjectConverter:
 			raise NoAssemblyDirectory()
 		#take only .s files
 
+		self.instr = []
+		self.failed = []
+####--------------------------------------------------------------------------------------------------------
 	def __str__(self):
 		return "**\n  	ProjectConverter(output_type={}, nibble={}, hexmode={})\n\t- root: {}\n\t- Files: {}\n**".format(
 			self.converter.output_type, self.converter.nibble,
@@ -29,6 +32,13 @@ class ProjectConverter:
 			self.files
 		)
 
+	def __len__(self):
+		return len(self.instr)
+
+	def __add__(self, x):
+		self.instr.extend(x.getInstructions())
+		return self
+####--------------------------------------------------------------------------------------------------------
 	def setOutputType(self, x):
 		self.converter.setOutputType(x)
 
@@ -39,13 +49,32 @@ class ProjectConverter:
 		return self.converter.instructionExists(x)
 
 	def setHex(self, x):
-		self.convert.setHex(x)
+		self.converter.setHex(x)
 
+	def getFiles(self):
+		return self.files
+
+	def getInstructions(self):
+		return self.instr
+
+	def getFailedConvert(self):
+		return self.failed
+####--------------------------------------------------------------------------------------------------------
 	#convert the whole project to machine
-	def convert(self):
-		for f in self.files:
-			self.converter.convert(f)
+	def convert(self, files = []):
+		self.failed = []
+		if len(files) == 0: files = self.files
+		if self.getOutputType() == 'r':
+			self.instr.append([self.catch_convert(f) for f in files])
+			return self.instr[-1]
+		no_ret = [catch_convert(f) for f in files]
 
+	def catch_convert(self,f):
+		try:
+			return self.converter.convert(self.root + '/' + f)
+		except Exception:
+			print("File " + f + " assembly failed")
+			self.failed.append(f)
 	
 	##-----------PROJECT ASSEMBLY PROTOCOLS-----------##
 
