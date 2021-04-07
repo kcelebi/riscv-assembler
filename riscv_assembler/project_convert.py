@@ -42,7 +42,9 @@ class ProjectConverter:
 		self.convert.setHex(x)
 
 	#convert the whole project to machine
-	#def convert(self):
+	def convert(self):
+		for f in self.files:
+			self.converter.convert(f)
 
 	
 	##-----------PROJECT ASSEMBLY PROTOCOLS-----------##
