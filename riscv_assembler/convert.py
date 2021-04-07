@@ -240,7 +240,7 @@ class AssemblyConverter:
 			raise WrongInstructionType()
 
 		opcode = 0;f3 = 1;f7 = 2
-		mod_imm = int(imm) - ((int(imm)>>12)<<12)
+		mod_imm = int(imm) - ((int(imm)>>12)<<12) # imm[11:0]
 		return "".join([
 			#self.__binary(int(imm),12),
 			self.__binary(mod_imm,12),
@@ -258,12 +258,16 @@ class AssemblyConverter:
 			raise WrongInstructionType()
 
 		opcode = 0;f3 = 1;f7 = 2
+		mod_imm = (int(imm) - (int(imm) >> 12) << 12) >> 5 # imm[11:5]
+		mod_imm_2 = int(imm) - (int(imm) >> 5) << 5 # imm[4:0]
 		return "".join([
-			self.__binary(int(imm),12)[::-1][5:12][::-1],
+			#self.__binary(int(imm),12)[::-1][5:12][::-1],
+			self.__binary(mod_imm, 7), # imm[11:5]
 			self.__reg_to_bin(rs2),
 			self.__reg_to_bin(rs1),
 			self.instr_data[instr][f3],
-			self.__binary(int(imm),12)[::-1][0:5][::-1],
+			#self.__binary(int(imm),12)[::-1][0:5][::-1],
+			self.__binary(mod_imm_2, 5), # imm[4:0]
 			self.instr_data[instr][opcode]
 		])
 
@@ -275,18 +279,27 @@ class AssemblyConverter:
 			raise WrongInstructionType()
 
 		opcode = 0;f3 = 1;f7 = 2
+		mod_imm = (int(imm) - (int(imm) >> 12) << 12) >> 6 # imm[12]
+		mod_imm_2 = (int(imm) - (int(imm) >> 11) >> 11) >> 5 # imm[10:5]
+		mod_imm += mod_imm_2 # imm[12|10:5]
+		mod_imm_3 = (int(imm) - (int(imm) >> 5) << 5) # imm[4:1]
+		mod_imm_4 = (int(imm) - (int(imm) >> 11) << 11) >> 10 # imm[11]
+		mod_imm_3 += mod_imm_4 # imm[4:1|11]
+		
 		return "".join([
-			"".join([
-				self.__binary(int(imm),13)[::-1][12][::-1],
-				self.__binary(int(imm),13)[::-1][5:11][::-1]
-			]),
+			#"".join([
+			#	self.__binary(int(imm),13)[::-1][12][::-1],
+			#	self.__binary(int(imm),13)[::-1][5:11][::-1]
+			#]),
+			self.__binary(mod_imm),
 			self.__reg_to_bin(rs2),
 			self.__reg_to_bin(rs1),
 			self.instr_data[instr][f3],
-			"".join([
-				self.__binary(int(imm),13)[::-1][1:5][::-1],
-				self.__binary(int(imm),13)[::-1][11][::-1]
-			]),
+			self.__binary(mod_imm_3),
+			#"".join([
+			#	self.__binary(int(imm),13)[::-1][1:5][::-1],
+			#	self.__binary(int(imm),13)[::-1][11][::-1]
+			#]),
 			self.instr_data[instr][opcode]
 		])
 
