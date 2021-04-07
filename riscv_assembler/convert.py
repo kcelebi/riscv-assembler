@@ -258,8 +258,8 @@ class AssemblyConverter:
 			raise WrongInstructionType()
 
 		opcode = 0;f3 = 1;f7 = 2
-		mod_imm = (int(imm) - (int(imm) >> 12) << 12) >> 5 # imm[11:5]
-		mod_imm_2 = int(imm) - (int(imm) >> 5) << 5 # imm[4:0]
+		mod_imm = (int(imm) - ((int(imm) >> 12) << 12)) >> 5 # imm[11:5]
+		mod_imm_2 = int(imm) - ((int(imm) >> 5) << 5) # imm[4:0]
 		return "".join([
 			#self.__binary(int(imm),12)[::-1][5:12][::-1],
 			self.__binary(mod_imm, 7), # imm[11:5]
@@ -280,21 +280,21 @@ class AssemblyConverter:
 
 		opcode = 0;f3 = 1;f7 = 2
 
-		mod_imm = (int(imm) - (int(imm) >> 12) << 12) >> 6 # imm[12]
-		mod_imm += (int(imm) - (int(imm) >> 11) >> 11) >> 5 # imm[12|10:5]
-		mod_imm_2 = (int(imm) - (int(imm) >> 5) << 5) # imm[4:1]
-		mod_imm_2 += (int(imm) - (int(imm) >> 11) << 11) >> 10 # imm[4:1|11]
+		mod_imm = (int(imm) - ((int(imm) >> 12) << 12)) >> 6 # imm[12]
+		mod_imm += (int(imm) - ((int(imm) >> 11) >> 11)) >> 5 # imm[12|10:5]
+		mod_imm_2 = (int(imm) - ((int(imm) >> 5) << 5)) # imm[4:1]
+		mod_imm_2 += (int(imm) - ((int(imm) >> 11) << 11)) >> 10 # imm[4:1|11]
 
 		return "".join([
 			#"".join([
 			#	self.__binary(int(imm),13)[::-1][12][::-1],
 			#	self.__binary(int(imm),13)[::-1][5:11][::-1]
 			#]),
-			self.__binary(mod_imm),
+			self.__binary(mod_imm,7),
 			self.__reg_to_bin(rs2),
 			self.__reg_to_bin(rs1),
 			self.instr_data[instr][f3],
-			self.__binary(mod_imm_2),
+			self.__binary(mod_imm_2,5),
 			#"".join([
 			#	self.__binary(int(imm),13)[::-1][1:5][::-1],
 			#	self.__binary(int(imm),13)[::-1][11][::-1]
@@ -328,17 +328,17 @@ class AssemblyConverter:
 
 		opcode = 0;f3 = 1;f7 = 2
 
-		mod_imm = ((int(imm) - (int(imm) >> 20) << 20) >> 19) << 19 # imm[20]
-		mod_imm += (int(imm) - (int(imm) >> 10) << 10) >> 1 # imm[20|10:1]
-		mod_imm += (int(imm) - (int(imm) >> 11) << 11) >> 10 # imm[20|10:1|11]
-		mod_imm += (int(imm) - (int(imm) >> 19) << 19) >> 12 # imm[20|10:1|11|19:12]
+		mod_imm = ((int(imm) - ((int(imm) >> 20) << 20)) >> 19) << 19 # imm[20]
+		mod_imm += (int(imm) - ((int(imm) >> 10) << 10)) >> 1 # imm[20|10:1]
+		mod_imm += (int(imm) - ((int(imm) >> 11) << 11)) >> 10 # imm[20|10:1|11]
+		mod_imm += (int(imm) - ((int(imm) >> 19) << 19)) >> 12 # imm[20|10:1|11|19:12]
 		return  "".join([
 			#"".join([
 			#	self.__binary(int(imm),21)[::-1][20][::-1], self.__binary(int(imm),21)[::-1][1:11][::-1],
 			#	self.__binary(int(imm),21)[::-1][11][::-1],
 			#	self.__binary(int(imm),21)[::-1][12:20][::-1]
 			#]),		
-			self.__binary(mod_imm),
+			self.__binary(mod_imm,20),
 			self.__reg_to_bin(rd),
 			self.instr_data[instr][opcode]
 		])
@@ -431,10 +431,10 @@ class AssemblyConverter:
 
 		#check if line is comment, empty space, .global .text
 		if not self.__valid_line(clean):
-			return -1
+			return [-1]
 
 		if clean[0] == "ecall":
-			return -1
+			return [-1]
 
 		if clean[0] == "sw" or clean[0] == "lw" or clean[0] == "lb" or clean[0] == "lh" or clean[0] == "sb" or clean[0] == "sh":
 			#sw s0, 0(sp)
