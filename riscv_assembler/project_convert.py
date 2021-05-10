@@ -35,9 +35,9 @@ class ProjectConverter:
 	def __len__(self):
 		return len(self.instr)
 
-	def __add__(self, x):
-		self.instr.extend(x.getInstructions())
-		return self
+	'''def __add__(self, other):
+		self.instr.extend(other.getInstructions())
+		return self''' #fix this
 ####--------------------------------------------------------------------------------------------------------
 	def setOutputType(self, x):
 		self.converter.setOutputType(x)
