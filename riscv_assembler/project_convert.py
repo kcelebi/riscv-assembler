@@ -22,6 +22,9 @@ class ProjectConverter:
 			raise NoAssemblyDirectory()
 		#take only .s files
 
+		self.instr = {}
+		self.failed = []
+####--------------------------------------------------------------------------------------------------------
 	def __str__(self):
 		return "**\n  	ProjectConverter(output_type={}, nibble={}, hexmode={})\n\t- root: {}\n\t- Files: {}\n**".format(
 			self.converter.output_type, self.converter.nibble,
@@ -29,9 +32,53 @@ class ProjectConverter:
 			self.files
 		)
 
-	#convert the whole project to machine
-	#def convert(self):
+	def __len__(self):
+		return len(self.instr)
 
+	'''def __add__(self, other):
+		self.instr.extend(other.getInstructions())
+		return self''' #fix this
+####--------------------------------------------------------------------------------------------------------
+	def setOutputType(self, x):
+		self.converter.setOutputType(x)
+
+	def getOutputType(self):
+		return self.converter.getOutputType()
+
+	def instructionExists(self, x):
+		return self.converter.instructionExists(x)
+
+	def setHex(self, x):
+		self.converter.setHex(x)
+
+	def getFiles(self):
+		return self.files
+
+	def getInstructions(self):
+		return self.instr
+
+	def getFailedConvert(self):
+		return self.failed
+
+	def addDict(self, f, x):
+		if x != None:
+			self.instr[f] = x
+####--------------------------------------------------------------------------------------------------------
+	#convert the whole project to machine
+	def convert(self, files = []):
+		self.failed = []
+		if len(files) == 0: files = self.files
+		if self.getOutputType() == 'r':
+			g = [self.addDict(f, self.catch_convert(f)) for f in files]
+			return self.instr
+		no_ret = [catch_convert(f) for f in files]
+
+	def catch_convert(self,f):
+		try:
+			return self.converter.convert(self.root + '/' + f)
+		except:
+			print("File " + f + " assembly failed")
+			self.failed.append(f)
 	
 	##-----------PROJECT ASSEMBLY PROTOCOLS-----------##
 
