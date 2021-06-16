@@ -1,5 +1,5 @@
 from pathlib import Path
-import math as m
+import math
 
 __all__ = ['Toolkit','nibbleForm']
 
@@ -29,48 +29,47 @@ def flatten(x):
 
 class Toolkit:
 
-	R_instr = [
-		"add","sub", "sll", 
-		"sltu", "xor", "srl", 
-		"sra", "or", "and",
-		"addw", "subw", "sllw",
-		"slrw", "sraw", "mul",
-		"mulh", "mulu", "mulsu",
-		"div", "divu", "rem",
-		"remu"
-	]
-	I_instr = [
-		"addi", "lb", "lw",
-		"ld", "lbu", "lhu",
-		"lwu", "fence", "fence.i", 
-		"slli", "slti", "sltiu", 
-		"xori", "slri", "srai",
-		"ori", "andi", "addiw",
-		"slliw", "srliw", "sraiw", 
-		"jalr", "ecall", "ebreak", 
-		"CSRRW", "CSRRS","CSRRC", 
-		"CSRRWI", "CSRRSI", "CSRRCI" 
-	]
-	S_instr = [
-		"sw", "sb", "sh", 
-		"sd"
-	]
-	SB_instr = [
-		"beq", "bne", "blt", 
-		"bge", "bltu", "bgeu"
-	]
-	U_instr = ["auipc", "lui"]
-	UJ_instr = ["jal"]
-	pseudo_instr = [
-		"beqz", "bnez", "li", 
-		"mv", "j", "jr", 
-		"la", "neg", "nop", 
-		"not", "ret", "seqz", 
-		"snez", "bgt", "ble"
-	]
-	
-
 	def __init__(self, filename = ""):
+		R_instr = [
+			"add","sub", "sll", 
+			"sltu", "xor", "srl", 
+			"sra", "or", "and",
+			"addw", "subw", "sllw",
+			"slrw", "sraw", "mul",
+			"mulh", "mulu", "mulsu",
+			"div", "divu", "rem",
+			"remu"
+		]
+		I_instr = [
+			"addi", "lb", "lw",
+			"ld", "lbu", "lhu",
+			"lwu", "fence", "fence.i", 
+			"slli", "slti", "sltiu", 
+			"xori", "slri", "srai",
+			"ori", "andi", "addiw",
+			"slliw", "srliw", "sraiw", 
+			"jalr", "ecall", "ebreak", 
+			"CSRRW", "CSRRS","CSRRC", 
+			"CSRRWI", "CSRRSI", "CSRRCI" 
+		]
+		S_instr = [
+			"sw", "sb", "sh", 
+			"sd"
+		]
+		SB_instr = [
+			"beq", "bne", "blt", 
+			"bge", "bltu", "bgeu"
+		]
+		U_instr = ["auipc", "lui"]
+		UJ_instr = ["jal"]
+		pseudo_instr = [
+			"beqz", "bnez", "li", 
+			"mv", "j", "jr", 
+			"la", "neg", "nop", 
+			"not", "ret", "seqz", 
+			"snez", "bgt", "ble"
+		]
+
 		self.instructions = []
 		self.filename = filename
 		self.r_map = {}
@@ -85,6 +84,14 @@ class Toolkit:
 			SB_instr, U_instr, UJ_instr, 
 			pseudo_instr
 		])
+
+		self.R_instr = R_instr
+		self.I_instr = I_instr
+		self.S_instr = S_instr
+		self.SB_instr = SB_instr
+		self.U_instr = U_instr
+		self.UJ_instr = UJ_instr
+		self.pseudo_instr = pseudo_instr
 
 	def __str__():
 		return "Toolkit(filename={})".format(self.filename)
@@ -158,7 +165,7 @@ class Toolkit:
 		return self.__binary(int(x[1::]), 5)
 
 	def __binary(self, x, size):
-		byte_num = m.ceil(size/8)
+		byte_num = math.ceil(size/8)
 		b_num = x.to_bytes(byte_num, byteorder = 'big', signed = True)
 
 		fin_bin = ''.join(format(byte, '08b') for byte in b_num)
