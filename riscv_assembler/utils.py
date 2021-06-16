@@ -1,4 +1,5 @@
 from pathlib import Path
+import math as m
 
 __all__ = ['Toolkit','nibbleForm']
 
@@ -38,7 +39,7 @@ class Toolkit:
 		self.r_map = {}
 		self.instr_data = {}
 
-		self.R_instr = [
+		R_instr = [
 			"add","sub", "sll", 
 			"sltu", "xor", "srl", 
 			"sra", "or", "and",
@@ -48,7 +49,7 @@ class Toolkit:
 			"div", "divu", "rem",
 			"remu"
 		]
-		self.I_instr = [
+		I_instr = [
 			"addi", "lb", "lw",
 			"ld", "lbu", "lhu",
 			"lwu", "fence", "fence.i", 
@@ -60,17 +61,17 @@ class Toolkit:
 			"CSRRW", "CSRRS","CSRRC", 
 			"CSRRWI", "CSRRSI", "CSRRCI" 
 		]
-		self.S_instr = [
+		S_instr = [
 			"sw", "sb", "sh", 
 			"sd"
 		]
-		self.SB_instr = [
+		SB_instr = [
 			"beq", "bne", "blt", 
 			"bge", "bltu", "bgeu"
 		]
-		self.U_instr = ["auipc", "lui"]
-		self.UJ_instr = ["jal"]
-		self.pseudo_instr = [
+		U_instr = ["auipc", "lui"]
+		UJ_instr = ["jal"]
+		pseudo_instr = [
 			"beqz", "bnez", "li", 
 			"mv", "j", "jr", 
 			"la", "neg", "nop", 
@@ -83,6 +84,14 @@ class Toolkit:
 			SB_instr, U_instr, UJ_instr, 
 			pseudo_instr
 		])
+
+		self.R_instr = R_instr
+		self.I_instr = I_instr
+		self.S_instr = S_instr
+		self.SB_instr = SB_instr
+		self.U_instr = U_instr
+		self.UJ_instr = UJ_instr
+		self.pseudo_instr = pseudo_instr
 
 	def __str__():
 		return "Toolkit(filename={})".format(self.filename)
