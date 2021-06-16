@@ -28,70 +28,63 @@ def flatten(x):
 #-----------------------------------------------------------------------------------------
 
 class Toolkit:
+
+	R_instr = [
+		"add","sub", "sll", 
+		"sltu", "xor", "srl", 
+		"sra", "or", "and",
+		"addw", "subw", "sllw",
+		"slrw", "sraw", "mul",
+		"mulh", "mulu", "mulsu",
+		"div", "divu", "rem",
+		"remu"
+	]
+	I_instr = [
+		"addi", "lb", "lw",
+		"ld", "lbu", "lhu",
+		"lwu", "fence", "fence.i", 
+		"slli", "slti", "sltiu", 
+		"xori", "slri", "srai",
+		"ori", "andi", "addiw",
+		"slliw", "srliw", "sraiw", 
+		"jalr", "ecall", "ebreak", 
+		"CSRRW", "CSRRS","CSRRC", 
+		"CSRRWI", "CSRRSI", "CSRRCI" 
+	]
+	S_instr = [
+		"sw", "sb", "sh", 
+		"sd"
+	]
+	SB_instr = [
+		"beq", "bne", "blt", 
+		"bge", "bltu", "bgeu"
+	]
+	U_instr = ["auipc", "lui"]
+	UJ_instr = ["jal"]
+	pseudo_instr = [
+		"beqz", "bnez", "li", 
+		"mv", "j", "jr", 
+		"la", "neg", "nop", 
+		"not", "ret", "seqz", 
+		"snez", "bgt", "ble"
+	]
 	
+
 	def __init__(self, filename = ""):
 		self.instructions = []
 		self.filename = filename
+		self.r_map = {}
+		self.instr_data = {}
 		#get instruction data and register mapping
 		self.r_map, self.instr_data = self.__pre()
 		if filename != "":
 			self.code = self.__read_in_advance()
-		self.r_map = {}
-		self.instr_data = {}
-
-		R_instr = [
-			"add","sub", "sll", 
-			"sltu", "xor", "srl", 
-			"sra", "or", "and",
-			"addw", "subw", "sllw",
-			"slrw", "sraw", "mul",
-			"mulh", "mulu", "mulsu",
-			"div", "divu", "rem",
-			"remu"
-		]
-		I_instr = [
-			"addi", "lb", "lw",
-			"ld", "lbu", "lhu",
-			"lwu", "fence", "fence.i", 
-			"slli", "slti", "sltiu", 
-			"xori", "slri", "srai",
-			"ori", "andi", "addiw",
-			"slliw", "srliw", "sraiw", 
-			"jalr", "ecall", "ebreak", 
-			"CSRRW", "CSRRS","CSRRC", 
-			"CSRRWI", "CSRRSI", "CSRRCI" 
-		]
-		S_instr = [
-			"sw", "sb", "sh", 
-			"sd"
-		]
-		SB_instr = [
-			"beq", "bne", "blt", 
-			"bge", "bltu", "bgeu"
-		]
-		U_instr = ["auipc", "lui"]
-		UJ_instr = ["jal"]
-		pseudo_instr = [
-			"beqz", "bnez", "li", 
-			"mv", "j", "jr", 
-			"la", "neg", "nop", 
-			"not", "ret", "seqz", 
-			"snez", "bgt", "ble"
-		]
-
+		
 		self.all_instr = flatten([
 			R_instr, I_instr, S_instr,
 			SB_instr, U_instr, UJ_instr, 
 			pseudo_instr
 		])
-
-		self.R_instr = R_instr
-		self.I_instr = I_instr
-		self.S_instr = S_instr
-		self.SB_instr = SB_instr
-		self.U_instr = U_instr
-		self.UJ_instr = UJ_instr
-		self.pseudo_instr = pseudo_instr
 
 	def __str__():
 		return "Toolkit(filename={})".format(self.filename)
