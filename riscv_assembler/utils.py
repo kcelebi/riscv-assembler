@@ -32,7 +32,7 @@ class Toolkit:
 	def __init__(self, filename = ""):
 		R_instr = [
 			"add","sub", "sll", 
-			"sltu", "xor", "srl", 
+			"slt", "sltu", "xor", "srl", 
 			"sra", "or", "and",
 			"addw", "subw", "sllw",
 			"slrw", "sraw", "mul",
