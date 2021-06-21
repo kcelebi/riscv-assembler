@@ -41,7 +41,7 @@ class Toolkit:
 			"remu"
 		]
 		I_instr = [
-			"addi", "lb", "lw",
+			"addi", "lb", "lh", "lw",
 			"ld", "lbu", "lhu",
 			"lwu", "fence", "fence.i", 
 			"slli", "slti", "sltiu", 
