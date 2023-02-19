@@ -83,12 +83,12 @@ class Parser:
 		return self.organize()
 
 class _R_parse(Parser):
-	def organize(tokens):
+	def organize(self, tokens):
 		instr, rs1, rs2, rd = tokens[0], reg_map[tokens[2]], reg_map[tokens[3]], reg_map[tokens[1]]
 		return R(instr, rs1, rs2, rd)
 
 class _I_parse(Parser):
-	def organize(tokens):
+	def organize(self, tokens):
 		instr, rs1, imm, rd = tokens[0], None, None, None
 		if instr == "jalr":
 			if len(tokens) == 4:
@@ -103,9 +103,47 @@ class _I_parse(Parser):
 		return I(instr, rs1, imm, rd)
 
 class _S_parse(Parser):
-	def organize(tokens):
-		instr, rs1, rs2, imm = tokens[0], None, None, None
-		
+	def organize(self, tokens):
+		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[3]], reg_map[tokens[1]], tokens[2]
+		return S(instr, rs1, rs2, imm)
+
+class _SB_parse(Parser):
+	def organize(self, tokens):
+		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[1]], reg_map[tokens[2]], JUMP(tokens[3])
+		return SB(instr, rs1, rs2, imm)
+
+class _U_parse(Parser):
+	def organize(self, tokens):
+		instr, imm, rd = tokens[0], tokens[1], reg_map[tokens[2]]
+		return U(instr, imm, rd)
+
+class _UJ_parse(Parser):
+	def organize(self, tokens):
+		instr, imm, rd = tokens[0], None, None
+		if len(tokens) == 3:
+			imm, rd = JUMP(tokens[2]), reg_map[tokens[1]]
+		else:
+			imm, rd = JUMP(tokens[1]), reg_map["x1"]
+
+		return UJ(instr, imm, rd)
+
+class _Pseudo_parse(Parser):
+	def organize(self, tokens):
+		instr = tokens[0]
+		if instr == 'nop':
+			rs1, imm, rd = reg_map["x0"], 0, reg_map["x0"]
+			return I("addi", rs1, imm, rd)
+		elif instr == "mv":
+			rs1, imm, rd = reg_map[tokens[2]], 0, reg_map[tokens[1]]
+			return I("addi", rs1, imm, rd)
+		elif instr == "not":
+			rs1, imm, rd = reg_map[tokens[2]], -1, reg_map[tokens[1]]
+			return I("xori", rs1, imm, rd)
+		elif instr == "neg":
+			rs1, rs2, rd = reg_map["x0"], reg_map[tokens[2]], reg_map[tokens[1]]
+			return R("sub", rs1, rs2, rd)
+
+		return BadInstructionError()
 
 
 reg_map = register_map()
