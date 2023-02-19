@@ -17,6 +17,7 @@
 '''
 
 from instr_arr import *
+from parse import *
 
 class AssemblyConverter:
 
@@ -26,13 +27,25 @@ class AssemblyConverter:
 		self.hex_mode = __check_hex_mode(hex_mode)
 
 	def __str__(self):
-		...
+		return "Output: {output_mode}, Nibble: {nibble_mode}, Hex: {hex_mode}".format(
+			output_mode = self.output_mode,
+			nibble_mode = self.nibble_mode,
+			hex_mode = self.hex_mode
+		)
 
 	def __repr__(self):
-		...
+		return "Output: {output_mode}, Nibble: {nibble_mode}, Hex: {hex_mode}".format(
+			output_mode = self.output_mode,
+			nibble_mode = self.nibble_mode,
+			hex_mode = self.hex_mode
+		)
 
 	def clone(self):
-		...
+		return AssemblyConverter(
+			output_mode = self.output_mode,
+			nibble_mode = self.nibble_mode,
+			hex_mode = self.hex_mode
+		)
 
 	@staticmethod
 	def __check_output_mode(x):
@@ -74,4 +87,5 @@ class AssemblyConverter:
 	@property
 	def nibble_mode(self):
 		return self.nibble_mode
+
 
