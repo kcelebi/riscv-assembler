@@ -49,7 +49,7 @@ class AssemblyConverter:
 
 	@staticmethod
 	def __check_output_mode(x):
-		assert x in ['b', 't', 'p'], "Output Mode needs to be one of b(inary), t(ext), or p(rint)."
+		assert x in ['b', 't', 'p', None], "Output Mode needs to be one of b(inary), t(ext), p(rint), or None."
 		return x
 
 	@staticmethod
@@ -87,5 +87,15 @@ class AssemblyConverter:
 	@property
 	def nibble_mode(self):
 		return self.nibble_mode
+
+	@staticmethod
+	def parse(file):
+		...
+
+	'''
+		Put it all together
+	'''
+	def convert(self, file):
+		...
 
 
