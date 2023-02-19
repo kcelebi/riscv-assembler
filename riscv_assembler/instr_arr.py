@@ -16,6 +16,12 @@ class Instruction:
 		return x
 
 class _R(Instruction):
+	def __repr__(self):
+		return "R instruction: {instr}, {rs1}, {rs2}, {rd}".format(*args)
+
+	def __str__(self):
+		return "R instruction: {instr}, {rs1}, {rs2}, {rd}".format(*args)
+
 	def compute_instr(self, instr, rs1, rs2, rd):
 		instr = __check_instr_valid(instr, R_instr)
 		opcode, f3, f7 = 0, 1, 2
@@ -25,62 +31,118 @@ class _R(Instruction):
 		])
 
 class _I(Instruction):
+	def __repr__(self):
+		return "I instruction: {instr}, {rs1}, {imm}, {rd}".format(*args)
+
+	def __str__(self):
+		return "I instruction: {instr}, {rs1}, {imm}, {rd}".format(*args)
+
 	def compute_instr(self, instr, rs1, imm, rd):
 		instr = __check_instr_valid(instr, I_instr)
 		opcode, f3, f7 = 0, 1, 2
-		mod_imm = int(imm) - ((int(imm)>>12)<<12) # imm[11:0]
+		mod_imm = immediate(imm)
 
 		return "".join([
 			...
 		])
 
+	@staticmethod
+	def immediate(imm):
+		return int(imm) - ((int(imm)>>12)<<12) # imm[11:0]
+
 class _S(Instruction):
+	def __repr__(self):
+		return "S instruction: {instr}, {rs1}, {rs2}, {imm}".format(*args)
+
+	def __str__(self):
+		return "S instruction: {instr}, {rs1}, {rs2}, {imm}".format(*args)
+
 	def compute_instr(self, instr, rs1, rs2, imm):
 		instr = __check_instr_valid(instr, S_instr)
 		opcode, f3, f7 = 0, 1, 2
+		mod_imm, mod_imm_2 = immediate(imm)
+
+		return "".join([
+			...
+		])
+
+	@staticmethod
+	def immediate(imm):
 		mod_imm = (int(imm) - ((int(imm) >> 12) << 12)) >> 5 # imm[11:5]
 		mod_imm_2 = int(imm) - ((int(imm) >> 5) << 5) # imm[4:0]
 
-		return "".join([
-			...
-		])
+		return mod_imm, mod_imm_2
 
 class _SB(Instruction):
+	def __repr__(self):
+		return "SB instruction: {instr}, {rs1}, {rs2}, {imm}".format(*args)
+
+	def __str__(self):
+		return "SB instruction: {instr}, {rs1}, {rs2}, {imm}".format(*args)
+
 	def compute_instr(self, instr, rs1, rs2, imm):
 		instr = __check_instr_valid(instr, SB_instr)
 		opcode, f3, f7 = 0, 1, 2
+		mod_imm, mod_imm_2 = immediate(imm)
+
+		return "".join([
+			...
+		])
+
+	@staticmethod
+	def immediate(imm):
 		mod_imm = (int(imm) - ((int(imm) >> 12) << 12)) >> 6 # imm[12]
 		mod_imm += (int(imm) - ((int(imm) >> 11) >> 11)) >> 5 # imm[12|10:5]
+		
 		mod_imm_2 = (int(imm) - ((int(imm) >> 5) << 5)) # imm[4:1]
 		mod_imm_2 += (int(imm) - ((int(imm) >> 11) << 11)) >> 10 # imm[4:1|11]
 
-		return "".join([
-			...
-		])
+		return mod_imm, mod_imm_2
 
 class _U(Instruction):
+	def __repr__(self):
+		return "U instruction: {instr}, {imm}, {rd}".format(*args)
+
+	def __str__(self):
+		return "U instruction: {instr}, {imm}, {rd}".format(*args)
+
 	def compute_instr(self, instr, imm, rd):
 		instr = __check_instr_valid(instr, U_instr)
 		opcode, f3, f7 = 0, 1, 2
-		mod_imm = (int(imm) >> 12)
+		mod_imm = immediate(imm)
 
 		return "".join([
 			...
 		])
 
+	@staticmethod
+	def immediate(imm):
+		return (int(imm) >> 12)
+
 class _UJ(Instruction):
+	def __repr__(self):
+		return "UJ instruction: {instr}, {imm}, {rd}".format(*args)
+
+	def __str__(self):
+		return "UJ instruction: {instr}, {imm}, {rd}".format(*args)
+
 	def compute_instr(self, instr, imm, rd):
 		instr = __check_instr_valid(instr, UJ_instr)
 		opcode, f3, f7 = 0, 1, 2
-
-		mod_imm = ((int(imm) - ((int(imm) >> 20) << 20)) >> 19) << 19 # imm[20]
-		mod_imm += (int(imm) - ((int(imm) >> 10) << 10)) >> 1 # imm[20|10:1]
-		mod_imm += (int(imm) - ((int(imm) >> 11) << 11)) >> 10 # imm[20|10:1|11]
-		mod_imm += (int(imm) - ((int(imm) >> 19) << 19)) >> 12 # imm[20|10:1|11|19:12]
+		mod_imm = immediate(imm)
 		
 		return "".join([
 			...
 		])
+
+	@staticmethod
+	def immediate(imm):
+		mod_imm = ((int(imm) - ((int(imm) >> 20) << 20)) >> 19) << 19 # imm[20]
+		mod_imm += (int(imm) - ((int(imm) >> 10) << 10)) >> 1 # imm[20|10:1]
+		mod_imm += (int(imm) - ((int(imm) >> 11) << 11)) >> 10 # imm[20|10:1|11]
+		mod_imm += (int(imm) - ((int(imm) >> 19) << 19)) >> 12 # imm[20|10:1|11|19:12]
+
+		return mod_imm
 
 
 R, I, S, SB, U, UJ = _R(), _I(), _S(), _SB(), _U(), _UJ()
