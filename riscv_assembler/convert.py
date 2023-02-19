@@ -175,7 +175,8 @@ class AssemblyConverter:
 		return True
 
 	#gets rid of inline comments
-	def __handle_inline_comments(self,x):
+	@staticmethod
+	def __handle_inline_comments(x):
 		if "#" in x:
 			pos = x.index("#")
 			if pos != 0 and pos != len(x)-1:
@@ -419,6 +420,10 @@ class AssemblyConverter:
 		return instructions
 
 	#interpret each line and form instructions
+	'''
+		TO DO
+		Clean up all of this
+	'''
 	def __interpret(self,line,i):
 		res = []
 		line = self.__handle_inline_comments(line)
