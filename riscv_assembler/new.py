@@ -21,9 +21,9 @@ from instr_arr import *
 class AssemblyConverter:
 
 	def __init__(self, output_mode = 'b', nibble_mode = False, hex_mode = False):
-		self.output_mode = output_mode
-		self.nibble_mode = nibble_mode
-		self.hex_mode = hex_mode
+		self.output_mode = __check_output_mode(output_mode)
+		self.nibble_mode = __check_nibble_mode(nibble_mode)
+		self.hex_mode = __check_hex_mode(hex_mode)
 
 	def __str__(self):
 		...
@@ -36,15 +36,18 @@ class AssemblyConverter:
 
 	@staticmethod
 	def __check_output_mode(x):
-		...
+		assert x in ['b', 't', 'p'], "Output Mode needs to be one of b(inary), t(ext), or p(rint)."
+		return x
 
 	@staticmethod
 	def __check_nibble_mode(x):
-		...
+		assert type(x) == bool, "Nibble mode needs to be a boolean."
+		return x
 
 	@staticmethod
 	def __check_hex_mode(x):
-		...
+		assert type(x) == bool, "Hex mode needs to be a boolean."
+		return x
 
 	'''
 		Property: whether to return as hex or not
@@ -71,8 +74,4 @@ class AssemblyConverter:
 	@property
 	def nibble_mode(self):
 		return self.nibble_mode
-
-
-
-
 
