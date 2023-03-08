@@ -1,6 +1,6 @@
 from instr_arr import *
 
-__all__ = ['read_file']
+__all__ = ['read_file', 'interpret']
 
 def valid_line(x, allow_colon = False):
 	if x[0][0] == "#" or x[0][0] == "\n" or x[0][0] == "" or x[0][0] == ".":
@@ -25,11 +25,11 @@ def read_file(file):
 	while line != "":
 		line = line.strip()
 		if len(line) > 0 and valid_line(line, True):
-			code += [interpret_line(line)]
+			code += [interpret(line)]
 			line = file.readline()
 	return code
 
-def interpret_line(line):
+def interpret(line):
 	tokens = handle_inline_comments(line).split()
 	f = determine_type(tokens[0])
 	return f(tokens)

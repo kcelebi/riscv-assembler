@@ -8,12 +8,12 @@
 
 
 	Questions:
-		- Do we want the object to save the code?
-		- 
+		- Do we want the object to save the code? No
 
 	Immediate ToDos:
-		- Add decorators + properties
 		- Add checks & helper methods
+		- Implement hexmode
+		- Go through and fix the instruction conversions themselves
 '''
 
 from instr_arr import *
@@ -22,29 +22,29 @@ from parse import *
 class AssemblyConverter:
 
 	def __init__(self, output_mode = 'b', nibble_mode = False, hex_mode = False):
-		self.output_mode = self.__check_output_mode(output_mode)
-		self.nibble_mode = self.__check_nibble_mode(nibble_mode)
-		self.hex_mode = self.__check_hex_mode(hex_mode)
+		self.__output_mode = self.__check_output_mode(output_mode)
+		self.__nibble_mode = self.__check_nibble_mode(nibble_mode)
+		self.__hex_mode = self.__check_hex_mode(hex_mode)
 
 	def __str__(self):
 		return "Output: {output_mode}, Nibble: {nibble_mode}, Hex: {hex_mode}".format(
-			output_mode = self.output_mode,
-			nibble_mode = self.nibble_mode,
-			hex_mode = self.hex_mode
+			output_mode = self.__output_mode,
+			nibble_mode = self.__nibble_mode,
+			hex_mode = self.__hex_mode
 		)
 
 	def __repr__(self):
 		return "Output: {output_mode}, Nibble: {nibble_mode}, Hex: {hex_mode}".format(
-			output_mode = self.output_mode,
-			nibble_mode = self.nibble_mode,
-			hex_mode = self.hex_mode
+			output_mode = self.__output_mode,
+			nibble_mode = self.__nibble_mode,
+			hex_mode = self.__hex_mode
 		)
 
 	def clone(self):
 		return AssemblyConverter(
-			output_mode = self.output_mode,
-			nibble_mode = self.nibble_mode,
-			hex_mode = self.hex_mode
+			output_mode = self.__output_mode,
+			nibble_mode = self.__nibble_mode,
+			hex_mode = self.__hex_mode
 		)
 
 	def __check_output_mode(self, x):
@@ -63,45 +63,48 @@ class AssemblyConverter:
 		Property: the way to output machine code
 			Options: 'b', 't', 'p'
 	'''
-	'''@property
-				def output_mode(self):
-					return self.output_mode
-			
-				@output_mode.setter
-				def output_mode(self, x):
-					self.output_mode = x'''
+	@property
+	def output_mode(self):
+		return self.__output_mode
+
+	@output_mode.setter
+	def output_mode(self, x):
+		self.__output_mode = x
 
 	'''
 		Property: whether to print in nibbles (only applicable for text or print)
 			True = nibble
 			False = full number
 	'''
-	'''@property
-				def nibble_mode(self):
-					return self.nibble_mode
-			
-				@nibble_mode.setter
-				def nibble_mode(self, x):
-					self.nibble_mode = x'''
+	@property
+	def nibble_mode(self):
+		return self.__nibble_mode
+
+	@nibble_mode.setter
+	def nibble_mode(self, x):
+		self.__nibble_mode = x
 
 	'''
 	Property: whether to return as hex or not
 		True = hex
 		False = binary
 	'''
-	'''@property
-				def hex_mode(self):
-					return self.hex_mode
-			
-				@hex_mode.setter
-				def hex_mode(self, x):
-					self.hex_mode = x'''
+	@property
+	def hex_mode(self):
+		return self.__hex_mode
+
+	@hex_mode.setter
+	def hex_mode(self, x):
+		self.__hex_mode = x
 
 	'''
 		Put it all together
 	'''
-	def convert(self, file):
-		result = read_file(file)
+	def convert(self, input):
+		if ".s" in input or "/" in input:
+			result = read_file(input)
+			return result
+		result = interpret(input)
 		return result
 
 
