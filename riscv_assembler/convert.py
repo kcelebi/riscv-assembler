@@ -148,10 +148,25 @@ class AssemblyConverter:
 
 	#for jumps, calculates hex address of func
 	def calcJump(self, x,line_num):
-		#calc line number of func
-		for i in range(len(self.code)):
+		# search forward
+		skip_labels = 0
+		for i in range(line_num, len(self.code)):
 			if x+":" == self.code[i]:
-				return (i - line_num)*4 #how many instructions to jump ahead/behind
+				jump_size = (i - line_num - skip_labels) * 4 # how many instructions to jump ahead
+				return jump_size
+			if self.code[i].endswith(':'):
+				skip_labels += 1
+
+		# search backward
+		skip_labels = 0
+		for i in range(line_num, -1, -1):
+			# substruct correct label itself
+			if self.code[i].endswith(':'):
+				skip_labels += 1
+			if x+":" == self.code[i]:
+				jump_size = (i - line_num + skip_labels) * 4 # how many instructions to jump behind
+				return jump_size
+
 		#print("Address not found")
 		return -10 #if not found
 
