@@ -13,7 +13,7 @@
 	Immediate ToDos:
 		- Add checks & helper methods
 		- Implement hexmode
-		- Go through and fix the instruction conversions themselves
+		- Go through and fix the instruction conversions themselves	
 '''
 
 from instr_arr import *
@@ -98,13 +98,9 @@ class AssemblyConverter:
 		self.__hex_mode = x
 
 	'''
-		Put it all together
+		Put it all together. Need to modify for output type.
 	'''
 	def convert(self, input):
-		if ".s" in input or "/" in input:
-			result = read_file(input)
-			return result
-		result = interpret(input)
-		return result
+		return Parser(input)
 
 
