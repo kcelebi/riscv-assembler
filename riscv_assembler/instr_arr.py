@@ -32,10 +32,10 @@ class _R(Instruction):
 
 		return "".join([
 			instr_map[instr][f7],
-			reg_to_bin(rs2),
-			reg_to_bin(rs1),
+			reg(rs2),
+			reg(rs1),
 			instr_map[instr][f3],
-			reg_to_bin(rd),
+			reg(rd),
 			instr_map[instr][opcode]
 		])
 
@@ -48,16 +48,20 @@ class _I(Instruction):
 
 	def compute_instr(self, instr, rs1, imm, rd):
 		instr = super().check_instr_valid(instr, I_instr)
-		opcode, f3, f7 = 0, 1, 2
-		mod_imm = immediate(imm)
+		opcode, f3 = 0, 1
 
 		return "".join([
-			...
+			immediate(imm),
+			reg(rs1),
+			instr_map[instr][f3],
+			reg(rd),
+			instr_map[instr][opcode]
 		])
 
 	@staticmethod
 	def immediate(imm):
-		return int(imm) - ((int(imm)>>12)<<12) # imm[11:0]
+		#return int(imm) - ((int(imm)>>12)<<12) # imm[11:0]
+		return format(int(imm), '012b')
 
 class _S(Instruction):
 	def __repr__(self):
@@ -68,19 +72,28 @@ class _S(Instruction):
 
 	def compute_instr(self, instr, rs1, rs2, imm):
 		instr = super().check_instr_valid(instr, S_instr)
-		opcode, f3, f7 = 0, 1, 2
-		mod_imm, mod_imm_2 = immediate(imm)
+		opcode, f3 = 0, 1
 
 		return "".join([
-			...
+			immediate(imm, 1),
+			reg(rs2),
+			reg(rs1),
+			instr_map[instr][f3],
+			immediate(imm, 2),
+			instr_map[instr][opcode]
 		])
 
 	@staticmethod
-	def immediate(imm):
-		mod_imm = (int(imm) - ((int(imm) >> 12) << 12)) >> 5 # imm[11:5]
-		mod_imm_2 = int(imm) - ((int(imm) >> 5) << 5) # imm[4:0]
+	def immediate(imm, n):
+		'''mod_imm = (int(imm) - ((int(imm) >> 12) << 12)) >> 5 # imm[11:5]
+								mod_imm_2 = int(imm) - ((int(imm) >> 5) << 5) # imm[4:0]
+						
+								return mod_imm, mod_imm_2'''
+		mod_imm = format(((1 << 13) - 1) & int(imm), '013b')
+		if n == 1:
+			return mod_imm[0] + mod_imm[12-10 : 12-4]
+		return mod_imm[12-4 : 12 - 0] + mod_imm[1]
 
-		return mod_imm, mod_imm_2
 
 class _SB(Instruction):
 	def __repr__(self):
@@ -153,19 +166,19 @@ class _UJ(Instruction):
 
 		return mod_imm
 
-class Parser:
+class InstructionParser:
 	def organize(self, *args):
 		raise NotImplementedError()
 
 	def __call__(self, *args):
 		return self.organize(*args)
 
-class _R_parse(Parser):
+class _R_parse(InstructionParser):
 	def organize(self, tokens):
 		instr, rs1, rs2, rd = tokens[0], reg_map[tokens[2]], reg_map[tokens[3]], reg_map[tokens[1]]
 		return R(instr, rs1, rs2, rd)
 
-class _I_parse(Parser):
+class _I_parse(InstructionParser):
 	def organize(self, tokens):
 		instr, rs1, imm, rd = tokens[0], None, None, None
 		if instr == "jalr":
@@ -180,22 +193,22 @@ class _I_parse(Parser):
 
 		return I(instr, rs1, imm, rd)
 
-class _S_parse(Parser):
+class _S_parse(InstructionParser):
 	def organize(self, tokens):
 		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[3]], reg_map[tokens[1]], tokens[2]
 		return S(instr, rs1, rs2, imm)
 
-class _SB_parse(Parser):
+class _SB_parse(InstructionParser):
 	def organize(self, tokens):
 		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[1]], reg_map[tokens[2]], JUMP(tokens[3])
 		return SB(instr, rs1, rs2, imm)
 
-class _U_parse(Parser):
+class _U_parse(InstructionParser):
 	def organize(self, tokens):
 		instr, imm, rd = tokens[0], tokens[1], reg_map[tokens[2]]
 		return U(instr, imm, rd)
 
-class _UJ_parse(Parser):
+class _UJ_parse(InstructionParser):
 	def organize(self, tokens):
 		instr, imm, rd = tokens[0], None, None
 		if len(tokens) == 3:
@@ -205,7 +218,7 @@ class _UJ_parse(Parser):
 
 		return UJ(instr, imm, rd)
 
-class _Pseudo_parse(Parser):
+class _Pseudo_parse(InstructionParser):
 	def organize(self, tokens):
 		instr = tokens[0]
 		if instr == 'nop':
@@ -223,8 +236,9 @@ class _Pseudo_parse(Parser):
 
 		return BadInstructionError()
 
-def reg_to_bin(x):
-	return __binary(int(x[1:]), 5)
+def reg(x):
+	#return __binary(int(x[1:]), 5)
+	return format(int(imm[1:]), '05b')
 
 def __binary(x, size):
 	byte_num = m.ceil(size/8)
@@ -312,3 +326,8 @@ pseudo_instr = [
 	"not", "ret", "seqz", 
 	"snez", "bgt", "ble"
 ]
+
+'''get_intr_set_map = {}
+for instr_set in [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr, pseudo_instr]:
+	for instr in instr_set:
+		get_instr_set_map[instr] = '''

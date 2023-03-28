@@ -1,43 +1,86 @@
 from instr_arr import *
 
-__all__ = ['read_file', 'interpret']
+__all__ = ['Parser']
 
-def valid_line(x, allow_colon = False):
-	if x[0][0] == "#" or x[0][0] == "\n" or x[0][0] == "" or x[0][0] == ".":
-		return False
+class Parser:
 
-	if not allow_colon and x[0][-1] == ":" :
-		return False
-	return True
+	'''
+		Procedure:
+			- Call read_file()
+				- Strip the line and check valid_line()
+				- interpret() the line
+					- handle_inline_comments()
+					- determine_type() of instruction
+						- returns appropriate function
+					- return parsed version of line
+				- combine the interpreted lines together
+				- Return
+	'''
 
-def handle_inline_comments(x):
-	if "#" in x:
-		pos = x.index("#")
-		if pos != 0 and pos != len(x)-1:
-			return x[0:pos]
-	return x
+	def __init__(self):
+		...
 
-def read_file(file):
-	code = []
-	file = open(file, "r")
+	def __call__(self, *args):
+		if self.is_file(*args):
+			return self.read_file(*args)
+		return self.interpret(*args)
 
-	line = file.readline()
-	while line != "":
-		line = line.strip()
-		if len(line) > 0 and valid_line(line, True):
-			code += [interpret(line)]
-			line = file.readline()
-	return code
+	def is_file(self, x):
+		return True if '.s' in x or '/' in x else False
 
-def interpret(line):
-	tokens = handle_inline_comments(line).split()
-	f = determine_type(tokens[0])
-	return f(tokens)
+	'''
+		In read_file(), Check if the inputted line is appropriate before
+		parsing it.
+	'''
+	def valid_line(self, x, allow_colon = False):
+		if x[0][0] == "#" or x[0][0] == "\n" or x[0][0] == "" or x[0][0] == ".":
+			return False
 
-def determine_type(tk):
-	instr_sets = [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr]
-	parsers = [Rp, Ip, Sp, SBp, Up ,UJp]
-	for i in range(len(instr_sets)):
-		if tk in instr_sets[i]:
-			return parsers[i]
-	raise BadInstructionError()
+		if not allow_colon and x[0][-1] == ":" :
+			return False
+		return True
+
+	'''
+		In interpret(), remove any comments in the line.
+	'''
+	def handle_inline_comments(self, x):
+		if "#" in x:
+			pos = x.index("#")
+			if pos != 0 and pos != len(x)-1:
+				return x[0:pos]
+		return x
+
+	'''
+		Read the .s file provided and parse it completely.
+	'''
+	def read_file(self, file):
+		code = []
+		file = open(file, "r")
+
+		line = file.readline()
+		while line != "":
+			line = line.strip()
+			if len(line) > 0 and valid_line(line, True):
+				code += [interpret(line)]
+				line = file.readline()
+		return code
+
+	'''
+		In read_file(), parse and return the machine code.
+	'''
+	def interpret(self, line):
+		tokens = handle_inline_comments(line).split()
+		f = determine_type(tokens[0])
+		return f(tokens)
+
+	'''
+		In interpret(), determine which instruction set is being used
+		and return the appropriate parsing function.
+	'''
+	def determine_type(self, tk):
+		instr_sets = [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr]
+		parsers = [Rp, Ip, Sp, SBp, Up ,UJp]
+		for i in range(len(instr_sets)):
+			if tk in instr_sets[i]:
+				return parsers[i]
+		raise BadInstructionError()
