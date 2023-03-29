@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
+		<style>
+		html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+		.w3-sidebar {
+		  z-index: 3;
+		  width: 250px;
+		  top: 43px;
+		  bottom: 0;
+		  height: inherit;
+		}
+		</style>
+        <title>riscv-assembler Documentation</title>
+        <author>Kaya Çelebi</author>
+    </head>
+
+    <body>
+
+    	<!-- NAVBAR -->
+    	<div class="w3-top">
+		  <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+		    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+		    <a href="index.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Home</a>
+		    <a href="#" class="w3-bar-item w3-button w3-theme-l1">About</a>
+		    <a href="https://github.com/kcelebi/riscv-assembler" class="w3-bar-item w3-button w3-hide-small w3-hover-white">GitHub</a>
+		     <a href="https://pypi.org/project/riscv-assembler/" class="w3-bar-item w3-button w3-hide-small w3-hover-white">PyPI</a>
+		    <a href="contrib.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Contribute</a>
+		    <a href="contact.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Contact</a>
+		  </div>
+		</div>
+
+		<!-- Sidebar -->
+		<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
+		  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
+		    <i class="fa fa-remove"></i>
+		  </a>
+		  <h4 class="w3-bar-item"><b>Menu</b></h4>
+		  <!--<a class="w3-bar-item w3-button w3-hover-black" href="index.html#install">Installation</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="index.html#usage">Usage</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="ac.html">AssemblyConverter</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="toolkit.html">Toolkit</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="errors.html">Error Messages</a>-->
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#what">What is this?</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#how">How it Works</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#future">Future Plans</a>
+		</nav>
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+		<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+		<div class="w3-main" style="margin-left:250px">
+			<div class="w3-row w3-padding-64">
+			    <div class="w3-twothird w3-container">
+
+			    	<a id='what'></a>
+			    	<h1 class='w3-text-teal'>What is this?</h1>
+
+			    	<h3>TL;DR</h3>
+
+			    	<p>Your computer relies on streams of 1's and 0's to do all of its operations. This is the lowest level of code, called machine code, that can be used on a computer. Of course, machine code is quite annoying/impossible to interpret on the fly, so we have other higher levels of code, such as Python, Java, and C, that allow us to give instructions that get translated to machine code. The second-lowest level of code is called Assembly code, and it is mostly used to program Operating Systems and basic hardware functions of a computer.</p>
+
+			    	<p>Writing Assembly code to test hardware is quite annoying because you have to deal with machine code and the long 32 or 64-bit binary numbers. This package provides tools to help make tests and debug Assembly code that might be used to test/create hardware. This package also serves an educational purpose for those learning about Computer Architecture and RISC-V.</p>
+
+			    	<p>In our computer, there are different ways that we can format our hardware to interpret the 1's and 0's. Intel has a format called x86 that has been used in computers for many years. It has its own kind of formatting and way of interpreting Assembly code. More recently, there has been an emergence in popularity of a different format called RISC-V, owned by a company called ARM. These chips are mostly used in phones, and have been incredibly successful with the iPhone. ARM chips recently became even more popular with Apple's new M1 Macbook Pro which uses an ARM architecture to structure its hardware. This new computer has been known to absolutely wipe out its competitors in processing power and capability.</p>
+
+			    	<a id='how'></a>
+			    	<h1 class='w3-text-teal'>How it Works</h1>
+
+			    	<p>This package works by parsing through given .s files, filtering through comments and empty space to find instructions, categorizing them by their instruction type, then constructing the machine code. These tools have been tested quite thoroughly and work well for individual files. Files grouped in projects have not been implemented yet, but should be soon.</p>
+
+			    	<p>This package was designed with the intention of helping with CPU architecture engineering. Machine code is difficult to interpret which can make it difficult to create efficient tests by hand. Simple software like this can help generate testing material and help debug CPU systems.</p>
+
+			    	<a id='future'></a>
+			    	<h1 class='w3-text-teal'>Future Plans</h1>
+
+			    	<p> I created this package purely to provide an extra set of tools for a difficult job and also to display my understanding of Computer Architecture systems in RISC-V. This package was first released when I was a 2nd-year student in college, and I intend to keep improving it overtime in a professional manner. I have many ideas for new implementations which I will update this website with. <b>For any questions or inquiries, please feel free to <a href='contact.html'>contact</a> me </b>.</p>
+
+			    	<h3>Project Files</h3>
+
+			    	<p>One of the bigger problems I intend to tackle is dealing with multiple files in a project. Currently, this package can only handle files that exist on their own. This implementation will be coming soon.</p>
+
+			    	<h3>Adding Custom Instructions</h3>
+
+			    	<p>A function that I intend to implement is <code class="w3-codespan">addPseudo()</code> which gives users the opportunity to add their own custom functions or fill in functions that might be missing from the package data.</p>
+
+			    	<h3>Machine Code Decoder</h3>
+
+			    	<p>The next logical project to tackle would be to create the reverse system: decoding machine code to create .s files. This is a little more ambitious and can be achieved down the line.</p>
+
+			    </div>
+
+			    <!--<div class="w3-third w3-container">
+			      <p class="w3-border w3-padding-large w3-padding-32 w3-center">AD</p>
+			      <p class="w3-border w3-padding-large w3-padding-64 w3-center">AD</p>
+			    </div>-->
+			</div>
+			<!-- END MAIN -->
+			<footer id="myFooter">
+			    <div class="w3-container w3-theme-l2 w3-padding-32">
+			      <h4>Created and Maintained by Kaya Çelebi</h4>
+			     <a class="github-button" href="https://github.com/kcelebi" aria-label="Follow @kcelebi on GitHub" data-size='large'>Follow @kcelebi</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler" data-icon="octicon-star" aria-label="Star kcelebi/riscv-assembler on GitHub" data-size='large'>Star</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler/subscription" data-icon="octicon-eye" data-size="large" aria-label="Watch kcelebi/riscv-assembler on GitHub">Watch</a>
+			    </div>
+		  	</footer>
+		</div>
+	</body>
+</html>

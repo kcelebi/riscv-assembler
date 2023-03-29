@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
+		<style>
+		html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+		.w3-sidebar {
+		  z-index: 3;
+		  width: 250px;
+		  top: 43px;
+		  bottom: 0;
+		  height: inherit;
+		}
+		</style>
+        <title>riscv-assembler Documentation</title>
+        <author>Kaya Çelebi</author>
+    </head>
+
+    <body>
+
+    	<!-- NAVBAR -->
+    	<div class="w3-top">
+		  <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+		    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+		    <a href="index.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Home</a>
+		    <a href="about.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">About</a>
+		    <a href="https://github.com/kcelebi/riscv-assembler" class="w3-bar-item w3-button w3-hide-small w3-hover-white">GitHub</a>
+		     <a href="https://pypi.org/project/riscv-assembler/" class="w3-bar-item w3-button w3-hide-small w3-hover-white">PyPI</a>
+		    <a href="contrib.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Contribute</a>
+		    <a href="contact.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Contact</a>
+		  </div>
+		</div>
+
+		<!-- Sidebar -->
+		<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
+		  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
+		    <i class="fa fa-remove"></i>
+		  </a>
+		  <h4 class="w3-bar-item"><b>Menu</b></h4>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="index.html#install">Installation</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="index.html#usage">Usage</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#top">AssemblyConverter</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#convert">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;Convert</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#helper">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;Helper Functions</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="toolkit.html">Toolkit</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="errors.html">Error Messages</a>
+		</nav>
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+		<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+		<div class="w3-main" style="margin-left:250px">
+
+			<div class="w3-row w3-padding-64">
+			    <div class="w3-twothird w3-container">
+			    	<a id='top'></a>
+			    	<h1 class="w3-text-teal">AssemblyConverter</h1>
+
+			    	<a class="github-button" href="https://github.com/kcelebi" aria-label="Follow @kcelebi on GitHub" data-size='large'>Follow @kcelebi</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler" data-icon="octicon-star" aria-label="Star kcelebi/riscv-assembler on GitHub" data-size='large'>Star</a>
+			    	<a id='install'></a>
+			    	<a class="github-button" href="https://github.com/kcelebi/riscv-assembler/subscription" data-icon="octicon-eye" data-size="large" aria-label="Watch kcelebi/riscv-assembler on GitHub">Watch</a>
+
+			    	<p>Let's check out how to use <code class='w3-codespan'>AssemblyConverter</code>. First, let's import it into our Python file:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		from riscv_assembler.convert import AssemblyConverter
+			    	</div>
+
+			    	<p>We can now instantiate an object. The constructor's defaults are initialized as so:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		AssemblyConverter(output_type = "b", nibble = False, hexMode = False)
+			    	</div>
+
+			    	<p> <code class='w3-codespan'>output_type</code> refers to whether a converted file should be outputted to a binary file (<code class='w3-codespan'>"b"</code>), a text file (<code class='w3-codespan'>"t"</code>), or to console (<code class='w3-codespan'>"p"</code>). The three of these options can be used in any sort of combination. Here are acceptable usages: </p>
+
+			    	<div class='w3-code notranslate'>
+			    		cnv = AssemblyConverter(output_type = "btp") #binary and text and printing <br>
+						cnv = AssemblyConverter(output_type = "pbt") #works same as above ^<br>
+						cnv = AssemblyConverter(output_type = "b") #just binary<br>
+						cnv = AssemblyConverter(output_type = "t") #just text<br>
+						cnv = AssemblyConverter(output_type = "p") #just printing<br>
+						cnv = AssemblyConverter() #binary by default<br>
+			    	</div>
+
+			    	<p><code class='w3-codespan'>nibble</code> refers to whether (for text file and console outputs) the 32-bit binary numbers should be split in nibbles or kept as an unbroken string. An example output for <code class='w3-codespan'>nibble = True</code> would be:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		1101    0110    0000   0000 ...
+			    	</div>
+
+			    	<p>An example for the default <code class='w3-codespan'>nibble = False</code> would be:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		11010110000000...
+			    	</div>
+
+			    	<p><code class='w3-codespan'>hexMode</code> gives the option (for text file and console outputs) to output in hexadecimal form instead of binary. By default, the outputs are in binary. Leading zeros are included to properly represent a 32-bit instruction.</p>
+
+			    	<a id='convert'></a>
+			    	<h1 class="w3-text-teal">Convert</h1>
+
+			    	<p>With this object we can apply our most powerful function : <code class='w3-codespan'>convert()</code>. This function takes in a file name (with <code class='w3-codespan'>.s</code> extension) from the local directory and converts it to the output file of your choice, specified by the object construction. Let's convert the file <code class='w3-codespan'>simple.s</code>:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		cnv = AssemblyConverter()<br>
+			    		cnv.convert('simple.s')
+			    	</div>
+
+			    	<p>Any empty files, fully commented files, or files without <code class='w3-codespan'>.s</code> extension will not be accepted. The function creates a directory by truncating the extension of the file along with two subdirectories called <code class='w3-codespan'>bin</code> and <code class='w3-codespan'>txt</code> for the respective output files (for <code class='w3-codespan'>simple.s</code> the directory would be <code class='w3-codespan'>simple</code>). Output files will be stored there for usage and/or printed to console.</p>
+
+			    	<div class='w3-code notranslate'>
+			    		/simple<br>
+			    		&emsp;&emsp;/bin<br>
+			    		&emsp;&emsp;&emsp;&emsp;simple.bin<br>
+			    		&emsp;&emsp;/txt<br>
+			    		&emsp;&emsp;&emsp;&emsp;simple.txt<br>
+
+			    	</div>
+
+			    	<a id='helper'></a>
+			    	<h1 class = "w3-text-teal">Helper Functions</h1>
+
+			    	<p>Here are a few functions that might be useful.</p>
+
+			    	<h3>Output Type</h3>
+
+			    	<p>It is possible to get and set the output type of your <code class="w3-codespan">AssemblyConverter</code> object. Observe:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		cnv = AssemblyConverter("bt")<br>
+			    		output_type = cnv.getOutputType() <br>
+			    		<br>
+
+			    		print(output_type) #prints bt <br>
+			    		<br>
+			    		cnv.setOutputType("p") #now only prints to console
+			    	</div>
+
+			    	<h3>Instructions</h3>
+
+			    	It is possible to check whether a certain instruction is supported by this package. The function <code class="w3-codespan">instructionExists(instr)</code> returns a boolean for whether <code class="w3-codespan">instr</code> exists. Observe:
+
+			    	<div class='w3-code notranslate'>
+			    		cnv = AssemblyConverter()<br>
+			    		cnv.instructionExists("add") #returns true <br>
+			    		cnv.instructionExists("hello world") #returns false 
+			    	</div>
+			    </div>
+
+			    <!-- ADS 
+			    <div class="w3-third w3-container">
+			      <p class="w3-border w3-padding-large w3-padding-32 w3-center">AD</p>
+			      <p class="w3-border w3-padding-large w3-padding-64 w3-center">AD</p>
+			    </div>-->
+
+		    </div>
+
+		    <footer id="myFooter">
+			    <div class="w3-container w3-theme-l2 w3-padding-32">
+			      <h4>Created and Maintained by Kaya Çelebi</h4>
+			     <a class="github-button" href="https://github.com/kcelebi" aria-label="Follow @kcelebi on GitHub" data-size='large'>Follow @kcelebi</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler" data-icon="octicon-star" aria-label="Star kcelebi/riscv-assembler on GitHub" data-size='large'>Star</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler/subscription" data-icon="octicon-eye" data-size="large" aria-label="Watch kcelebi/riscv-assembler on GitHub">Watch</a>
+			    </div>
+	  		</footer>
+		</div>
+	</body>
+</html>

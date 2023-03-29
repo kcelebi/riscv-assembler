@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
+		<style>
+		html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+		.w3-sidebar {
+		  z-index: 3;
+		  width: 250px;
+		  top: 43px;
+		  bottom: 0;
+		  height: inherit;
+		}
+		</style>
+        <title>riscv-assembler Documentation</title>
+        <author>Kaya Çelebi</author>
+    </head>
+
+    <body>
+
+    	<!-- NAVBAR -->
+    	<div class="w3-top">
+		  <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+		    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+		    <a href="index.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Home</a>
+		    <a href="about.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">About</a>
+		    <a href="https://github.com/kcelebi/riscv-assembler" class="w3-bar-item w3-button w3-hide-small w3-hover-white">GitHub</a>
+		     <a href="https://pypi.org/project/riscv-assembler/" class="w3-bar-item w3-button w3-hide-small w3-hover-white">PyPI</a>
+		    <a href="contrib.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Contribute</a>
+		    <a href="contact.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Contact</a>
+		  </div>
+		</div>
+
+		<!-- Sidebar -->
+		<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
+		  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
+		    <i class="fa fa-remove"></i>
+		  </a>
+		  <h4 class="w3-bar-item"><b>Menu</b></h4>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="index.html#install">Installation</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="index.hmtl#usage">Usage</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="ac.html">AssemblyConverter</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#top">Toolkit</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#isa">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;ISA Functions</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#r">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;R Type</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#i">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;I Type</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="#s">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;S Type</a>
+		   <a class="w3-bar-item w3-button w3-hover-black" href="#debug">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;Debugger Functions</a>
+		   <a class="w3-bar-item w3-button w3-hover-black" href="errors.html">Error Messages</a>
+		</nav>
+
+		<!-- Overlay effect when opening sidebar on small screens -->
+		<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+		<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+		<div class="w3-main" style="margin-left:250px">
+
+			<div class="w3-row w3-padding-64">
+			    <div class="w3-twothird w3-container">
+			    	<a id='top'></a>
+			    	<h1 class='w3-text-teal'>Toolkit</h1>
+
+			    	<a class="github-button" href="https://github.com/kcelebi" aria-label="Follow @kcelebi on GitHub" data-size='large'>Follow @kcelebi</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler" data-icon="octicon-star" aria-label="Star kcelebi/riscv-assembler on GitHub" data-size='large'>Star</a>
+			    	<a id='install'></a>
+			    	<a class="github-button" href="https://github.com/kcelebi/riscv-assembler/subscription" data-icon="octicon-eye" data-size="large" aria-label="Watch kcelebi/riscv-assembler on GitHub">Watch</a>
+
+			    	<p>Let's check out how to use <code class='w3-codespan'>Toolkit</code>. <code class='w3-codespan'>Toolkit</code> contains functions that can be used to interpret specific lines, calculate jumps, and other debugging tools. First, let's import the class and functions:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		from riscv_assembler.utils import *
+			    	</div>
+
+			    	<p> <b>Some of these functions rely on the class, some do not.</b> First, let's look at those that rely on the <code class='w3-codespan'>Toolkit</code> class. Let's instantiate an object:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		tk = Toolkit()
+			    	</div>
+
+			    	<p>No parameters required. Let's now look at some functions.</p>
+
+			    	<a id='isa'></a>
+			    	<h1 class='w3-text-teal'>Instruction Format Function</h1>
+
+			    	<p>This package also offers instruction format-specific functions for individual lines of assembly. The instruction types supported are R, I, S, SB, U, and UJ. The machine code is returned as a bitstring that can be printed to console. Check out the examples below for each instruction type:</p>
+
+			    	<a id='r'></a>
+			    	<h3>R Type</h3>
+
+			    	<p>This functions converts individual lines of assembly with R type instructions to machine code. The function usage is:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		R_type(operation, rs1, rs2, rd)
+			    	</div>
+
+			    	Here is an example of translating <code class='w3-codespan'>add x0 s0 s1</code>.
+
+			    	<div class='w3-code notranslate'>
+			    		tk = Toolkit()<br>
+			    		instr = tk.R_type("add","x0","s0","s1") #convert the instruction <br>
+			    		<br>
+			    		print(instr) #print the bitstring<br>
+			    	</div>
+
+			    	<p>Note that the registers are being written as strings. The package maps them correctly to their respective binary values (ex. <code class='w3-codespan'>s0</code> maps to <code class='w3-codespan'>x8</code>).</p>
+
+			    	<a id='i'></a>
+			    	<h3>I Type</h3>
+
+			    	<p>This functions converts individual lines of assembly with I type instructions to machine code. The function usage is:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		I_type(operation, rs1, imm, rd)
+			    	</div>
+
+			    	<p>Here is an example of translating <code class='w3-codespan'>addi x0 x0 32</code>.</p>
+
+			    	<div class='w3-code notranslate'>
+			    		tk = Toolkit() <br>
+			    		instr = tk.I_type("addi", "x0", "32", "x0") #convert the instruction <br>
+			    		<br>
+			    		print(instr) #print bitstring
+
+			    	</div>
+
+			    	<p>Note that the immediate is a string, not just a number. This was implemented this way for seamless integration with the convert() function, there is an easy workaround for using it on its own.</p>
+
+			    	<a id='s'></a>
+			    	<h3>S Type</h3>
+
+			    	<p>This functions converts individual lines of assembly with S type instructions to machine code. The function usage is:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		S_type(operation, rs1, rs2, imm)
+			    	</div>
+
+			    	<p>Here is an example of translating <code class='w3-codespan'>sw x0 0(sp)</code>.</p>
+
+			    	<div class='w3-code notranslate'>
+			    		tk = Toolkit() <br>
+			    		instr = tk.S_type("sw", "x0", "sp", "0") #convert the instruction<br>
+			    		<br>
+			    		print(instr) #print bitstring<br>
+			    	</div>
+
+			    	<a id='debug'></a>
+			    	<h1 class='w3-text-teal'>Debugger Function</h1>
+
+			    	<p><code class='w3-codespan'>hex()</code> converts an inputted string of binary to 32-bits in hexadecimal. There is an option to maintain leading zeros or not. The function usage is:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		tk = Toolkit()<br>
+						string  = '00000000000000000000111100110011'<br>
+						<br>
+						print(tk.hex(string,leading_zero=True)) #outputs '0x00000F33'<br>
+						print(tk.hex(string,leading_zero=False)) #outputs '0xF33'
+			    	</div>
+
+			    	<p><code class='w3-codespan'>nibbleForm()</code> takes an inputted string of unbroken binary and outputs it in nibbles separated by an inputted delimeter. The function usage is:</p>
+
+			    	<div class='w3-code notranslate'>
+				    	string  = '00000000000000000000111100110011'<br>
+				    	<br>
+						print(nibbleForm(string, delim = '\t')) <br>
+						#outputs separed by tabs '0000    0000    0000    0000    0000    1111    0011    0011'<br>
+						<br>
+						print(nibbleForm(string, delim = 'qqq') <br>#outputs '0000qqq0000qqq0000qqq0000qqq0000qqq1111qqq0011qqq0011'<br>
+					</div>
+
+					<p><code class='w3-codespan'>calcJump()</code> takes in a filename, a name of a function to jump to, and the line number of a branch statement to calculate the branch jump immediate. The line number should <b>not</b> just be the line number in your text editor; ignore empty lines, comments, and lines that indicate the start of a function (such as <code class='w3-codespan'>loop:</code>). <b>Consider the first valid line as line 0</b>. The function usage is:</p>
+
+					<div class='w3-code notranslate'>
+						tk = Tookit()<br>
+						<br>
+						print( tk.calcJump(filename = "myfile.s", x = 'loop', line_num = 42) <br>
+						#outputs an immediate according to how many instructions <br>
+						#need to be jumped to get to the function
+                    </div>
+
+                    <p>For functions that do not exist in the system that are used often, feel free to contact me to have it implemented. Most functions are readily available, however, with a growing library it is possible that a pseudo instruction or two slipped past. I intend on implementing functions that allow for the user to bypass any shortfalls like this.</p>
+
+			    </div>
+
+			    <!-- ADS 
+			    <div class="w3-third w3-container">
+			      <p class="w3-border w3-padding-large w3-padding-32 w3-center">AD</p>
+			      <p class="w3-border w3-padding-large w3-padding-64 w3-center">AD</p>
+			    </div>-->
+			</div>
+
+			<footer id="myFooter">
+			    <div class="w3-container w3-theme-l2 w3-padding-32">
+			      <h4>Created and Maintained by Kaya Çelebi</h4>
+			     <a class="github-button" href="https://github.com/kcelebi" aria-label="Follow @kcelebi on GitHub" data-size='large'>Follow @kcelebi</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler" data-icon="octicon-star" aria-label="Star kcelebi/riscv-assembler on GitHub" data-size='large'>Star</a>
+					<a class="github-button" href="https://github.com/kcelebi/riscv-assembler/subscription" data-icon="octicon-eye" data-size="large" aria-label="Watch kcelebi/riscv-assembler on GitHub">Watch</a>
+			    </div>
+	  		</footer>
+
+		<!-- END MAIN -->  	
+		</div>
+
+	</body>
+</html>
