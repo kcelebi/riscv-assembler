@@ -104,22 +104,23 @@ class _SB(Instruction):
 
 	def compute_instr(self, instr, rs1, rs2, imm):
 		instr = super().check_instr_valid(instr, SB_instr)
-		opcode, f3, f7 = 0, 1, 2
-		mod_imm, mod_imm_2 = immediate(imm)
+		opcode, f3 = 0, 1
 
 		return "".join([
-			...
+			immediate(imm, 1),
+			reg(rs2),
+			reg(rs1),
+			instr_map[instr][f3],
+			immediate(imm, 2),
+			instr_map[instr][opcode]
 		])
 
 	@staticmethod
-	def immediate(imm):
-		mod_imm = (int(imm) - ((int(imm) >> 12) << 12)) >> 6 # imm[12]
-		mod_imm += (int(imm) - ((int(imm) >> 11) >> 11)) >> 5 # imm[12|10:5]
-		
-		mod_imm_2 = (int(imm) - ((int(imm) >> 5) << 5)) # imm[4:1]
-		mod_imm_2 += (int(imm) - ((int(imm) >> 11) << 11)) >> 10 # imm[4:1|11]
-
-		return mod_imm, mod_imm_2
+	def immediate(imm, n):
+		mod_imm = format(((1 << 13) - 1) & int(imm), '013b')
+		if n == 1:
+			return mod_imm[12-12] + mod_imm[12-10:12-5]
+		return mod_imm[12-4:12-1] + mod_imm[12-11]
 
 class _U(Instruction):
 	def __repr__(self):
@@ -130,16 +131,17 @@ class _U(Instruction):
 
 	def compute_instr(self, instr, imm, rd):
 		instr = super().check_instr_valid(instr, U_instr)
-		opcode, f3, f7 = 0, 1, 2
-		mod_imm = immediate(imm)
+		opcode = 0
 
 		return "".join([
-			...
+			immediate(imm),
+			reg(rd),
+			instr_map[instr][opcode]
 		])
 
 	@staticmethod
 	def immediate(imm):
-		return (int(imm) >> 12)
+		return format(int(imm) >> 12, '013b')
 
 class _UJ(Instruction):
 	def __repr__(self):
@@ -150,21 +152,18 @@ class _UJ(Instruction):
 
 	def compute_instr(self, instr, imm, rd):
 		instr = super().check_instr_valid(instr, UJ_instr)
-		opcode, f3, f7 = 0, 1, 2
-		mod_imm = immediate(imm)
+		opcode = 0
 		
 		return "".join([
-			...
+			immediate(imm),
+			reg(rd),
+			instr_map[instr][opcode]
 		])
 
 	@staticmethod
 	def immediate(imm):
-		mod_imm = ((int(imm) - ((int(imm) >> 20) << 20)) >> 19) << 19 # imm[20]
-		mod_imm += (int(imm) - ((int(imm) >> 10) << 10)) >> 1 # imm[20|10:1]
-		mod_imm += (int(imm) - ((int(imm) >> 11) << 11)) >> 10 # imm[20|10:1|11]
-		mod_imm += (int(imm) - ((int(imm) >> 19) << 19)) >> 12 # imm[20|10:1|11|19:12]
-
-		return mod_imm
+		mod_imm = format(((1 << 20) - 1) & int(imm), '013b')
+		return mod_imm[20-20] + mod_imm[20-10:20-1] + mod_imm[20-11] + mod_imm[20-19:20-12]
 
 class InstructionParser:
 	def organize(self, *args):
@@ -237,18 +236,7 @@ class _Pseudo_parse(InstructionParser):
 		return BadInstructionError()
 
 def reg(x):
-	#return __binary(int(x[1:]), 5)
 	return format(int(imm[1:]), '05b')
-
-def __binary(x, size):
-	byte_num = m.ceil(size/8)
-	b_num = x.to_bytes(byte_num, byteorder = 'big', signed = True)
-
-	fin_bin = ''.join(format(byte, '08b') for byte in b_num)
-	
-	if byte_num*8 == size:
-		return fin_bin
-	return fin_bin[len(fin_bin)-size:len(fin_bin)]
 
 def register_map():
 	path = Path(__file__).parent / "data/reg_map.dat"
