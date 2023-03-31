@@ -6,7 +6,7 @@ __all__ = [
 	'R_instr', 'I_instr', 'S_instr',
 	'SB_instr', 'U_instr', 'UJ_instr','pseudo_instr',
 	 'R', 'I', 'S', 'SB', 'U', 'UJ',
-	 'Rp', 'Ip', 'Sp', 'SBp', 'Up', 'UJp']
+	 'Rp', 'Ip', 'Sp', 'SBp', 'Up', 'UJp', 'Psp']
 
 class Instruction:
 	def compute_instr(self, *args):
@@ -18,6 +18,14 @@ class Instruction:
 	def check_instr_valid(self, x, instr_set):
 		assert x in instr_set, "{instr} is not the right instruction for this function.".format(instr = x)
 		return x
+
+	@staticmethod
+	def immediate(*args):
+		raise NotImplementedError()
+
+	@staticmethod
+	def reg(x):
+		return format(int(x[1:]), '05b')
 
 class _R(Instruction):
 	def __repr__(self):
@@ -32,10 +40,10 @@ class _R(Instruction):
 
 		return "".join([
 			instr_map[instr][f7],
-			reg(rs2),
-			reg(rs1),
+			super().reg(rs2),
+			super().reg(rs1),
 			instr_map[instr][f3],
-			reg(rd),
+			super().reg(rd),
 			instr_map[instr][opcode]
 		])
 
@@ -51,10 +59,10 @@ class _I(Instruction):
 		opcode, f3 = 0, 1
 
 		return "".join([
-			immediate(imm),
-			reg(rs1),
+			_I.immediate(imm),
+			super().reg(rs1),
 			instr_map[instr][f3],
-			reg(rd),
+			super().reg(rd),
 			instr_map[instr][opcode]
 		])
 
@@ -75,11 +83,11 @@ class _S(Instruction):
 		opcode, f3 = 0, 1
 
 		return "".join([
-			immediate(imm, 1),
-			reg(rs2),
-			reg(rs1),
+			_S.immediate(imm, 1),
+			super().reg(rs2),
+			super().reg(rs1),
 			instr_map[instr][f3],
-			immediate(imm, 2),
+			_S.immediate(imm, 2),
 			instr_map[instr][opcode]
 		])
 
@@ -107,11 +115,11 @@ class _SB(Instruction):
 		opcode, f3 = 0, 1
 
 		return "".join([
-			immediate(imm, 1),
-			reg(rs2),
-			reg(rs1),
+			_SB.immediate(imm, 1),
+			super().reg(rs2),
+			super().reg(rs1),
 			instr_map[instr][f3],
-			immediate(imm, 2),
+			_SB.immediate(imm, 2),
 			instr_map[instr][opcode]
 		])
 
@@ -134,8 +142,8 @@ class _U(Instruction):
 		opcode = 0
 
 		return "".join([
-			immediate(imm),
-			reg(rd),
+			_U.immediate(imm),
+			super().reg(rd),
 			instr_map[instr][opcode]
 		])
 
@@ -155,8 +163,8 @@ class _UJ(Instruction):
 		opcode = 0
 		
 		return "".join([
-			immediate(imm),
-			reg(rd),
+			_UJ.immediate(imm),
+			super().reg(rd),
 			instr_map[instr][opcode]
 		])
 
@@ -173,11 +181,25 @@ class InstructionParser:
 		return self.organize(*args)
 
 class _R_parse(InstructionParser):
+
+	def __repr__(self):
+		return "R Parser"
+
+	def __str__(self):
+		return "R Parser"
+
 	def organize(self, tokens):
 		instr, rs1, rs2, rd = tokens[0], reg_map[tokens[2]], reg_map[tokens[3]], reg_map[tokens[1]]
 		return R(instr, rs1, rs2, rd)
 
 class _I_parse(InstructionParser):
+
+	def __repr__(self):
+		return "I Parser"
+
+	def __str__(self):
+		return "I Parser"
+
 	def organize(self, tokens):
 		instr, rs1, imm, rd = tokens[0], None, None, None
 		if instr == "jalr":
@@ -193,21 +215,49 @@ class _I_parse(InstructionParser):
 		return I(instr, rs1, imm, rd)
 
 class _S_parse(InstructionParser):
+
+	def __repr__(self):
+		return "S Parser"
+
+	def __str__(self):
+		return "S Parser"
+
 	def organize(self, tokens):
 		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[3]], reg_map[tokens[1]], tokens[2]
 		return S(instr, rs1, rs2, imm)
 
 class _SB_parse(InstructionParser):
+
+	def __repr__(self):
+		return "SB Parser"
+
+	def __str__(self):
+		return "SB Parser"
+
 	def organize(self, tokens):
 		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[1]], reg_map[tokens[2]], JUMP(tokens[3])
 		return SB(instr, rs1, rs2, imm)
 
 class _U_parse(InstructionParser):
+
+	def __repr__(self):
+		return "U Parser"
+
+	def __str__(self):
+		return "U Parser"
+
 	def organize(self, tokens):
 		instr, imm, rd = tokens[0], tokens[1], reg_map[tokens[2]]
 		return U(instr, imm, rd)
 
 class _UJ_parse(InstructionParser):
+
+	def __repr__(self):
+		return "UJ Parser"
+
+	def __str__(self):
+		return "UJ Parser"
+
 	def organize(self, tokens):
 		instr, imm, rd = tokens[0], None, None
 		if len(tokens) == 3:
@@ -218,6 +268,13 @@ class _UJ_parse(InstructionParser):
 		return UJ(instr, imm, rd)
 
 class _Pseudo_parse(InstructionParser):
+
+	def __repr__(self):
+		return "Pseudo Parser"
+
+	def __str__(self):
+		return "Pseudo Parser"
+
 	def organize(self, tokens):
 		instr = tokens[0]
 		if instr == 'nop':
@@ -234,9 +291,6 @@ class _Pseudo_parse(InstructionParser):
 			return R("sub", rs1, rs2, rd)
 
 		return BadInstructionError()
-
-def reg(x):
-	return format(int(x[1:]), '05b')
 
 def register_map():
 	path = Path(__file__).parent / "data/reg_map.dat"
@@ -268,7 +322,7 @@ def instruction_map():
 
 
 R, I, S, SB, U, UJ = _R(), _I(), _S(), _SB(), _U(), _UJ()
-Rp, Ip, Sp, SBp, Up, UJp = _R_parse(), _I_parse(), _S_parse(), _SB_parse(), _U_parse(), _UJ_parse()
+Rp, Ip, Sp, SBp, Up, UJp, Psp = _R_parse(), _I_parse(), _S_parse(), _SB_parse(), _U_parse(), _UJ_parse(), _Pseudo_parse()
 reg_map, instr_map = register_map(), instruction_map()
 
 

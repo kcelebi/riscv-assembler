@@ -75,8 +75,8 @@ class _Parser:
 		and return the appropriate parsing function.
 	'''
 	def determine_type(self, tk):
-		instr_sets = [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr]
-		parsers = [Rp, Ip, Sp, SBp, Up ,UJp]
+		instr_sets = [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr, pseudo_instr]
+		parsers = [Rp, Ip, Sp, SBp, Up ,UJp, Psp]
 		for i in range(len(instr_sets)):
 			if tk in instr_sets[i]:
 				return parsers[i]
