@@ -1,7 +1,6 @@
 import pytest
 from pathlib import Path
 from riscv_assembler.convert import *
-from riscv_assembler.utils import *
 #TESTS
 
 #test simple.s file, writes to txt and bin
@@ -58,11 +57,11 @@ def func8():
 	out_arr = []
 	cnv = AssemblyConverter(hexMode = True)
 
-	path = Path(__file__).parent / "assembly/test0.s"
-	out_arr.extend(cnv.convert(str(path)))
+	path = str(Path(__file__).parent / "assembly/test0.s")
+	out_arr.extend(cnv.convert(path))
 
-	path = Path(__file__).parent / "assembly/test1.s"
-	out_arr.extend(cnv.convert(str(path)))
+	path = str(Path(__file__).parent / "assembly/test1.s")
+	out_arr.extend(cnv.convert(path))
 
 	return out_arr
 
