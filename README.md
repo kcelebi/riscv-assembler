@@ -1,4 +1,4 @@
-[![kcelebi](https://circleci.com/gh/kcelebi/riscv-assembler?branch=SystemUpdate.svg?style=svg)](https://circleci.com/gh/kcelebi/riscv-assembler)
+[![kcelebi](https://circleci.com/gh/kcelebi/riscv-assembler.svg?style=svg)](https://circleci.com/gh/kcelebi/riscv-assembler)
 [![Gitter](https://badges.gitter.im/riscv-assembler/community.svg)](https://gitter.im/riscv-assembler/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
