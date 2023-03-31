@@ -2,7 +2,7 @@ from instr_arr import *
 
 __all__ = ['Parser']
 
-class Parser:
+class _Parser:
 
 	'''
 		Procedure:
@@ -17,13 +17,10 @@ class Parser:
 				- Return
 	'''
 
-	def __init__(self):
-		...
-
 	def __call__(self, *args):
 		if self.is_file(*args):
 			return self.read_file(*args)
-		return self.interpret(*args)
+		return [self.interpret(x) for x in args[0].split("\n")]
 
 	def is_file(self, x):
 		return True if '.s' in x or '/' in x else False
@@ -60,8 +57,8 @@ class Parser:
 		line = file.readline()
 		while line != "":
 			line = line.strip()
-			if len(line) > 0 and valid_line(line, True):
-				code += [interpret(line)]
+			if len(line) > 0 and self.valid_line(line, True):
+				code += [self.interpret(line)]
 				line = file.readline()
 		return code
 
@@ -69,8 +66,8 @@ class Parser:
 		In read_file(), parse and return the machine code.
 	'''
 	def interpret(self, line):
-		tokens = handle_inline_comments(line).split()
-		f = determine_type(tokens[0])
+		tokens = self.handle_inline_comments(line).split()
+		f = self.determine_type(tokens[0])
 		return f(tokens)
 
 	'''
@@ -84,3 +81,5 @@ class Parser:
 			if tk in instr_sets[i]:
 				return parsers[i]
 		raise BadInstructionError()
+
+Parser = _Parser()

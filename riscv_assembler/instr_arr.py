@@ -236,7 +236,7 @@ class _Pseudo_parse(InstructionParser):
 		return BadInstructionError()
 
 def reg(x):
-	return format(int(imm[1:]), '05b')
+	return format(int(x[1:]), '05b')
 
 def register_map():
 	path = Path(__file__).parent / "data/reg_map.dat"

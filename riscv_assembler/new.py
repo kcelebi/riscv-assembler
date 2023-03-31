@@ -6,18 +6,15 @@
 		- Convert tokens of that line to machine code
 		- Output to text, bin, or console
 
-
-	Questions:
-		- Do we want the object to save the code? No
-
 	Immediate ToDos:
-		- Add checks & helper methods
 		- Implement hexmode
 		- Go through and fix the instruction conversions themselves	
 '''
 
 from instr_arr import *
 from parse import *
+
+__all__ = ['AssemblyConverter']
 
 class AssemblyConverter:
 
@@ -48,7 +45,7 @@ class AssemblyConverter:
 		)
 
 	def __check_output_mode(self, x):
-		mod = ''.join(sort(x.split()))
+		mod = ''.join(sorted(x.split()))
 		assert mod in ['a', 'f', 'p', None], "Output Mode needs to be one of a(rray), f(ile), p(rint), or None."
 		return x
 
@@ -100,6 +97,8 @@ class AssemblyConverter:
 
 	'''
 		Put it all together. Need to modify for output type.
+
+		Input is either a file name or string of assembly.
 	'''
 	def convert(self, input, file = None):
 		output = Parser(input)
@@ -110,7 +109,7 @@ class AssemblyConverter:
 			return output
 		elif self.__output_mode == 'f':
 			assert file != None, "For output mode to file, need to provided file name."
-			write_to_file(output, file)
+			self.write_to_file(output, file)
 			return
 		elif self.__output_mode == 'p':
 			print(output)
@@ -118,9 +117,8 @@ class AssemblyConverter:
 
 		raise NotImplementedError()
 
-	@staticmethod
-	def write_to_file(output, file):
-		if file[:-4] == '.bin':
+	def write_to_file(self, output, file):
+		if file[-4:] == '.bin':
 			with open(file, 'wb') as f:
 				for instr in output:
 					byte_array = [instr[i:i+8] for i in range(0,len(instr),8)]
@@ -129,7 +127,7 @@ class AssemblyConverter:
 
 			return
 
-		elif file[:-4] == '.txt':
+		elif file[-4:] == '.txt':
 			with open(file, 'w') as f:
 				for instr in output:
 					f.write(instr + "\n")
