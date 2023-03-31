@@ -1,4 +1,4 @@
-from instr_arr import *
+from riscv_assembler.instr_arr import *
 
 __all__ = ['Parser']
 
