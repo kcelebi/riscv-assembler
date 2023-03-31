@@ -1,3 +1,5 @@
 old.md
 riscv_assembler/prjtest.pybuild
 dist
+riscv_assembler.egg-info
+build
