@@ -36,7 +36,8 @@ jobs:
       - run:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
-          command: python -m tests.test_class
+          #command: python -m tests.test_class
+          command: pytest
 
 
 # Invoke jobs via workflows
