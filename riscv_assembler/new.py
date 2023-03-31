@@ -21,7 +21,7 @@ from parse import *
 
 class AssemblyConverter:
 
-	def __init__(self, output_mode = 'b', nibble_mode = False, hex_mode = False):
+	def __init__(self, output_mode = 'a', nibble_mode = False, hex_mode = False):
 		self.__output_mode = self.__check_output_mode(output_mode)
 		self.__nibble_mode = self.__check_nibble_mode(nibble_mode)
 		self.__hex_mode = self.__check_hex_mode(hex_mode)
@@ -48,7 +48,8 @@ class AssemblyConverter:
 		)
 
 	def __check_output_mode(self, x):
-		assert x in ['b', 't', 'p', None], "Output Mode needs to be one of b(inary), t(ext), p(rint), or None."
+		mod = ''.join(sort(x.split()))
+		assert mod in ['a', 'f', 'p', None], "Output Mode needs to be one of a(rray), f(ile), p(rint), or None."
 		return x
 
 	def __check_nibble_mode(self, x):
@@ -61,7 +62,7 @@ class AssemblyConverter:
 
 	'''
 		Property: the way to output machine code
-			Options: 'b', 't', 'p'
+			Options: 'a', 'f', 'p'
 	'''
 	@property
 	def output_mode(self):
@@ -100,7 +101,41 @@ class AssemblyConverter:
 	'''
 		Put it all together. Need to modify for output type.
 	'''
-	def convert(self, input):
-		return Parser(input)
+	def convert(self, input, file = None):
+		output = Parser(input)
+
+		assert len(output) > 0, "Provided input yielded nothing from parser. Check input."
+
+		if self.__output_mode == 'a':
+			return output
+		elif self.__output_mode == 'f':
+			assert file != None, "For output mode to file, need to provided file name."
+			write_to_file(output, file)
+			return
+		elif self.__output_mode == 'p':
+			print(output)
+			return
+
+		raise NotImplementedError()
+
+	@staticmethod
+	def write_to_file(output, file):
+		if file[:-4] == '.bin':
+			with open(file, 'wb') as f:
+				for instr in output:
+					byte_array = [instr[i:i+8] for i in range(0,len(instr),8)]
+					byte_list = [int(b,2) for b in byte_array]
+					f.write(bytearray(byte_list))
+
+			return
+
+		elif file[:-4] == '.txt':
+			with open(file, 'w') as f:
+				for instr in output:
+					f.write(instr + "\n")
+
+			return
+
+		raise NotImplementedError()
 
 
