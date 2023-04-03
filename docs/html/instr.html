@@ -62,10 +62,55 @@
 			    	<a class="github-button" href="https://github.com/kcelebi/riscv-assembler/subscription" data-icon="octicon-eye" data-size="large" aria-label="Watch kcelebi/riscv-assembler on GitHub">Watch</a>
 
 					
-			    	<p>Let's check out how to use <code class='w3-codespan'>Instructions</code>. First, let's import it into our Python file:</p>
+			    	<p>Let's check out how to use <code class='w3-codespan'>Instructions</code>. The <code class = 'w3-codespan'>AssemblyConverter</code> utilizes these functionalities automatically, so familiarizing yourself with them only serves for utility/debugging purposes. First, let's import it into our Python file:</p>
 
 			    	<div class='w3-code notranslate'>
 			    		from riscv_assembler.instr_arr import *
+			    	</div>
+
+			    	<p>From this, we now have access to the functions to parse instructions and organize them to their binary outputs. Let us examine both.</p>
+
+			    	<h1 class = 'w3-text-teal'>Organizers</h1>
+
+			    	<p>These functions are most useful if you know the instruction, rs1, rs2, rd, etc. already. Example usage:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		# outputs instruction as string in binary <br>
+			    		res = R(instr = "add", rs1 = "x0", rs2 = "x1", rd = "x1") <br>
+			    		res = I(instr = "addi", rs1 = "x0", imm = 10, rd = "x0") <br>
+			    	</div>
+
+			    	These organizers work for all types, <code class = 'w3-codespan'>R, I, S, SB, U, UJ</code>.
+
+			    	<h1 class = 'w3-text-teal'>Parsers</h1>
+
+			    	<p>These functions are most useful if you have only tokenized an instruction and have not determined which token corresponds to what parameters. There is a parser built into the package that can tokenize/clean the instruction for you, if you wish to use it. Observe:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		# get built-in Parser <br>
+			    		from riscv_assembler.parse import Parser <br>
+
+			    		<br>
+
+			    		line = "add x0 x0 x1" <br>
+			    		tokens = Parser.tokenize(line) # Get clean line<br>
+
+			    		<br>
+
+			    		f = Parser.determine_type(tokens[0]) # determine which parser to use<br>
+			    		result = f(tokens)<br>
+			    	</div>
+
+			    	<p>If you know the parsing function to use in advance, you can also apply it directly. The functions for each instruction type, respectively, are <code class='w3-codespan'>Rp, Ip, Sp, SBp, Up, UJp</code>. All of this can also be accomplished with a built-in function:</p>
+
+			    	<div class='w3-code notranslate'>
+			    		# get built-in Parser <br>
+			    		from riscv_assembler.parse import Parser <br>
+
+			    		<br>
+
+			    		line = "add x0 x0 x1" <br>
+			    		result = Parser.interpret(line) <br>
 			    	</div>
 
 

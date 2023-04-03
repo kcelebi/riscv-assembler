@@ -97,34 +97,34 @@
 			    <p>Here's a <b>Quick Start</b> on how to convert a whole assembly (<code class='w3-codespan'>.s</code>) file to machine code using <code class ='w3-codespan'>convert()</code> :</p>
 
 			    <div class='w3-code notranslate'>
-			    	from riscv_assembler.convert import *<br>
+			    	from riscv_assembler.convert import AssemblyConverter as AC<br>
 
 			    	# instantiate object, by default outputs to a file in nibbles, not in hexademicals <br>
-			    	cnv = AssemblyConverter(output_mode = 'f', nibble_mode = True, hex_mode = False)<br>
+			    	convert = AC(output_mode = 'f', nibble_mode = True, hex_mode = False)<br>
 
 			    	<br>
 
 			    	# Convert a whole .s file to text file<br>
-			    	cnv.convert("simple.s", "result.txt") <br>
+			    	convert("simple.s", "result.txt") <br>
 
 			    	<br>
 			    	
 			    	# Convert a string of assembly to binary file <br>
 			    	cnv_str = "add x1 x0 x0\nadd x2 x0 x1" <br>
-			    	cnv.convert(cnv_str, "result.bin") <br>
+			    	convert(cnv_str, "result.bin") <br>
 
 			    	<br>
 
 			    	# Convert a string and print output with no nibbles<br>
-			    	cnv.output_mode = 'p' <br>
-			    	cnv.nibble_mode = False <br>
-			    	cnv.convert(cnv_str) <br>
+			    	convert.output_mode = 'p' <br>
+			    	convert.nibble_mode = False <br>
+			    	convert.convert(cnv_str) <br>
 
 			    	<br>
 
 			    	# Convert a string and save to array <br>
-			    	cnv.output_mode = 'a' <br>
-			    	result = cnv.convert(cnv_str) <br>
+			    	convert.output_mode = 'a' <br>
+			    	result = convert(cnv_str) <br>
 
 			    </div>
 
