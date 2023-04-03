@@ -3,6 +3,10 @@ import math as m
 from pathlib import Path
 import os
 
+'''
+	DEPRECATED VERSION AS OF MARCH 30th
+'''
+
 __all__ = ['AssemblyConverter']
 class WrongInstructionSize( Exception ):
 	#raised when instruction size is not 32 bits

@@ -79,13 +79,13 @@ def test_1():
 def test_2():
 	assert func2() == ["a", "f"], "Test 2 Failed"
 
-'''def test_4():
+def test_4():
 	assert func4() == ['0000\t0000\t0000\t0000\t0000\t0000\t1011\t0011'], "Test 4 Failed"
 
 def test_5():
 	assert func5() == ['0000\t0010\t0000\t0100\t0000\t0010\t1001\t0011'], "Test 5 Failed"
 
-def test_7():
+'''def test_7():
 	assert func7() == 4
 
 def test_8():
