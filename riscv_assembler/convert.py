@@ -103,8 +103,8 @@ class AssemblyConverter:
 	'''
 	def convert(self, input, file = None):
 		output = Parser(input)
-
 		assert len(output) > 0, "Provided input yielded nothing from parser. Check input."
+		output = self.mod(output) # apply nibble mode, hex mode
 
 		if self.__output_mode == 'a':
 			return output
@@ -119,22 +119,44 @@ class AssemblyConverter:
 		raise NotImplementedError()
 
 	def write_to_file(self, output, file):
-		if file[-4:] == '.bin':
+		extension = file[-4:]
+
+		if extension == '.bin':
 			with open(file, 'wb') as f:
 				for instr in output:
 					byte_array = [instr[i:i+8] for i in range(0,len(instr),8)]
 					byte_list = [int(b,2) for b in byte_array]
 					f.write(bytearray(byte_list))
-
 			return
 
-		elif file[-4:] == '.txt':
+		elif extension == '.txt':
 			with open(file, 'w') as f:
 				for instr in output:
 					f.write(instr + "\n")
 
 			return
 
+		elif extension == '.csv':
+			raise NotImplementedError()
+
+		elif extension == '.dat':
+			raise NotImplementedError()
+
 		raise NotImplementedError()
 
+	def mod(self, output):
+		if self.__nibble_mode:
+			output = AssemblyConverter.apply_nibble(output)
+		elif self.__hex_mode:
+			output = AssemblyConverter.apply_hex(output)
+		return output
+
+	@staticmethod
+	def apply_nibble(output):
+		return ['\t'.join([elem[i:i+4] for i in range(0, len(elem), 4)]) for elem in output]
+
+	@staticmethod
+	def apply_hex(output):
+		raise NotImplementedError()
+		return ...
 
