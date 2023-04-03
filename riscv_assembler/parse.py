@@ -1,5 +1,5 @@
 from riscv_assembler.instr_arr import *
-
+from types import FunctionType as function
 __all__ = ['Parser']
 
 class _Parser:
@@ -17,19 +17,19 @@ class _Parser:
 				- Return
 	'''
 
-	def __call__(self, *args):
+	def __call__(self, *args) -> list:
 		if self.is_file(*args):
 			return self.read_file(*args)
 		return [self.interpret(x) for x in args[0].split("\n")]
 
-	def is_file(self, x):
+	def is_file(self, x : str) -> bool:
 		return True if '.s' in x or '/' in x else False
 
 	'''
 		In read_file(), Check if the inputted line is appropriate before
 		parsing it.
 	'''
-	def valid_line(self, x, allow_colon = False):
+	def valid_line(self, x : str, allow_colon : bool = False) -> bool:
 		if x[0][0] == "#" or x[0][0] == "\n" or x[0][0] == "" or x[0][0] == ".":
 			return False
 
@@ -40,7 +40,7 @@ class _Parser:
 	'''
 		In interpret(), remove any comments in the line.
 	'''
-	def handle_inline_comments(self, x):
+	def handle_inline_comments(self, x : str) -> str:
 		if "#" in x:
 			pos = x.index("#")
 			if pos != 0 and pos != len(x)-1:
@@ -50,7 +50,7 @@ class _Parser:
 	'''
 		Read the .s file provided and parse it completely.
 	'''
-	def read_file(self, file):
+	def read_file(self, file : str) -> list:
 		code = []
 		file = open(file, "r")
 
@@ -65,7 +65,7 @@ class _Parser:
 	'''
 		In read_file(), parse and return the machine code.
 	'''
-	def interpret(self, line):
+	def interpret(self, line : str) -> str:
 		tokens = self.handle_inline_comments(line).split()
 		f = self.determine_type(tokens[0])
 		return f(tokens)
@@ -74,12 +74,41 @@ class _Parser:
 		In interpret(), determine which instruction set is being used
 		and return the appropriate parsing function.
 	'''
-	def determine_type(self, tk):
+	def determine_type(self, tk : str) -> function:
 		instr_sets = [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr, pseudo_instr]
 		parsers = [Rp, Ip, Sp, SBp, Up ,UJp, Psp]
 		for i in range(len(instr_sets)):
 			if tk in instr_sets[i]:
 				return parsers[i]
-		raise BadInstructionError()
+		raise Exception("Bad Instruction Provided!")
+
+	'''
+		Calculate jump
+	'''
+	def calc_jump(self, x : str, line_num : int) -> int:
+		raise NotImplementedError()
+
+		# search forward
+		skip_labels = 0
+		for i in range(line_num, len(self.code)):
+			if x+":" == self.code[i]:
+				jump_size = (i - line_num - skip_labels) * 4 # how many instructions to jump ahead
+				return jump_size
+
+			if self.code[i][-1] == ':':
+				skip_labels += 1
+
+		# search backward
+		skip_labels = 0
+		for i in range(line_num, -1, -1):
+			# substruct correct label itself
+			if self.code[i][-1] == ':':
+				skip_labels += 1
+
+			if x+":" == self.code[i]:
+				jump_size = (i - line_num + skip_labels) * 4 # how many instructions to jump behind
+				return jump_size
+
+		raise Exception("Address not found!")
 
 Parser = _Parser()
