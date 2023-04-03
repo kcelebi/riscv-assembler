@@ -19,7 +19,7 @@ __all__ = ['AssemblyConverter']
 
 class AssemblyConverter:
 
-	def __init__(self, output_mode = 'a', nibble_mode = False, hex_mode = False):
+	def __init__(self, output_mode : str = 'a', nibble_mode : bool = False, hex_mode : bool = False) -> None:
 		self.__output_mode = self.__check_output_mode(output_mode)
 		self.__nibble_mode = self.__check_nibble_mode(nibble_mode)
 		self.__hex_mode = self.__check_hex_mode(hex_mode)
@@ -45,16 +45,16 @@ class AssemblyConverter:
 			hex_mode = self.__hex_mode
 		)
 
-	def __check_output_mode(self, x):
+	def __check_output_mode(self, x) -> str:
 		mod = ''.join(sorted(x.split()))
 		assert mod in ['a', 'f', 'p', None], "Output Mode needs to be one of a(rray), f(ile), p(rint), or None."
 		return x
 
-	def __check_nibble_mode(self, x):
+	def __check_nibble_mode(self, x) -> str:
 		assert type(x) == bool, "Nibble mode needs to be a boolean."
 		return x
 
-	def __check_hex_mode(self, x):
+	def __check_hex_mode(self, x) -> str:
 		assert type(x) == bool, "Hex mode needs to be a boolean."
 		return x
 
@@ -63,11 +63,11 @@ class AssemblyConverter:
 			Options: 'a', 'f', 'p'
 	'''
 	@property
-	def output_mode(self):
+	def output_mode(self) -> str:
 		return self.__output_mode
 
 	@output_mode.setter
-	def output_mode(self, x):
+	def output_mode(self, x : str) -> None:
 		self.__output_mode = x
 
 	'''
@@ -76,11 +76,11 @@ class AssemblyConverter:
 			False = full number
 	'''
 	@property
-	def nibble_mode(self):
+	def nibble_mode(self) -> str:
 		return self.__nibble_mode
 
 	@nibble_mode.setter
-	def nibble_mode(self, x):
+	def nibble_mode(self, x : str) -> None:
 		self.__nibble_mode = x
 
 	'''
@@ -89,11 +89,11 @@ class AssemblyConverter:
 		False = binary
 	'''
 	@property
-	def hex_mode(self):
+	def hex_mode(self) -> str:
 		return self.__hex_mode
 
 	@hex_mode.setter
-	def hex_mode(self, x):
+	def hex_mode(self, x : str) -> None:
 		self.__hex_mode = x
 
 	'''
@@ -101,7 +101,7 @@ class AssemblyConverter:
 
 		Input is either a file name or string of assembly.
 	'''
-	def convert(self, input, file = None):
+	def convert(self, input : str, file : str = None):
 		output = Parser(input)
 		assert len(output) > 0, "Provided input yielded nothing from parser. Check input."
 		output = self.mod(output) # apply nibble mode, hex mode
@@ -118,7 +118,7 @@ class AssemblyConverter:
 
 		raise NotImplementedError()
 
-	def write_to_file(self, output, file):
+	def write_to_file(self, output : list, file : str) -> None:
 		extension = file[-4:]
 
 		if extension == '.bin':
@@ -144,7 +144,7 @@ class AssemblyConverter:
 
 		raise NotImplementedError()
 
-	def mod(self, output):
+	def mod(self, output : list) -> list:
 		if self.__nibble_mode:
 			output = AssemblyConverter.apply_nibble(output)
 		elif self.__hex_mode:
@@ -152,11 +152,11 @@ class AssemblyConverter:
 		return output
 
 	@staticmethod
-	def apply_nibble(output):
+	def apply_nibble(output : list) -> list:
 		return ['\t'.join([elem[i:i+4] for i in range(0, len(elem), 4)]) for elem in output]
 
 	@staticmethod
-	def apply_hex(output):
+	def apply_hex(output : list) -> list:
 		raise NotImplementedError()
 		return ...
 
