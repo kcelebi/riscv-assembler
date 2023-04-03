@@ -45,6 +45,9 @@ class AssemblyConverter:
 			hex_mode = self.__hex_mode
 		)
 
+	def __call__(self, *args):
+		return self.convert(*args)
+
 	def __check_output_mode(self, x) -> str:
 		mod = ''.join(sorted(x.split()))
 		assert mod in ['a', 'f', 'p', None], "Output Mode needs to be one of a(rray), f(ile), p(rint), or None."
@@ -159,4 +162,3 @@ class AssemblyConverter:
 	def apply_hex(output : list) -> list:
 		raise NotImplementedError()
 		return ...
-
