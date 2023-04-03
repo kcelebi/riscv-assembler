@@ -1,27 +1,34 @@
 import pytest
 from pathlib import Path
-from riscv_assembler.convert import *
+from riscv_assembler.convert import AssemblyConverter as AC
 #TESTS
 
 #test simple.s file, writes to txt and bin
-def func0():
+'''def func0():
 	#test convert, should return array
 	cnv = AssemblyConverter()
 
 	path = str(Path(__file__).parent / "assembly/test0.s")
-	return cnv.convert(path)
+	return cnv.convert(path)'''
+
+def func0():
+	#test convert, should return array
+	cnv = AC()
+
+	path = str(Path(__file__).parent / "assembly/test0.s")
+	return cnv(path)
 
 def func1():
 	#test convert
-	cnv = AssemblyConverter()
+	cnv = AC()
 
 	path = str(Path(__file__).parent / "assembly/test1.s")
-	return cnv.convert(path)
+	return cnv(path)
 
 def func2():
 	#test get/set OutpuType
 	outarr = []
-	cnv = AssemblyConverter()
+	cnv = AC()
 
 	outarr += [cnv.output_mode]
 	cnv.output_mode = 'p'
@@ -32,36 +39,45 @@ def func2():
 
 def func4():
 	#test nibble form for convert
-	cnv = AssemblyConverter(nibble_mode = True)
+	cnv = AC(nibble_mode = True)
 
 	path = str(Path(__file__).parent / "assembly/test0.s")
-	return cnv.convert(path)
+	return cnv(path)
 
 def func5():
 	#test nibbleForm for convert
-	cnv = AssemblyConverter(nibble_mode = True)
+	cnv = AC(nibble_mode = True)
 
 	path = str(Path(__file__).parent / "assembly/test1.s")
-	return cnv.convert(path)
+	return cnv(path)
+
+def func6():
+	# test clone
+
+	cnv = AC(output_mode = 'p', nibble_mode = True, hex_mode = True)
+
+	cnv2 = cnv.clone()
+
+	return [cnv2.output_mode, cnv2.nibble_mode, cnv2.hex_mode]
 
 def func7():
 	#test calcJump()
 	path = str(Path(__file__).parent / "assembly/test2.s")
 
-	cnv = AssemblyConverter(filename = path)
+	cnv = AC(filename = path)
 
 	return cnv.calcJump("loop",2) #3-1
 
 def func8():
 	#test hex
 	out_arr = []
-	cnv = AssemblyConverter(hex_mode = True)
+	cnv = AC(hex_mode = True)
 
 	path = str(Path(__file__).parent / "assembly/test0.s")
-	out_arr.extend(cnv.convert(path))
+	out_arr += cnv(path)
 
 	path = str(Path(__file__).parent / "assembly/test1.s")
-	out_arr.extend(cnv.convert(path))
+	out_arr += cnv(path)
 
 	return out_arr
 
@@ -84,6 +100,9 @@ def test_4():
 
 def test_5():
 	assert func5() == ['0000\t0010\t0000\t0100\t0000\t0010\t1001\t0011'], "Test 5 Failed"
+
+def test_6():
+	assert func6() == ['p', True, True], "Test 6 Failed"
 
 '''def test_7():
 	assert func7() == 4
