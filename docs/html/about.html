@@ -63,13 +63,15 @@
 			    	<a id='what'></a>
 			    	<h1 class='w3-text-teal'>What is this?</h1>
 
-			    	<h3>TL;DR</h3>
-
 			    	<p>Your computer relies on streams of 1's and 0's to do all of its operations. This is the lowest level of code, called machine code, that can be used on a computer. Of course, machine code is quite annoying/impossible to interpret on the fly, so we have other higher levels of code, such as Python, Java, and C, that allow us to give instructions that get translated to machine code. The second-lowest level of code is called Assembly code, and it is mostly used to program Operating Systems and basic hardware functions of a computer.</p>
 
 			    	<p>Writing Assembly code to test hardware is quite annoying because you have to deal with machine code and the long 32 or 64-bit binary numbers. This package provides tools to help make tests and debug Assembly code that might be used to test/create hardware. This package also serves an educational purpose for those learning about Computer Architecture and RISC-V.</p>
 
 			    	<p>In our computer, there are different ways that we can format our hardware to interpret the 1's and 0's. Intel has a format called x86 that has been used in computers for many years. It has its own kind of formatting and way of interpreting Assembly code. More recently, there has been an emergence in popularity of a different format called RISC-V, owned by a company called ARM. These chips are mostly used in phones, and have been incredibly successful with the iPhone. ARM chips recently became even more popular with Apple's new M1 Macbook Pro which uses an ARM architecture to structure its hardware. This new computer has been known to absolutely wipe out its competitors in processing power and capability.</p>
+
+			    	<h3>TL;DR</h3>
+
+			    	<p>Our machines essentially runs on the Assembly Code which is the lowest level before binary. It's annoying to write assembly code if you're checking to make sure it works with the binary output and vice-versa, this package helps with that.</p>
 
 			    	<a id='how'></a>
 			    	<h1 class='w3-text-teal'>How it Works</h1>
@@ -78,14 +80,23 @@
 
 			    	<p>This package was designed with the intention of helping with CPU architecture engineering. Machine code is difficult to interpret which can make it difficult to create efficient tests by hand. Simple software like this can help generate testing material and help debug CPU systems.</p>
 
+			    	<h3>TL;DR</h3>
+
+			    	<p>We make the process of converting these files easy! CPU architecture engineers can now relax 😎.</p>
+
+			    	<a id='future'></a>
+			    	<h1 class='w3-text-teal'>Who Am I?</h1>
+
+			    	<p>I'm Kaya, a Computer Science and Statistics graduate from Duke University. Although my work is mainly involved in machine learning and data science, I took an interest to computer architecture from my CS250 class in my 2nd year. Learning about assembly was quite intriguing, and I noticed the lack of tools for developing/debugging, which I was desperately in need of for the class 😅. Given my work schedule, it can be difficult to find time to improve this package, however, I'll do the best that I can 😁.</p>
+
 			    	<a id='future'></a>
 			    	<h1 class='w3-text-teal'>Future Plans</h1>
 
-			    	<p> I created this package purely to provide an extra set of tools for a difficult job and also to display my understanding of Computer Architecture systems in RISC-V. This package was first released when I was a 2nd-year student in college, and I intend to keep improving it overtime in a professional manner. I have many ideas for new implementations which I will update this website with. <b>For any questions or inquiries, please feel free to <a href='contact.html'>contact</a> me </b>.</p>
+			    	<p> I created this package purely to provide an extra set of tools for a difficult job and also to display my understanding of Computer Architecture systems in RISC-V. This package was first released when I was a 2nd-year student in college, and I intend to keep improving it overtime in a professional manner. I have many ideas for new implementations which I will update this website with. <b>For any questions or inquiries, please feel free to <a href='contact.html'>contact me</a></b>.</p>
 
 			    	<h3>Project Files</h3>
 
-			    	<p>One of the bigger problems I intend to tackle is dealing with multiple files in a project. Currently, this package can only handle files that exist on their own. This implementation will be coming soon.</p>
+			    	<p>One of the bigger problems I intend to tackle is dealing with multiple files in a project. Currently, this package can only handle files that exist on their own and individual instructions. This implementation will be coming soon.</p>
 
 			    	<h3>Adding Custom Instructions</h3>
 

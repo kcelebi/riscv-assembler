@@ -47,8 +47,7 @@
 		  <a class="w3-bar-item w3-button w3-hover-black" href="#top">AssemblyConverter</a>
 		  <a class="w3-bar-item w3-button w3-hover-black" href="#convert">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;Convert</a>
 		  <a class="w3-bar-item w3-button w3-hover-black" href="#helper">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;-&emsp;&emsp;Helper Functions</a>
-		  <a class="w3-bar-item w3-button w3-hover-black" href="toolkit.html">Toolkit</a>
-		  <a class="w3-bar-item w3-button w3-hover-black" href="errors.html">Error Messages</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="instr.html">Instructions</a>
 		</nav>
 
 		<!-- Overlay effect when opening sidebar on small screens -->
@@ -70,27 +69,25 @@
 			    	<p>Let's check out how to use <code class='w3-codespan'>AssemblyConverter</code>. First, let's import it into our Python file:</p>
 
 			    	<div class='w3-code notranslate'>
-			    		from riscv_assembler.convert import AssemblyConverter
+			    		from riscv_assembler.convert import *
 			    	</div>
 
 			    	<p>We can now instantiate an object. The constructor's defaults are initialized as so:</p>
 
 			    	<div class='w3-code notranslate'>
-			    		AssemblyConverter(output_type = "b", nibble = False, hexMode = False)
+			    		AssemblyConverter(output_type = "a", nibble = False, hexMode = False)
 			    	</div>
 
-			    	<p> <code class='w3-codespan'>output_type</code> refers to whether a converted file should be outputted to a binary file (<code class='w3-codespan'>"b"</code>), a text file (<code class='w3-codespan'>"t"</code>), or to console (<code class='w3-codespan'>"p"</code>). The three of these options can be used in any sort of combination. Here are acceptable usages: </p>
+			    	<p> <code class='w3-codespan'>output_type</code> refers to whether a converted file should be outputted to an array(<code class='w3-codespan'>"a"</code>), a file (<code class='w3-codespan'>"f"</code>), or printed to console (<code class='w3-codespan'>"p"</code>). Here are acceptable usages: </p>
 
 			    	<div class='w3-code notranslate'>
-			    		cnv = AssemblyConverter(output_type = "btp") #binary and text and printing <br>
-						cnv = AssemblyConverter(output_type = "pbt") #works same as above ^<br>
-						cnv = AssemblyConverter(output_type = "b") #just binary<br>
-						cnv = AssemblyConverter(output_type = "t") #just text<br>
-						cnv = AssemblyConverter(output_type = "p") #just printing<br>
-						cnv = AssemblyConverter() #binary by default<br>
+						cnv = AssemblyConverter(output_type = "b") # output to array<br>
+						cnv = AssemblyConverter(output_type = "t") # output to file<br>
+						cnv = AssemblyConverter(output_type = "p") # printing to console<br>
+						cnv = AssemblyConverter() #array by default<br>
 			    	</div>
 
-			    	<p><code class='w3-codespan'>nibble</code> refers to whether (for text file and console outputs) the 32-bit binary numbers should be split in nibbles or kept as an unbroken string. An example output for <code class='w3-codespan'>nibble = True</code> would be:</p>
+			    	<p><code class='w3-codespan'>nibble</code> refers to whether (for file and console outputs) the 32-bit binary numbers should be split in nibbles or kept as an unbroken string. An example output for <code class='w3-codespan'>nibble = True</code> would be:</p>
 
 			    	<div class='w3-code notranslate'>
 			    		1101    0110    0000   0000 ...
@@ -102,46 +99,33 @@
 			    		11010110000000...
 			    	</div>
 
-			    	<p><code class='w3-codespan'>hexMode</code> gives the option (for text file and console outputs) to output in hexadecimal form instead of binary. By default, the outputs are in binary. Leading zeros are included to properly represent a 32-bit instruction.</p>
+			    	<p><code class='w3-codespan'>hexMode</code> gives the option (for text file, array outputs, and console outputs) to output in hexadecimal form instead of binary. By default, the outputs are in binary. Leading zeros are included to properly represent a 32-bit instruction.</p>
 
 			    	<a id='convert'></a>
 			    	<h1 class="w3-text-teal">Convert</h1>
 
-			    	<p>With this object we can apply our most powerful function : <code class='w3-codespan'>convert()</code>. This function takes in a file name (with <code class='w3-codespan'>.s</code> extension) from the local directory and converts it to the output file of your choice, specified by the object construction. Let's convert the file <code class='w3-codespan'>simple.s</code>:</p>
+			    	<p>With this object we can apply the key function : <code class='w3-codespan'>convert()</code>. This function takes in either a string with assembly in it or a file name (with <code class='w3-codespan'>.s</code> extension) from the local directory and converts it to the output format of your choice, specified by the object construction. Let's convert the file <code class='w3-codespan'>simple.s</code>:</p>
 
 			    	<div class='w3-code notranslate'>
 			    		cnv = AssemblyConverter()<br>
-			    		cnv.convert('simple.s')
+			    		result = cnv.convert('simple.s')
 			    	</div>
 
-			    	<p>Any empty files, fully commented files, or files without <code class='w3-codespan'>.s</code> extension will not be accepted. The function creates a directory by truncating the extension of the file along with two subdirectories called <code class='w3-codespan'>bin</code> and <code class='w3-codespan'>txt</code> for the respective output files (for <code class='w3-codespan'>simple.s</code> the directory would be <code class='w3-codespan'>simple</code>). Output files will be stored there for usage and/or printed to console.</p>
-
-			    	<div class='w3-code notranslate'>
-			    		/simple<br>
-			    		&emsp;&emsp;/bin<br>
-			    		&emsp;&emsp;&emsp;&emsp;simple.bin<br>
-			    		&emsp;&emsp;/txt<br>
-			    		&emsp;&emsp;&emsp;&emsp;simple.txt<br>
-
-			    	</div>
+			    	<p>Any empty files, fully commented files, or files without <code class='w3-codespan'>.s</code> extension will not be accepted.</p>
 
 			    	<a id='helper'></a>
 			    	<h1 class = "w3-text-teal">Helper Functions</h1>
 
 			    	<p>Here are a few functions that might be useful.</p>
 
-			    	<h3>Output Type</h3>
+			    	<h3>Properties</h3>
 
-			    	<p>It is possible to get and set the output type of your <code class="w3-codespan">AssemblyConverter</code> object. Observe:</p>
+			    	<p>AssemblyConverter has three properties: <code class='w3-codespan'>output_mode</code>, <code class='w3-codespan'>nibble_mode</code> , and <code class='w3-codespan'>hex_mode</code>. This makes getting/setting these values very accessible. Observe:</p>
 
 			    	<div class='w3-code notranslate'>
-			    		cnv = AssemblyConverter("bt")<br>
-			    		output_type = cnv.getOutputType() <br>
-			    		<br>
-
-			    		print(output_type) #prints bt <br>
-			    		<br>
-			    		cnv.setOutputType("p") #now only prints to console
+			    		cnv = AssemblyConverter(output_mode = 'a')<br>
+			    		print(cnv.output_mode) # prints 'a'<br>
+			    		cnv.output_mode = 'f' # set output_mode to files
 			    	</div>
 
 			    	<h3>Instructions</h3>

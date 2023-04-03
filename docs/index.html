@@ -1,14 +1,3 @@
-<!--
-[x] index
-[x] assemblyconverter
-[x] toolkit
-[x] about
-[x] contact
-[x] contrib
-[] errors
-[] demo?
--->
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -60,8 +49,7 @@
 		  <a class="w3-bar-item w3-button w3-hover-black" href="#install">Installation</a>
 		  <a class="w3-bar-item w3-button w3-hover-black" href="#usage">Usage</a>
 		  <a class="w3-bar-item w3-button w3-hover-black" href="html/ac.html">AssemblyConverter</a>
-		  <a class="w3-bar-item w3-button w3-hover-black" href="html/toolkit.html">Toolkit</a>
-		  <a class="w3-bar-item w3-button w3-hover-black" href="html/errors.html">Error Messages</a>
+		  <a class="w3-bar-item w3-button w3-hover-black" href="html/instr.html">Instructions</a>
 		</nav>
 
 		<!-- Overlay effect when opening sidebar on small screens -->
@@ -84,7 +72,7 @@
 			      <p>Feel free to <a href = "https://github.com/kcelebi/riscv-assembler">open an issue</a> or <a href="html/contact.html">contact</a> me with any questions/inquiries.</p>
 			      <h1 class="w3-text-teal">Installation</h1>
 
-			      <p>The package can be installed using pip:</p>
+			      <p>The package is designed for Python version >=3.8 and can be installed using pip:</p>
 			      <div class='w3-code notranslate'>
 			      	$ pip install riscv-assembler
 			      </div>
@@ -94,7 +82,7 @@
 			      	$ python3 -m pip install riscv-assembler
 			  	  </div>
 
-			      <p> It is possible that the <code class='w3-codespan'>bitstring</code> dependency might not install correctly. If this occurs, you can simply pip install it separately:</p>
+			      <p> There have been issues with the bitstring <code class='w3-codespan'>bitstring</code> dependency installing incorrectly. If this occurs, you can simply pip install it separately:</p>
 
 			      <div class='w3-code notranslate'>
 			      	$ pip install bitstring
@@ -104,16 +92,32 @@
 			    <a id='usage'></a>
 			    <h1 class="w3-text-teal">Usage</h1>
 
-			    <p> The package works through an <code class='w3-codespan'>AssemblyConverter</code> class and a <code class='w3-codespan'>Toolkit</code> class. The  <code class='w3-codespan'>AssemblyConverter</code> class contains functions to convert whole files and projects from Assembly code to machine code. The Toolkit class contains tools to convert individual lines, apply specific instruction format types, calculate branching immediates, and many other functions.</p>
+			    <p> The package works through an <code class='w3-codespan'>AssemblyConverter</code> class. The  <code class='w3-codespan'>AssemblyConverter</code> class contains functions to convert individual lines and whole files from Assembly code to machine code in a variety of output types.</p>
 
 			    <p>Here's a <b>Quick Start</b> on how to convert a whole assembly (<code class='w3-codespan'>.s</code>) file to machine code using <code class ='w3-codespan'>convert()</code> :</p>
 
 			    <div class='w3-code notranslate'>
-			    	from riscv_assembler.convert import AssemblyConverter<br>
+			    	from riscv_assembler.convert import *<br>
 
-			    	cnv = AssemblyConverter()<br>
-			    	cnv.convert("simple.s") <br>
-			    	#outputs to binary file simple.bin<br>
+			    	# instantiate object, by default outputs to a file in nibbles, not in hexademicals <br>
+			    	cnv = AssemblyConverter(output_mode = 'f', nibble_mode = True, hex_mode = False)<br>
+
+			    	# Convert a whole .s file to text file<br>
+			    	cnv.convert("simple.s", "result.txt") <br>
+			    	
+			    	# Convert a string of assembly to binary file <br>
+			    	cnv_str = "add x1 x0 x0\nadd x2 x0 x1" <br>
+			    	cnv.convert(cnv_str, "result.bin") <br>
+
+			    	# Convert a string and print output with no nibbles<br>
+			    	cnv.output_mode = 'p' <br>
+			    	cnv.nibble_mode = False <br>
+			    	cnv.convert(cnv_str) <br>
+
+			    	# Convert a string and save to array <br>
+			    	cnv.output_mode = 'a' <br>
+			    	result = cnv.convert(cnv_str) <br>
+
 			    </div>
 
 			    <p>All done! Read on to find more ways to use <code class='w3-codespan'>AssemblyConverter</code> and <code class='w3-codespan'>Toolkit</code>.</p>
