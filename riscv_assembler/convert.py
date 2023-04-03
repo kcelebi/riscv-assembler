@@ -113,7 +113,7 @@ class AssemblyConverter:
 			return output
 		elif self.__output_mode == 'f':
 			assert file != None, "For output mode to file, need to provided file name."
-			self.write_to_file(output, file)
+			AssemblyConverter.write_to_file(output, file)
 			return
 		elif self.__output_mode == 'p':
 			print(output)
@@ -121,7 +121,8 @@ class AssemblyConverter:
 
 		raise NotImplementedError()
 
-	def write_to_file(self, output : list, file : str) -> None:
+	@staticmethod
+	def write_to_file(output : list, file : str) -> None:
 		extension = file[-4:]
 
 		if extension == '.bin':

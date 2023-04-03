@@ -1,16 +1,10 @@
 import pytest
 from pathlib import Path
 from riscv_assembler.convert import AssemblyConverter as AC
+from riscv_assembler.parse import Parser
 #TESTS
 
 #test simple.s file, writes to txt and bin
-'''def func0():
-	#test convert, should return array
-	cnv = AssemblyConverter()
-
-	path = str(Path(__file__).parent / "assembly/test0.s")
-	return cnv.convert(path)'''
-
 def func0():
 	#test convert, should return array
 	cnv = AC()
@@ -81,6 +75,26 @@ def func8():
 
 	return out_arr
 
+def func9():
+	# test tokenizer
+	line = "add x0 x0 x1"
+
+	result = Parser.tokenize(line)
+
+	return result
+
+def func10():
+	line = "add x0 x0 x1"
+	tokens = Parser.tokenize(line)
+
+	return str(Parser.determine_type(tokens[0]))
+
+def func11():
+	line = ""
+	tokens = Parser.tokenize(line)
+
+	return tokens
+
 #-----------------------------------------------------------------------------------------		
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
@@ -109,3 +123,12 @@ def test_6():
 
 def test_8():
 	assert func8() == ['0x000000b3', '0x02040293'], "Test 8 Failed"'''''
+
+def test_9():
+	assert func9() == ['add', 'x0', 'x0', 'x1'], "Test 9 Failed"
+
+def test_10():
+	assert func10() == 'R Parser', "Test 10 Failed"
+
+def test_11():
+	assert func11() == []

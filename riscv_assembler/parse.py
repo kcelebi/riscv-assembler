@@ -18,18 +18,20 @@ class _Parser:
 	'''
 
 	def __call__(self, *args) -> list:
-		if self.is_file(*args):
+		if _Parser.is_file(*args):
 			return self.read_file(*args)
 		return [self.interpret(x) for x in args[0].split("\n")]
 
-	def is_file(self, x : str) -> bool:
+	@staticmethod
+	def is_file(x : str) -> bool:
 		return True if '.s' in x or '/' in x else False
 
 	'''
 		In read_file(), Check if the inputted line is appropriate before
 		parsing it.
 	'''
-	def valid_line(self, x : str, allow_colon : bool = False) -> bool:
+	@staticmethod
+	def valid_line(x : str, allow_colon : bool = False) -> bool:
 		if x[0][0] == "#" or x[0][0] == "\n" or x[0][0] == "" or x[0][0] == ".":
 			return False
 
@@ -40,7 +42,8 @@ class _Parser:
 	'''
 		In interpret(), remove any comments in the line.
 	'''
-	def handle_inline_comments(self, x : str) -> str:
+	@staticmethod
+	def handle_inline_comments(x : str) -> str:
 		if "#" in x:
 			pos = x.index("#")
 			if pos != 0 and pos != len(x)-1:
@@ -50,31 +53,43 @@ class _Parser:
 	'''
 		Read the .s file provided and parse it completely.
 	'''
-	def read_file(self, file : str) -> list:
+	@staticmethod
+	def read_file(file : str) -> list:
 		code = []
 		file = open(file, "r")
 
 		line = file.readline()
 		while line != "":
-			line = line.strip()
-			if len(line) > 0 and self.valid_line(line, True):
-				code += [self.interpret(line)]
-				line = file.readline()
+			tokens = _Parser.tokenize(line)
+			code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
+			line = file.readline()
 		return code
+
+	'''
+		Tokenize a given line
+	'''
+	@staticmethod
+	def tokenize(line : str) -> list:
+		line = line.strip()
+		if len(line) > 0 and _Parser.valid_line(line, True):
+			tokens = _Parser.handle_inline_comments(line).split()
+			return tokens
+		return []
 
 	'''
 		In read_file(), parse and return the machine code.
 	'''
-	def interpret(self, line : str) -> str:
-		tokens = self.handle_inline_comments(line).split()
-		f = self.determine_type(tokens[0])
+	@staticmethod
+	def interpret(tokens : list) -> str:
+		f = _Parser.determine_type(tokens[0])
 		return f(tokens)
 
 	'''
 		In interpret(), determine which instruction set is being used
 		and return the appropriate parsing function.
 	'''
-	def determine_type(self, tk : str) -> function:
+	@staticmethod
+	def determine_type(tk : str) -> function:
 		instr_sets = [R_instr, I_instr, S_instr, SB_instr, U_instr, UJ_instr, pseudo_instr]
 		parsers = [Rp, Ip, Sp, SBp, Up ,UJp, Psp]
 		for i in range(len(instr_sets)):
