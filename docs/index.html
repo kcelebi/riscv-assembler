@@ -102,17 +102,25 @@
 			    	# instantiate object, by default outputs to a file in nibbles, not in hexademicals <br>
 			    	cnv = AssemblyConverter(output_mode = 'f', nibble_mode = True, hex_mode = False)<br>
 
+			    	<br>
+
 			    	# Convert a whole .s file to text file<br>
 			    	cnv.convert("simple.s", "result.txt") <br>
+
+			    	<br>
 			    	
 			    	# Convert a string of assembly to binary file <br>
 			    	cnv_str = "add x1 x0 x0\nadd x2 x0 x1" <br>
 			    	cnv.convert(cnv_str, "result.bin") <br>
 
+			    	<br>
+
 			    	# Convert a string and print output with no nibbles<br>
 			    	cnv.output_mode = 'p' <br>
 			    	cnv.nibble_mode = False <br>
 			    	cnv.convert(cnv_str) <br>
+
+			    	<br>
 
 			    	# Convert a string and save to array <br>
 			    	cnv.output_mode = 'a' <br>
@@ -120,7 +128,7 @@
 
 			    </div>
 
-			    <p>All done! Read on to find more ways to use <code class='w3-codespan'>AssemblyConverter</code> and <code class='w3-codespan'>Toolkit</code>.</p>
+			    <p>All done! Read on to find more ways to use <code class='w3-codespan'>AssemblyConverter</code> and <code class='w3-codespan'>Instructions</code>.</p>
 			   </div>
 
 			    <!--<div class="w3-third w3-container">
