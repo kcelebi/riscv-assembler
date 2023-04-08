@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
-from riscv_assembler.convert import AssemblyConverter as AC
-from riscv_assembler.parse import Parser
+from riscv_assembler.src.convert import AssemblyConverter as AC
+from riscv_assembler.src.parse import Parser
 #TESTS
 
 #test simple.s file, writes to txt and bin
