@@ -22,6 +22,8 @@ def get_last_version() -> str:
 def bump_patch_number(version_number: str) -> str:
     """Return a copy of `version_number` with the patch number incremented."""
     major, minor, patch = version_number.split(".")
+    if '-' in patch:
+        patch = patch.split('-')[0]
     return f"{major}.{minor}.{int(patch) + 1}"
 
 
