@@ -5,3 +5,4 @@ riscv_assembler.egg-info
 build
 .pytest_cache/
 __pycache__/
+deprc_setup.py
