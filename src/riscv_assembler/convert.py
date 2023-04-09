@@ -12,8 +12,8 @@
 		- Update tests
 '''
 
-from riscv_assembler.instr_arr import *
-from riscv_assembler.parse import *
+from src.riscv_assembler.instr_arr import *
+from src.riscv_assembler.parse import *
 
 __all__ = ['AssemblyConverter']
 
@@ -44,6 +44,9 @@ class AssemblyConverter:
 			nibble_mode = self.__nibble_mode,
 			hex_mode = self.__hex_mode
 		)
+
+	def __call__(self, *args):
+		return self.convert(*args)
 
 	def __check_output_mode(self, x) -> str:
 		mod = ''.join(sorted(x.split()))
@@ -110,7 +113,7 @@ class AssemblyConverter:
 			return output
 		elif self.__output_mode == 'f':
 			assert file != None, "For output mode to file, need to provided file name."
-			self.write_to_file(output, file)
+			AssemblyConverter.write_to_file(output, file)
 			return
 		elif self.__output_mode == 'p':
 			print(output)
@@ -118,7 +121,8 @@ class AssemblyConverter:
 
 		raise NotImplementedError()
 
-	def write_to_file(self, output : list, file : str) -> None:
+	@staticmethod
+	def write_to_file(output : list, file : str) -> None:
 		extension = file[-4:]
 
 		if extension == '.bin':
@@ -159,4 +163,3 @@ class AssemblyConverter:
 	def apply_hex(output : list) -> list:
 		raise NotImplementedError()
 		return ...
-

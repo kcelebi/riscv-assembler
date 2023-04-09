@@ -170,8 +170,8 @@ class _UJ(Instruction):
 
 	@staticmethod
 	def immediate(imm):
-		mod_imm = format(((1 << 20) - 1) & int(imm), '013b')
-		return mod_imm[20-20] + mod_imm[20-10:20-1] + mod_imm[20-11] + mod_imm[20-19:20-12]
+		mod_imm = format(((1 << 21) - 1) & int(imm), '021b')
+		return mod_imm[20-20] + mod_imm[20-10:20-0] + mod_imm[20-11] + mod_imm[20-19:20-11]
 
 class InstructionParser:
 	def organize(self, *args):
