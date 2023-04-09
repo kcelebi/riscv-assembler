@@ -24,6 +24,8 @@ def bump_patch_number(version_number: str) -> str:
     major, minor, patch = version_number.split(".")
     if '-' in patch:
         patch = patch.split('-')[0]
+        v = path.split('-')[1]
+        return f"{major}.{minor}.{int(patch) + 1}-{v}"
     return f"{major}.{minor}.{int(patch) + 1}"
 
 
