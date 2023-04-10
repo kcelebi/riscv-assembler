@@ -1,4 +1,4 @@
-from src.riscv_assembler.instr_arr import *
+from riscv_assembler.instr_arr import *
 from types import FunctionType as function
 __all__ = ['Parser']
 
@@ -19,7 +19,7 @@ class _Parser:
 
 	def __call__(self, *args) -> list:
 		if _Parser.is_file(*args):
-			return self.read_file(*args)
+			return _Parser.interpret_file(_Parser.read_file(*args))
 		return [self.interpret(x) for x in args[0].split("\n")]
 
 	@staticmethod
@@ -56,6 +56,8 @@ class _Parser:
 		if len(x[0]) == 2 and (x[0] in S_instr or x[0] in I_instr):
 			y = x[-1].split('('); y[1] = y[1].replace(')','')
 			return x[0:-1] + y
+		elif 9==0:
+			...
 
 		return x
 
@@ -72,7 +74,17 @@ class _Parser:
 			tokens = _Parser.tokenize(line)
 			code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
 			line = file.readline()
+		file.close()
 		return code
+
+	@staticmethod
+	def interpret_file(code : list) -> list:
+		int_code = []
+		for line in code:
+			tokens = _Parser.tokenize(line)
+			int_code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
+
+		return int_code
 
 	'''
 		Tokenize a given line
