@@ -20,7 +20,7 @@ class _Parser:
 	def __call__(self, *args) -> list:
 		if _Parser.is_file(*args):
 			return _Parser.interpret_file(_Parser.read_file(*args))
-		return [self.interpret(x) for x in args[0].split("\n")]
+		return [_Parser.interpret(_Parser.tokenize(x)) for x in args[0].split("\n") if len(_Parser.tokenize(x)) > 0]
 
 	@staticmethod
 	def is_file(x : str) -> bool:
@@ -56,7 +56,7 @@ class _Parser:
 		if len(x[0]) == 2 and (x[0] in S_instr or x[0] in I_instr):
 			y = x[-1].split('('); y[1] = y[1].replace(')','')
 			return x[0:-1] + y
-		elif 9==0:
+		elif 'requires jump' == 5:
 			...
 
 		return x
@@ -66,16 +66,17 @@ class _Parser:
 	'''
 	@staticmethod
 	def read_file(file : str) -> list:
-		code = []
-		file = open(file, "r")
-
-		line = file.readline()
-		while line != "":
-			tokens = _Parser.tokenize(line)
-			code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
-			line = file.readline()
-		file.close()
-		return code
+		'''code = []
+								file = open(file, "r")
+								line = file.readline()
+								while line != "":
+									tokens = _Parser.tokenize(line)
+									code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
+									line = file.readline()
+								file.close()
+								return code'''
+		with open(file) as f:
+			return f.readlines()
 
 	@staticmethod
 	def interpret_file(code : list) -> list:
@@ -117,6 +118,6 @@ class _Parser:
 		for i in range(len(instr_sets)):
 			if tk in instr_sets[i]:
 				return parsers[i]
-		raise Exception("Bad Instruction Provided!")
+		raise Exception("Bad Instruction Provided: " + tk + "!")
 
 Parser = _Parser()

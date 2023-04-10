@@ -4,5 +4,6 @@ dist
 riscv_assembler.egg-info
 build
 .pytest_cache/
-__pycache__/
+tests/__pycache__/
+src/riscv_assembler/__pycache__/
 deprc_setup.py
