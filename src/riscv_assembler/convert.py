@@ -161,5 +161,4 @@ class AssemblyConverter:
 
 	@staticmethod
 	def apply_hex(output : list) -> list:
-		raise NotImplementedError()
-		return ...
+		return ['0x' + '{:08X}'.format(int(elem, 2)).lower() for elem in output]

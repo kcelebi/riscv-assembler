@@ -95,6 +95,20 @@ def func11():
 
 	return tokens
 
+def func12():
+	cnv = AC(hex_mode = True, output_mode='a')
+
+	path = str(Path(__file__).parent / "assembly/test2.s")
+
+	return cnv(path)
+
+def func13():
+	cnv = AC(hex_mode = True, output_mode='a')
+
+	path = str(Path(__file__).parent / "assembly/test3.s")
+
+	return cnv(path)
+
 #-----------------------------------------------------------------------------------------		
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
@@ -118,11 +132,11 @@ def test_5():
 def test_6():
 	assert func6() == ['p', True, True], "Test 6 Failed"
 
-'''def test_7():
-	assert func7() == 4
+#def test_7():
+#	assert func7() == 4
 
 def test_8():
-	assert func8() == ['0x000000b3', '0x02040293'], "Test 8 Failed"'''''
+	assert func8() == ['0x000000b3', '0x02040293'], "Test 8 Failed"
 
 def test_9():
 	assert func9() == ['add', 'x0', 'x0', 'x1'], "Test 9 Failed"
@@ -132,3 +146,10 @@ def test_10():
 
 def test_11():
 	assert func11() == []
+
+# Test file test2.s, need to implement JUMP
+#def test_12():
+#	assert func12() == ['0x00a00413', '0x00a00493', '0x00848263', '0xfe040493']
+
+def test_13():
+	assert func13() == ['0x00812023']

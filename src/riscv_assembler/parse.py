@@ -47,7 +47,16 @@ class _Parser:
 		if "#" in x:
 			pos = x.index("#")
 			if pos != 0 and pos != len(x)-1:
-				return x[0:pos]
+				return x[0:pos].replace(',', ' ')
+		return x.replace(',', ' ')
+
+	@staticmethod
+	def handle_specific_instr(x : list) -> list:
+		# for sw, lw, lb, lh, sb, sh
+		if len(x[0]) == 2 and (x[0] in S_instr or x[0] in I_instr):
+			y = x[-1].split('('); y[1] = y[1].replace(')','')
+			return x[0:-1] + y
+
 		return x
 
 	'''
@@ -73,6 +82,7 @@ class _Parser:
 		line = line.strip()
 		if len(line) > 0 and _Parser.valid_line(line, True):
 			tokens = _Parser.handle_inline_comments(line).split()
+			tokens = _Parser.handle_specific_instr(tokens)
 			return tokens
 		return []
 
