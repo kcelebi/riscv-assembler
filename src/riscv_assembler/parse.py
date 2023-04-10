@@ -1,4 +1,4 @@
-from src.riscv_assembler.instr_arr import *
+from riscv_assembler.instr_arr import *
 from types import FunctionType as function
 __all__ = ['Parser']
 
@@ -19,8 +19,8 @@ class _Parser:
 
 	def __call__(self, *args) -> list:
 		if _Parser.is_file(*args):
-			return self.read_file(*args)
-		return [self.interpret(x) for x in args[0].split("\n")]
+			return _Parser.interpret_file(_Parser.read_file(*args))
+		return [_Parser.interpret(_Parser.tokenize(x)) for x in args[0].split("\n") if len(_Parser.tokenize(x)) > 0]
 
 	@staticmethod
 	def is_file(x : str) -> bool:
@@ -56,6 +56,8 @@ class _Parser:
 		if len(x[0]) == 2 and (x[0] in S_instr or x[0] in I_instr):
 			y = x[-1].split('('); y[1] = y[1].replace(')','')
 			return x[0:-1] + y
+		elif 'requires jump' == 5:
+			...
 
 		return x
 
@@ -64,15 +66,26 @@ class _Parser:
 	'''
 	@staticmethod
 	def read_file(file : str) -> list:
-		code = []
-		file = open(file, "r")
+		'''code = []
+								file = open(file, "r")
+								line = file.readline()
+								while line != "":
+									tokens = _Parser.tokenize(line)
+									code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
+									line = file.readline()
+								file.close()
+								return code'''
+		with open(file) as f:
+			return f.readlines()
 
-		line = file.readline()
-		while line != "":
+	@staticmethod
+	def interpret_file(code : list) -> list:
+		int_code = []
+		for line in code:
 			tokens = _Parser.tokenize(line)
-			code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
-			line = file.readline()
-		return code
+			int_code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
+
+		return int_code
 
 	'''
 		Tokenize a given line
@@ -105,35 +118,6 @@ class _Parser:
 		for i in range(len(instr_sets)):
 			if tk in instr_sets[i]:
 				return parsers[i]
-		raise Exception("Bad Instruction Provided!")
-
-	'''
-		Calculate jump
-	'''
-	def calc_jump(self, x : str, line_num : int) -> int:
-		raise NotImplementedError()
-
-		# search forward
-		skip_labels = 0
-		for i in range(line_num, len(self.code)):
-			if x+":" == self.code[i]:
-				jump_size = (i - line_num - skip_labels) * 4 # how many instructions to jump ahead
-				return jump_size
-
-			if self.code[i][-1] == ':':
-				skip_labels += 1
-
-		# search backward
-		skip_labels = 0
-		for i in range(line_num, -1, -1):
-			# substruct correct label itself
-			if self.code[i][-1] == ':':
-				skip_labels += 1
-
-			if x+":" == self.code[i]:
-				jump_size = (i - line_num + skip_labels) * 4 # how many instructions to jump behind
-				return jump_size
-
-		raise Exception("Address not found!")
+		raise Exception("Bad Instruction Provided: " + tk + "!")
 
 Parser = _Parser()

@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
-from src.riscv_assembler.convert import AssemblyConverter as AC
-from src.riscv_assembler.parse import Parser
+from riscv_assembler.convert import AssemblyConverter as AC
+from riscv_assembler.parse import Parser
 #TESTS
 
 #test simple.s file, writes to txt and bin
@@ -109,6 +109,13 @@ def func13():
 
 	return cnv(path)
 
+def func14():
+	cnv = AC(hex_mode = True, output_mode='a')
+
+	instr = 'add x1 x0 x0\naddi t0 s0 32\naddi t0 s0 32\nsw s0, 0(sp)'
+
+	return cnv(instr)
+
 #-----------------------------------------------------------------------------------------		
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
@@ -153,3 +160,6 @@ def test_11():
 
 def test_13():
 	assert func13() == ['0x00812023']
+
+def test_14():
+	assert func14() == ['0x000000b3', '0x02040293', '0x02040293','0x00812023']
