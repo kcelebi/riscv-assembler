@@ -12,8 +12,8 @@
 		- Update tests
 '''
 
-from instr_arr import *
-from parse import *
+from riscv_assembler.instr_arr import *
+from riscv_assembler.parse import *
 
 __all__ = ['AssemblyConverter']
 

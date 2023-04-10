@@ -1,4 +1,4 @@
-from instr_arr import *
+from riscv_assembler.instr_arr import *
 from types import FunctionType as function
 __all__ = ['Parser']
 
