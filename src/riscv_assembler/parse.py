@@ -97,33 +97,4 @@ class _Parser:
 				return parsers[i]
 		raise Exception("Bad Instruction Provided!")
 
-	'''
-		Calculate jump
-	'''
-	def calc_jump(self, x : str, line_num : int) -> int:
-		raise NotImplementedError()
-
-		# search forward
-		skip_labels = 0
-		for i in range(line_num, len(self.code)):
-			if x+":" == self.code[i]:
-				jump_size = (i - line_num - skip_labels) * 4 # how many instructions to jump ahead
-				return jump_size
-
-			if self.code[i][-1] == ':':
-				skip_labels += 1
-
-		# search backward
-		skip_labels = 0
-		for i in range(line_num, -1, -1):
-			# substruct correct label itself
-			if self.code[i][-1] == ':':
-				skip_labels += 1
-
-			if x+":" == self.code[i]:
-				jump_size = (i - line_num + skip_labels) * 4 # how many instructions to jump behind
-				return jump_size
-
-		raise Exception("Address not found!")
-
 Parser = _Parser()
