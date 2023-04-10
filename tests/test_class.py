@@ -155,8 +155,8 @@ def test_11():
 	assert func11() == []
 
 # Test file test2.s, need to implement JUMP
-#def test_12():
-#	assert func12() == ['0x00a00413', '0x00a00493', '0x00848263', '0xfe040493']
+def test_12():
+	assert func12() == ['0x00a00413', '0x00a00493', '0x00848263', '0xfe040493']
 
 def test_13():
 	assert func13() == ['0x00812023']

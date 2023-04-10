@@ -4,7 +4,7 @@ import math as m
 
 __all__ = [
 	'R_instr', 'I_instr', 'S_instr',
-	'SB_instr', 'U_instr', 'UJ_instr','pseudo_instr',
+	'SB_instr', 'U_instr', 'UJ_instr','pseudo_instr', 'JUMP',
 	 'R', 'I', 'S', 'SB', 'U', 'UJ',
 	 'Rp', 'Ip', 'Sp', 'SBp', 'Up', 'UJp', 'Psp']
 
@@ -69,7 +69,8 @@ class _I(Instruction):
 	@staticmethod
 	def immediate(imm):
 		#return int(imm) - ((int(imm)>>12)<<12) # imm[11:0]
-		return format(int(imm), '012b')
+		return format(((1 << 12) - 1) & int(imm), '012b')
+		#return format(int(imm), '012b')
 
 class _S(Instruction):
 	def __repr__(self):
@@ -97,7 +98,7 @@ class _S(Instruction):
 								mod_imm_2 = int(imm) - ((int(imm) >> 5) << 5) # imm[4:0]
 						
 								return mod_imm, mod_imm_2'''
-		mod_imm = format(((1 << 13) - 1) & int(imm), '013b')
+		mod_imm = format(((1 << 12) - 1) & int(imm), '012b')
 		if n == 1:
 			return mod_imm[0] + mod_imm[12-10 : 12-4]
 		return mod_imm[12-4 : 12 - 0] + mod_imm[1]
@@ -127,8 +128,8 @@ class _SB(Instruction):
 	def immediate(imm, n):
 		mod_imm = format(((1 << 13) - 1) & int(imm), '013b')
 		if n == 1:
-			return mod_imm[12-12] + mod_imm[12-10:12-5]
-		return mod_imm[12-4:12-1] + mod_imm[12-11]
+			return mod_imm[12-12] + mod_imm[12-11:12-5]
+		return mod_imm[12-4:12-0] + mod_imm[12-11]
 
 class _U(Instruction):
 	def __repr__(self):
@@ -201,10 +202,11 @@ class _I_parse(InstructionParser):
 		return "I Parser"
 
 	def organize(self, tokens):
+		line_num, code = tokens[-2], tokens[-1]
 		instr, rs1, imm, rd = tokens[0], None, None, None
 		if instr == "jalr":
 			if len(tokens) == 4:
-				rs1, imm, rd = reg_map[tokens[2]], JUMP(tokens[3]), reg_map[tokens[1]]
+				rs1, imm, rd = reg_map[tokens[2]], JUMP(tokens[3], line_num, code), reg_map[tokens[1]]
 			else:
 				rs1, imm, rd = reg_map[tokens[1]], 0, reg_map["x1"]
 		elif instr == "lw":
@@ -235,7 +237,8 @@ class _SB_parse(InstructionParser):
 		return "SB Parser"
 
 	def organize(self, tokens):
-		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[1]], reg_map[tokens[2]], JUMP(tokens[3])
+		line_num, code = tokens[-2], tokens[-1]
+		instr, rs1, rs2, imm = tokens[0], reg_map[tokens[1]], reg_map[tokens[2]], JUMP(tokens[3], line_num, code)
 		return SB(instr, rs1, rs2, imm)
 
 class _U_parse(InstructionParser):
@@ -259,11 +262,12 @@ class _UJ_parse(InstructionParser):
 		return "UJ Parser"
 
 	def organize(self, tokens):
+		line_num, code = tokens[-2], tokens[-1]
 		instr, imm, rd = tokens[0], None, None
 		if len(tokens) == 3:
-			imm, rd = JUMP(tokens[2]), reg_map[tokens[1]]
+			imm, rd = JUMP(tokens[2], line_num, code), reg_map[tokens[1]]
 		else:
-			imm, rd = JUMP(tokens[1]), reg_map["x1"]
+			imm, rd = JUMP(tokens[1], line_num, code), reg_map["x1"]
 
 		return UJ(instr, imm, rd)
 
@@ -292,27 +296,25 @@ class _Pseudo_parse(InstructionParser):
 
 		return BadInstructionError()
 
-def JUMP(x : str, line_num : int) -> int:
-	raise NotImplementedError()
-
+def JUMP(x : str, line_num : int, code: list) -> int:
 	# search forward
 	skip_labels = 0
-	for i in range(line_num, len(self.code)):
-		if x+":" == self.code[i]:
+	for i in range(line_num, len(code)):
+		if x+":" == code[i]:
 			jump_size = (i - line_num - skip_labels) * 4 # how many instructions to jump ahead
 			return jump_size
 
-		if self.code[i][-1] == ':':
+		if code[i][-1] == ':':
 			skip_labels += 1
 
 	# search backward
 	skip_labels = 0
 	for i in range(line_num, -1, -1):
 		# substruct correct label itself
-		if self.code[i][-1] == ':':
+		if code[i][-1] == ':':
 			skip_labels += 1
 
-		if x+":" == self.code[i]:
+		if x+":" == code[i]:
 			jump_size = (i - line_num + skip_labels) * 4 # how many instructions to jump behind
 			return jump_size
 
