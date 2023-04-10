@@ -1,5 +1,6 @@
 from riscv_assembler.instr_arr import *
 from types import FunctionType as function
+from os.path import exists
 __all__ = ['Parser']
 
 class _Parser:
@@ -18,13 +19,12 @@ class _Parser:
 	'''
 
 	def __call__(self, *args) -> list:
-		if _Parser.is_file(*args):
-			return _Parser.interpret_file(_Parser.read_file(*args))
-		return [_Parser.interpret(_Parser.tokenize(x)) for x in args[0].split("\n") if len(_Parser.tokenize(x)) > 0]
-
-	@staticmethod
-	def is_file(x : str) -> bool:
-		return True if '.s' in x or '/' in x else False
+		if exists(*args):
+			return _Parser.interpret_arr(_Parser.read_file(*args))
+		#return [_Parser.interpret(_Parser.tokenize(x)) for x in args[0].split("\n") if len(_Parser.tokenize(x)) > 0]
+		elif type(args[0]) == str:
+			return _Parser.interpret_arr(args[0].split('\n'))
+		return _Parser.interpret_arr(*args)
 
 	'''
 		In read_file(), Check if the inputted line is appropriate before
@@ -35,7 +35,7 @@ class _Parser:
 		if x[0][0] == "#" or x[0][0] == "\n" or x[0][0] == "" or x[0][0] == ".":
 			return False
 
-		if not allow_colon and x[0][-1] == ":" :
+		if not allow_colon and x[-1] == ":" :
 			return False
 		return True
 
@@ -76,13 +76,13 @@ class _Parser:
 								file.close()
 								return code'''
 		with open(file) as f:
-			return f.readlines()
+			return [x.strip() for x in f.readlines() if x != '\n']
 
 	@staticmethod
-	def interpret_file(code : list) -> list:
+	def interpret_arr(code : list) -> list:
 		int_code = []
-		for line in code:
-			tokens = _Parser.tokenize(line)
+		for line_num, line in enumerate(code):
+			tokens = _Parser.tokenize(line, line_num, code)
 			int_code += [_Parser.interpret(tokens) for _ in range(1) if len(tokens) != 0]
 
 		return int_code
@@ -91,12 +91,12 @@ class _Parser:
 		Tokenize a given line
 	'''
 	@staticmethod
-	def tokenize(line : str) -> list:
+	def tokenize(line : str, line_num: int = None, code : list = None) -> list:
 		line = line.strip()
-		if len(line) > 0 and _Parser.valid_line(line, True):
+		if len(line) > 0 and _Parser.valid_line(line):
 			tokens = _Parser.handle_inline_comments(line).split()
 			tokens = _Parser.handle_specific_instr(tokens)
-			return tokens
+			return tokens + [line_num, code] if line_num != None and code != None else tokens
 		return []
 
 	'''
