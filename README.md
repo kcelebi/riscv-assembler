@@ -1,6 +1,10 @@
 [![kcelebi](https://circleci.com/gh/kcelebi/riscv-assembler.svg?style=svg)](https://circleci.com/gh/kcelebi/riscv-assembler)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+# ALL PRODUCTION MOVED TO [www.github.com/celebi-pkg/riscv-assembler](https://www.github.com/celebi-pkg/riscv-assembler)
+
+**There won't be any more updates in this repository, please migrate there for the newest versions and fixes.**
+
 ![example](references/mdimg.png)
 # riscv-assembler Documentation
 RISC-V Assembly code assembler package. [View the full documentation here](https://www.riscvassembler.org)
