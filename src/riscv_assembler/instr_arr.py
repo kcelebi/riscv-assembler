@@ -1,6 +1,4 @@
 from pathlib import Path
-from bitstring import BitArray
-import math as m
 
 __all__ = [
 	'R_instr', 'I_instr', 'S_instr',
@@ -205,7 +203,7 @@ class _I_parse(InstructionParser):
 		line_num, code = tokens[-2], tokens[-1]
 		instr, rs1, imm, rd = tokens[0], None, None, None
 		if instr == "jalr":
-			if len(tokens) == 4:
+			if len(tokens) == 4+2:
 				rs1, imm, rd = reg_map[tokens[2]], JUMP(tokens[3], line_num, code), reg_map[tokens[1]]
 			else:
 				rs1, imm, rd = reg_map[tokens[1]], 0, reg_map["x1"]
@@ -280,6 +278,7 @@ class _Pseudo_parse(InstructionParser):
 		return "Pseudo Parser"
 
 	def organize(self, tokens):
+		# better way to organize, express, abstract pseudo?
 		instr = tokens[0]
 		if instr == 'nop':
 			rs1, imm, rd = reg_map["x0"], 0, reg_map["x0"]
@@ -296,14 +295,19 @@ class _Pseudo_parse(InstructionParser):
 
 		return BadInstructionError()
 
-def JUMP(x : str, line_num : int, code: list) -> int:
+
+'''
+	Calculate a JUMP from a branch statement to another line
+'''
+def JUMP(tk : str, line_num : int, code: list) -> int:
 	# search forward
 	skip_labels = 0
 	for i in range(line_num, len(code)):
-		if x+":" == code[i]:
+		if tk + ":" == code[i]:
 			jump_size = (i - line_num - skip_labels) * 4 # how many instructions to jump ahead
 			return jump_size
 
+		# skip funcs that are not matching tk
 		if code[i][-1] == ':':
 			skip_labels += 1
 
@@ -314,11 +318,11 @@ def JUMP(x : str, line_num : int, code: list) -> int:
 		if code[i][-1] == ':':
 			skip_labels += 1
 
-		if x+":" == code[i]:
+		if tk + ":" == code[i]:
 			jump_size = (i - line_num + skip_labels) * 4 # how many instructions to jump behind
 			return jump_size
 
-	raise Exception("Address not found!")
+	raise Exception("Address not found! Provided assembly code could be faulty, branch is expressed but not found in code.")
 
 def register_map():
 	path = Path(__file__).parent / "data/reg_map.dat"
